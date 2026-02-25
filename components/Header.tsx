@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Compare List", href: "/compare-list" },
   { label: "Blog", href: "/blog" },
   { label: "Careers", href: "/careers" },
+  { label: "Contact Us", href: "/contact-us" },
 ];
 
 export default function Header() {
