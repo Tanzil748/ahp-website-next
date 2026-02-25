@@ -731,8 +731,8 @@ export default function ContactPage() {
                         Message Sent!
                       </h2>
                       <p style={{ color: quickSilver, fontSize: "1.65rem" }}>
-                        Thank you for reaching out. We&apos;ll be in touch with
-                        you shortly.
+                        Thank you for reaching out. We'll be in touch with you
+                        shortly.
                       </p>
                     </div>
                   )}
@@ -741,21 +741,6 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
-
-        {/* ══════════════════════════════════════
-            FOOTER
-        ══════════════════════════════════════ */}
-        <footer
-          className="text-center py-10"
-          style={{
-            backgroundColor: "#1a1a18",
-            borderTop: `1px solid ${whiteAlpha10}`,
-          }}
-        >
-          <p style={{ fontSize: "1.4rem", color: quickSilver }}>
-            © 2026 Al Hussein Perfumes Corporate. All Rights Reserved.
-          </p>
-        </footer>
       </div>
     </>
   );
