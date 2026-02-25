@@ -1,5 +1,7 @@
 import Distribution from "@/components/distribution";
 import HeroSlider from "@/components/HeroSlider";
+import NewArrivals from "@/components/NewArrivals";
+import RecentEvents from "@/components/RecentEvents";
 // import Image from "next/image";
 
 export default function Home() {
@@ -7,6 +9,8 @@ export default function Home() {
     <>
       <HeroSlider />
       <Distribution />
+      <NewArrivals />
+      <RecentEvents />
     </>
   );
 }
