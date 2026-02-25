@@ -6,25 +6,25 @@ import Image from "next/image";
 
 const slides = [
   {
-    image: "/images/index-hero-banners/1.png",
+    image: "/images/index-page/hero-banners/1.png",
     subtitle: "Timeless Elegance",
     title: ["Discover Your", "Signature Scent"],
     text: "Timeless fragrances crafted to match every mood and moment.",
   },
   {
-    image: "/images/index-hero-banners/2.png",
+    image: "/images/index-page/hero-banners/2.png",
     subtitle: "Lasting Impressions",
     title: ["More Than", "a Fragrance"],
     text: "Each scent is designed to leave a lasting impression wherever you go.",
   },
   {
-    image: "/images/index-hero-banners/3.png",
+    image: "/images/index-page/hero-banners/3.png",
     subtitle: "Bold Identity",
     title: ["Unforgettable", "Starts Here"],
     text: "Bold, refined perfumes made for those who stand out.",
   },
   {
-    image: "/images/index-hero-banners/4.png",
+    image: "/images/index-page/hero-banners/4.png",
     subtitle: "Scent Reverie",
     title: ["Flavors For", "All Seasons"],
     text: "Embrace a collection of fragrances crafted to delight every moment of the year, from fresh spring notes to warm winter aromas.",
