@@ -156,6 +156,7 @@ export default function Header() {
           }
           .topbar-item .span {
             font-size: var(--fontSize-label-1);
+            color: white;
           }
           .topbar .link {
             transition: var(--transition-1);
@@ -446,7 +447,7 @@ export default function Header() {
         <div className="container px-7">
           {/* address — hidden below 992px */}
           <address className="topbar-item">
-            <div className="icon">
+            <div className="icon text-white">
               {/* location-outline SVG */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -484,7 +485,7 @@ export default function Header() {
 
           {/* hours — hidden below 992px */}
           <div className="topbar-item item-2">
-            <div className="icon">
+            <div className="icon text-white">
               {/* time-outline SVG */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -517,7 +518,7 @@ export default function Header() {
 
           {/* phone — always visible (it's a .link) */}
           <a href="tel:+15169072340" className="topbar-item link">
-            <div className="icon">
+            <div className="icon text-white">
               {/* call-outline SVG */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -547,7 +548,7 @@ export default function Header() {
             href="mailto:sales@alhusseinperfumes.com"
             className="topbar-item link"
           >
-            <div className="icon">
+            <div className="icon text-white">
               {/* mail-outline SVG */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
