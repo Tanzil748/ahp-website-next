@@ -442,7 +442,7 @@ export default function Header() {
           — slides up when header is active
       ════════════════════════════════════ */}
       <div className={`topbar${isActive ? " header-active" : ""}`}>
-        <div className="container">
+        <div className="container px-7">
           {/* address — hidden below 992px */}
           <address className="topbar-item">
             <div className="icon">

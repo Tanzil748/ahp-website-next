@@ -131,8 +131,7 @@ export default function AboutPage() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap');
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 10px; scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background-color: hsl(38,61%,73%); }
         ::-webkit-scrollbar-track { background: transparent; }

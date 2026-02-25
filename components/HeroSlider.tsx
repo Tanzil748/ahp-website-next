@@ -32,7 +32,7 @@ const slides = [
 ];
 
 export default function HeroSlider() {
-  const [current, setCurrent]   = useState(0);
+  const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
 
   const goTo = useCallback(
@@ -42,7 +42,7 @@ export default function HeroSlider() {
       setTimeout(() => {
         setCurrent(((index % slides.length) + slides.length) % slides.length);
         setAnimating(false);
-      }, 1000); // matches --transition-3: 1000ms
+      }, 100);
     },
     [animating],
   );
@@ -323,9 +323,7 @@ export default function HeroSlider() {
             </div>
 
             {/* .section-subtitle  +  .slider-reveal */}
-            <p className="section-subtitle slider-reveal">
-              {slide.subtitle}
-            </p>
+            <p className="section-subtitle slider-reveal">{slide.subtitle}</p>
 
             {/* .display-1 .hero-title  +  .slider-reveal */}
             <h1 className="hero-title slider-reveal">
@@ -335,14 +333,17 @@ export default function HeroSlider() {
             </h1>
 
             {/* .body-2 .hero-text  +  .slider-reveal */}
-            <p className="hero-text slider-reveal">
-              {slide.text}
-            </p>
+            <p className="hero-text slider-reveal">{slide.text}</p>
 
             {/* .btn .btn-primary  +  .slider-reveal */}
-            <Link href="/products" className="btn btn-primary hero-btn-cta slider-reveal">
+            <Link
+              href="/products"
+              className="btn btn-primary hero-btn-cta slider-reveal"
+            >
               <span className="text text-1">View Our Products</span>
-              <span className="text text-2" aria-hidden="true">View Our Products</span>
+              <span className="text text-2" aria-hidden="true">
+                View Our Products
+              </span>
             </Link>
           </div>
         ))}
@@ -355,11 +356,18 @@ export default function HeroSlider() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20" height="20"
-            fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" strokeWidth={1.5}
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
           </svg>
         </button>
 
@@ -371,11 +379,18 @@ export default function HeroSlider() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="20" height="20"
-            fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" strokeWidth={1.5}
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
           </svg>
         </button>
       </section>
