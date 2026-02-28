@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Product {
@@ -32,7 +31,11 @@ const CATALOGUE: Product[] = [
     longevity: "8-12 hours",
     sillage: "Strong",
     season: "Fall/Winter",
-    notes: { top: "Bergamot, Saffron", heart: "Rose, Oud", base: "Amber, Musk" },
+    notes: {
+      top: "Bergamot, Saffron",
+      heart: "Rose, Oud",
+      base: "Amber, Musk",
+    },
   },
   {
     id: "velvet-rose",
@@ -43,7 +46,11 @@ const CATALOGUE: Product[] = [
     longevity: "6-8 hours",
     sillage: "Moderate",
     season: "All Seasons",
-    notes: { top: "Pink Pepper, Mandarin", heart: "Bulgarian Rose, Peony", base: "Patchouli, White Musk" },
+    notes: {
+      top: "Pink Pepper, Mandarin",
+      heart: "Bulgarian Rose, Peony",
+      base: "Patchouli, White Musk",
+    },
   },
   {
     id: "cedar-noir",
@@ -54,7 +61,11 @@ const CATALOGUE: Product[] = [
     longevity: "10-14 hours",
     sillage: "Very Strong",
     season: "Winter",
-    notes: { top: "Black Pepper, Cardamom", heart: "Cedarwood, Vetiver", base: "Leather, Incense" },
+    notes: {
+      top: "Black Pepper, Cardamom",
+      heart: "Cedarwood, Vetiver",
+      base: "Leather, Incense",
+    },
   },
   {
     id: "aqua-lumiere",
@@ -65,7 +76,11 @@ const CATALOGUE: Product[] = [
     longevity: "4-6 hours",
     sillage: "Light",
     season: "Spring/Summer",
-    notes: { top: "Citrus, Sea Breeze", heart: "Jasmine, Lily", base: "White Musk, Sandalwood" },
+    notes: {
+      top: "Citrus, Sea Breeze",
+      heart: "Jasmine, Lily",
+      base: "White Musk, Sandalwood",
+    },
   },
   {
     id: "amber-elixir",
@@ -76,7 +91,11 @@ const CATALOGUE: Product[] = [
     longevity: "12-16 hours",
     sillage: "Strong",
     season: "Fall/Winter",
-    notes: { top: "Cinnamon, Nutmeg", heart: "Amber, Labdanum", base: "Vanilla, Tonka Bean" },
+    notes: {
+      top: "Cinnamon, Nutmeg",
+      heart: "Amber, Labdanum",
+      base: "Vanilla, Tonka Bean",
+    },
   },
   {
     id: "rose-de-nuit",
@@ -87,7 +106,11 @@ const CATALOGUE: Product[] = [
     longevity: "6-10 hours",
     sillage: "Moderate",
     season: "All Seasons",
-    notes: { top: "Lychee, Raspberry", heart: "Damask Rose, Iris", base: "Sandalwood, Musk" },
+    notes: {
+      top: "Lychee, Raspberry",
+      heart: "Damask Rose, Iris",
+      base: "Sandalwood, Musk",
+    },
   },
 ];
 
@@ -151,7 +174,9 @@ function GoldButton({
       `}</style>
       <button className="gold-btn" onClick={onClick}>
         <span className="btn-t1">{children}</span>
-        <span className="btn-t2" aria-hidden="true">{children}</span>
+        <span className="btn-t2" aria-hidden="true">
+          {children}
+        </span>
       </button>
     </>
   );
@@ -215,8 +240,20 @@ function ProductCard({
           onClick={onRemove}
           aria-label="Remove product"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 512 512" style={{ color: "hsl(38,61%,73%)" }}>
-            <path d="M368 368L144 144M368 144L144 368" stroke="currentColor" strokeWidth="48" strokeLinecap="round"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 512 512"
+            style={{ color: "hsl(38,61%,73%)" }}
+          >
+            <path
+              d="M368 368L144 144M368 144L144 368"
+              stroke="currentColor"
+              strokeWidth="48"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
 
@@ -236,13 +273,22 @@ function ProductCard({
           {/* Name & Category */}
           <h3
             className="text-center text-white mb-[5px]"
-            style={{ fontFamily: '"Forum", cursive', fontSize: "2.2rem", fontWeight: 400, lineHeight: "1.2em" }}
+            style={{
+              fontFamily: '"Forum", cursive',
+              fontSize: "2.2rem",
+              fontWeight: 400,
+              lineHeight: "1.2em",
+            }}
           >
             {product.name}
           </h3>
           <p
             className="text-center uppercase mb-[15px] text-[1.2rem] font-bold"
-            style={{ color: "hsl(38,61%,73%)", letterSpacing: "0.4em", fontFamily: '"DM Sans", sans-serif' }}
+            style={{
+              color: "hsl(38,61%,73%)",
+              letterSpacing: "0.4em",
+              fontFamily: '"DM Sans", sans-serif',
+            }}
           >
             {product.category}
           </p>
@@ -255,35 +301,47 @@ function ProductCard({
               borderBottom: "1px solid hsla(0,0%,100%,0.1)",
             }}
           >
-            <AttributeRow label="Volume"   value={product.volume}   />
+            <AttributeRow label="Volume" value={product.volume} />
             <AttributeRow label="Longevity" value={product.longevity} />
-            <AttributeRow label="Sillage"  value={product.sillage}  />
-            <AttributeRow label="Season"   value={product.season}   />
+            <AttributeRow label="Sillage" value={product.sillage} />
+            <AttributeRow label="Season" value={product.season} />
           </div>
 
           {/* Fragrance Notes */}
           <div className="mt-[10px]">
             <h4
               className="text-center mb-[15px]"
-              style={{ color: "hsl(38,61%,73%)", fontFamily: '"Forum", cursive', fontSize: "1.8rem", fontWeight: 400 }}
+              style={{
+                color: "hsl(38,61%,73%)",
+                fontFamily: '"Forum", cursive',
+                fontSize: "1.8rem",
+                fontWeight: 400,
+              }}
             >
               Fragrance Notes
             </h4>
             {[
-              { label: "Top Notes",   value: product.notes.top   },
+              { label: "Top Notes", value: product.notes.top },
               { label: "Heart Notes", value: product.notes.heart },
-              { label: "Base Notes",  value: product.notes.base  },
+              { label: "Base Notes", value: product.notes.base },
             ].map(({ label, value }) => (
               <div key={label} className="mb-3">
                 <p
                   className="uppercase font-bold text-[1.2rem] mb-1"
-                  style={{ color: "hsl(38,61%,73%)", letterSpacing: "0.4em", fontFamily: '"DM Sans", sans-serif' }}
+                  style={{
+                    color: "hsl(38,61%,73%)",
+                    letterSpacing: "0.4em",
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}
                 >
                   {label}
                 </p>
                 <p
                   className="text-[1.6rem] leading-[1.6]"
-                  style={{ color: "hsla(0,0%,65%,1)", fontFamily: '"DM Sans", sans-serif' }}
+                  style={{
+                    color: "hsla(0,0%,65%,1)",
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}
                 >
                   {value}
                 </p>
@@ -315,21 +373,41 @@ function AddPlaceholder({ onClick }: { onClick: () => void }) {
       >
         <div
           className="add-placeholder flex flex-col items-center justify-center min-h-[400px] w-full rounded-lg"
-          style={{ border: "2px dashed hsla(0,0%,100%,0.2)", background: "transparent" }}
+          style={{
+            border: "2px dashed hsla(0,0%,100%,0.2)",
+            background: "transparent",
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="60" height="60"
-            fill="none" viewBox="0 0 512 512"
+            width="60"
+            height="60"
+            fill="none"
+            viewBox="0 0 512 512"
             className="add-icon mb-4"
             style={{ color: "hsl(38,61%,73%)" }}
           >
-            <path d="M256 112v288M112 256h288" stroke="currentColor" strokeWidth="32" strokeLinecap="round"/>
-            <circle cx="256" cy="256" r="208" stroke="currentColor" strokeWidth="32"/>
+            <path
+              d="M256 112v288M112 256h288"
+              stroke="currentColor"
+              strokeWidth="32"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="256"
+              cy="256"
+              r="208"
+              stroke="currentColor"
+              strokeWidth="32"
+            />
           </svg>
           <p
             className="uppercase text-[1.4rem]"
-            style={{ color: "hsla(0,0%,65%,1)", letterSpacing: "0.4em", fontFamily: '"DM Sans", sans-serif' }}
+            style={{
+              color: "hsla(0,0%,65%,1)",
+              letterSpacing: "0.4em",
+              fontFamily: '"DM Sans", sans-serif',
+            }}
           >
             Add Product
           </p>
@@ -373,7 +451,10 @@ function ProductModal({
         {/* Modal */}
         <div
           className="relative w-full max-w-[700px] max-h-[80vh] flex flex-col rounded-xl overflow-hidden"
-          style={{ background: "hsla(210,4%,9%,1)", border: "1px solid hsl(38,61%,73%)" }}
+          style={{
+            background: "hsla(210,4%,9%,1)",
+            border: "1px solid hsl(38,61%,73%)",
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -383,13 +464,32 @@ function ProductModal({
           >
             <h2
               className="text-white"
-              style={{ fontFamily: '"Forum", cursive', fontSize: "calc(1.3rem + 2.4vw)", fontWeight: 400 }}
+              style={{
+                fontFamily: '"Forum", cursive',
+                fontSize: "calc(1.3rem + 2.4vw)",
+                fontWeight: 400,
+              }}
             >
               Select a Fragrance
             </h2>
-            <button onClick={onClose} className="flex items-center justify-center p-1 bg-transparent border-none cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 512 512" style={{ color: "hsl(38,61%,73%)" }}>
-                <path d="M368 368L144 144M368 144L144 368" stroke="currentColor" strokeWidth="48" strokeLinecap="round"/>
+            <button
+              onClick={onClose}
+              className="flex items-center justify-center p-1 bg-transparent border-none cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                fill="none"
+                viewBox="0 0 512 512"
+                style={{ color: "hsl(38,61%,73%)" }}
+              >
+                <path
+                  d="M368 368L144 144M368 144L144 368"
+                  stroke="currentColor"
+                  strokeWidth="48"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>
@@ -397,7 +497,13 @@ function ProductModal({
           {/* Body */}
           <div className="overflow-y-auto px-[30px] py-5 flex flex-col gap-4">
             {available.length === 0 ? (
-              <p className="text-center py-10" style={{ color: "hsla(0,0%,65%,1)", fontFamily: '"DM Sans", sans-serif' }}>
+              <p
+                className="text-center py-10"
+                style={{
+                  color: "hsla(0,0%,65%,1)",
+                  fontFamily: '"DM Sans", sans-serif',
+                }}
+              >
                 All products are already added to the compare list.
               </p>
             ) : (
@@ -409,7 +515,10 @@ function ProductModal({
                     background: "hsla(210,4%,11%,1)",
                     border: "1px solid hsla(0,0%,100%,0.1)",
                   }}
-                  onClick={() => { onSelect(product); onClose(); }}
+                  onClick={() => {
+                    onSelect(product);
+                    onClose();
+                  }}
                 >
                   <img
                     src={product.image}
@@ -420,13 +529,21 @@ function ProductModal({
                   <div className="flex-1">
                     <p
                       className="text-white mb-1"
-                      style={{ fontFamily: '"Forum", cursive', fontSize: "1.6rem", fontWeight: 400 }}
+                      style={{
+                        fontFamily: '"Forum", cursive',
+                        fontSize: "1.6rem",
+                        fontWeight: 400,
+                      }}
                     >
                       {product.name}
                     </p>
                     <p
                       className="uppercase text-[1.2rem]"
-                      style={{ color: "hsl(38,61%,73%)", letterSpacing: "0.15em", fontFamily: '"DM Sans", sans-serif' }}
+                      style={{
+                        color: "hsl(38,61%,73%)",
+                        letterSpacing: "0.15em",
+                        fontFamily: '"DM Sans", sans-serif',
+                      }}
                     >
                       {product.category}
                     </p>
@@ -444,7 +561,9 @@ function ProductModal({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function CompareListPage() {
   const [compareItems, setCompareItems] = useState<(Product | null)[]>([
-    CATALOGUE[0], CATALOGUE[1], null,
+    CATALOGUE[0],
+    CATALOGUE[1],
+    null,
   ]);
   const [modalOpen, setModalOpen] = useState(false);
   const [targetSlot, setTargetSlot] = useState<number | null>(null);
@@ -477,7 +596,9 @@ export default function CompareListPage() {
     setCompareItems([null, null, null]);
   };
 
-  const alreadyAdded = compareItems.filter(Boolean).map((p) => (p as Product).id);
+  const alreadyAdded = compareItems
+    .filter(Boolean)
+    .map((p) => (p as Product).id);
 
   return (
     <>
@@ -502,20 +623,26 @@ export default function CompareListPage() {
         ::-webkit-scrollbar-thumb { background: hsl(38,61%,73%); }
       `}</style>
 
-      <main style={{ backgroundColor: "hsla(210,4%,9%,1)", minHeight: "100vh" }}>
-
+      <main
+        style={{ backgroundColor: "hsla(210,4%,9%,1)", minHeight: "100vh" }}
+      >
         {/* ── Hero ── */}
         <section
           className="compare-hero relative text-center overflow-hidden"
           style={{
             paddingBlock: "120px 60px",
-            background: "linear-gradient(180deg, hsla(210,4%,11%,1) 0%, hsla(30,8%,5%,1) 100%)",
+            background:
+              "linear-gradient(180deg, hsla(210,4%,11%,1) 0%, hsla(30,8%,5%,1) 100%)",
           }}
         >
           <div className="relative z-[1] px-4 max-w-[1200px] mx-auto">
             <p
               className="font-bold uppercase mb-3 text-[1.2rem]"
-              style={{ color: "hsl(38,61%,73%)", letterSpacing: "0.4em", fontFamily: '"DM Sans", sans-serif' }}
+              style={{
+                color: "hsl(38,61%,73%)",
+                letterSpacing: "0.4em",
+                fontFamily: '"DM Sans", sans-serif',
+              }}
             >
               Find Your Perfect Scent
             </p>
@@ -523,21 +650,35 @@ export default function CompareListPage() {
             {/* Wavy separator */}
             <div className="flex justify-center mb-4">
               <svg width="100" height="10" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 5 Q12.5 0 25 5 Q37.5 10 50 5 Q62.5 0 75 5 Q87.5 10 100 5" stroke="hsl(38,61%,73%)" strokeWidth="1.5" fill="none"/>
+                <path
+                  d="M0 5 Q12.5 0 25 5 Q37.5 10 50 5 Q62.5 0 75 5 Q87.5 10 100 5"
+                  stroke="hsl(38,61%,73%)"
+                  strokeWidth="1.5"
+                  fill="none"
+                />
               </svg>
             </div>
 
             <h1
               className="text-white font-normal"
-              style={{ fontFamily: '"Forum", cursive', fontSize: "calc(2rem + 2.5vw)", lineHeight: "1.2em" }}
+              style={{
+                fontFamily: '"Forum", cursive',
+                fontSize: "calc(2rem + 2.5vw)",
+                lineHeight: "1.2em",
+              }}
             >
               Compare Fragrances
             </h1>
             <p
               className="mx-auto mt-5 text-[1.6rem] leading-[1.6]"
-              style={{ color: "hsla(0,0%,65%,1)", maxWidth: "600px", fontFamily: '"DM Sans", sans-serif' }}
+              style={{
+                color: "hsla(0,0%,65%,1)",
+                maxWidth: "600px",
+                fontFamily: '"DM Sans", sans-serif',
+              }}
             >
-              Compare up to 3 fragrances side by side to find your ideal signature scent
+              Compare up to 3 fragrances side by side to find your ideal
+              signature scent
             </p>
           </div>
         </section>
@@ -545,29 +686,58 @@ export default function CompareListPage() {
         {/* ── Compare Section ── */}
         <section className="py-[80px]" style={{ minHeight: "600px" }}>
           <div className="px-4 max-w-[1200px] mx-auto">
-
             {/* Empty state — shown when nothing is added */}
             {filledCount === 0 && (
               <div className="text-center py-[80px] px-5 max-w-[600px] mx-auto">
-                <div className="text-[80px] mb-[30px]" style={{ color: "hsl(38,61%,73%)", opacity: 0.6 }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none" viewBox="0 0 512 512" className="mx-auto">
-                    <path d="M432 64H80a16 16 0 00-16 16v352a16 16 0 0016 16h352a16 16 0 0016-16V80a16 16 0 00-16-16z" stroke="currentColor" strokeWidth="32" strokeLinejoin="round"/>
-                    <path d="M256 176v160M176 256h160" stroke="currentColor" strokeWidth="32" strokeLinecap="round"/>
+                <div
+                  className="text-[80px] mb-[30px]"
+                  style={{ color: "hsl(38,61%,73%)", opacity: 0.6 }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="80"
+                    height="80"
+                    fill="none"
+                    viewBox="0 0 512 512"
+                    className="mx-auto"
+                  >
+                    <path
+                      d="M432 64H80a16 16 0 00-16 16v352a16 16 0 0016 16h352a16 16 0 0016-16V80a16 16 0 00-16-16z"
+                      stroke="currentColor"
+                      strokeWidth="32"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M256 176v160M176 256h160"
+                      stroke="currentColor"
+                      strokeWidth="32"
+                      strokeLinecap="round"
+                    />
                   </svg>
                 </div>
                 <h2
                   className="text-white mb-[15px]"
-                  style={{ fontFamily: '"Forum", cursive', fontSize: "calc(1.3rem + 2.4vw)", fontWeight: 400, lineHeight: "1.4em" }}
+                  style={{
+                    fontFamily: '"Forum", cursive',
+                    fontSize: "calc(1.3rem + 2.4vw)",
+                    fontWeight: 400,
+                    lineHeight: "1.4em",
+                  }}
                 >
                   No Products to Compare
                 </h2>
                 <p
                   className="mb-[30px] text-[1.6rem] leading-[1.6]"
-                  style={{ color: "hsla(0,0%,65%,1)", fontFamily: '"DM Sans", sans-serif' }}
+                  style={{
+                    color: "hsla(0,0%,65%,1)",
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}
                 >
                   Add up to 3 fragrances to compare them side by side
                 </p>
-                <GoldButton onClick={() => openModal(0)}>Add Fragrance</GoldButton>
+                <GoldButton onClick={() => openModal(0)}>
+                  Add Fragrance
+                </GoldButton>
               </div>
             )}
 
@@ -583,20 +753,25 @@ export default function CompareListPage() {
                         onRemove={() => handleRemove(i)}
                       />
                     ) : (
-                      <AddPlaceholder key={`slot-${i}`} onClick={() => openModal(i)} />
-                    )
+                      <AddPlaceholder
+                        key={`slot-${i}`}
+                        onClick={() => openModal(i)}
+                      />
+                    ),
                   )}
                 </div>
 
                 {/* Actions */}
                 <div className="text-center pt-5">
-                  <GoldButton secondary onClick={handleClearAll}>Clear All</GoldButton>
+                  <GoldButton secondary onClick={handleClearAll}>
+                    Clear All
+                  </GoldButton>
                 </div>
               </>
             )}
-
           </div>
         </section>
+        <BackToTop />
       </main>
 
       {/* ── Product Selection Modal ── */}

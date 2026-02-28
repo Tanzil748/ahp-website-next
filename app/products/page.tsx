@@ -1,5 +1,6 @@
 "use client";
 
+import BackToTop from "@/components/BackToTop";
 import { useState, useMemo } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -1025,6 +1026,7 @@ export default function ProductsPage() {
               </>
             )}
           </main>
+          <BackToTop />
         </div>
       </div>
     </>

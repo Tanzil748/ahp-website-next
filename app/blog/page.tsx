@@ -1,10 +1,11 @@
 "use client";
 
+import BackToTop from "@/components/BackToTop";
 import { useState } from "react";
 
 // ─── EXACT THEME TOKENS ──────────────────────────────────────────────────────
-const gold        = "hsl(38, 61%, 73%)";
-const goldDim     = "hsla(38, 61%, 73%, 0.35)";
+const gold = "hsl(38, 61%, 73%)";
+const goldDim = "hsla(38, 61%, 73%, 0.35)";
 const eerieBlack1 = "hsla(210, 4%, 9%, 1)";
 const eerieBlack2 = "hsla(210, 4%, 11%, 1)";
 const eerieBlack4 = "hsla(0, 0%, 13%, 1)";
@@ -89,9 +90,14 @@ function OrnamentalSep({ align = "center" }: { align?: "center" | "left" }) {
     >
       <line x1="0" y1="6" x2="38" y2="6" stroke={gold} strokeWidth="1" />
       <rect
-        x="44" y="2" width="8" height="8"
+        x="44"
+        y="2"
+        width="8"
+        height="8"
         transform="rotate(45 48 6)"
-        fill="none" stroke={gold} strokeWidth="1"
+        fill="none"
+        stroke={gold}
+        strokeWidth="1"
       />
       <line x1="58" y1="6" x2="100" y2="6" stroke={gold} strokeWidth="1" />
     </svg>
@@ -348,21 +354,6 @@ export default function BlogPage() {
         .sub-btn:hover::before { bottom: -50%; }
         .sub-btn:hover { color: #fff; }
 
-        /* ── Back to top ── */
-        .back-top-btn {
-          position: fixed; bottom: 20px; right: 20px;
-          background-color: ${gold};
-          color: ${smokyBlack1};
-          font-size: 2.2rem;
-          width: 50px; height: 50px;
-          border-radius: 50%;
-          display: grid; place-items: center;
-          box-shadow: 0 0 25px rgba(0,0,0,0.25);
-          transition: 250ms ease;
-          z-index: 4;
-          text-decoration: none;
-        }
-        .back-top-btn:hover { background-color: #fff; color: ${gold}; }
 
         /* ── Card badges ── */
         .date-badge {
@@ -416,13 +407,11 @@ export default function BlogPage() {
           minHeight: "100vh",
         }}
       >
-
         {/* ══════════════════════════════════════
             HERO
         ══════════════════════════════════════ */}
         <section className="blog-hero">
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-
             {/* Ornament row */}
             <div className="fade-up delay-1 flex justify-center items-center gap-3 mb-4">
               <DiamondSep />
@@ -467,7 +456,6 @@ export default function BlogPage() {
               Discover the art of perfumery, fragrance trends, and
               behind-the-scenes stories
             </p>
-
           </div>
         </section>
 
@@ -477,8 +465,10 @@ export default function BlogPage() {
         <section style={{ padding: "80px 20px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <SectionSubtitle>Featured Post</SectionSubtitle>
-            <div className="featured-card featured-grid" style={{ marginTop: 32 }}>
-
+            <div
+              className="featured-card featured-grid"
+              style={{ marginTop: 32 }}
+            >
               {/* Image placeholder */}
               <div
                 style={{
@@ -543,7 +533,8 @@ export default function BlogPage() {
                     marginBottom: 20,
                   }}
                 >
-                  The Evolution of Luxury Fragrances: What&apos;s Trending in 2026
+                  The Evolution of Luxury Fragrances: What&apos;s Trending in
+                  2026
                 </h2>
 
                 <p
@@ -555,20 +546,26 @@ export default function BlogPage() {
                   }}
                 >
                   Explore the latest trends shaping the luxury perfume industry,
-                  from sustainable ingredients to personalized scent experiences.
-                  Discover how modern perfumery is blending tradition with innovation.
+                  from sustainable ingredients to personalized scent
+                  experiences. Discover how modern perfumery is blending
+                  tradition with innovation.
                 </p>
 
                 <div
                   style={{
-                    width: 60, height: 2,
+                    width: 60,
+                    height: 2,
                     backgroundColor: gold,
                     opacity: 0.6,
                     marginBottom: 28,
                   }}
                 />
 
-                <a href="#" className="read-more" style={{ alignSelf: "flex-start" }}>
+                <a
+                  href="#"
+                  className="read-more"
+                  style={{ alignSelf: "flex-start" }}
+                >
                   <span>Read More</span>
                   <span>→</span>
                 </a>
@@ -864,10 +861,7 @@ export default function BlogPage() {
         {/* ══════════════════════════════════════
             BACK TO TOP
         ══════════════════════════════════════ */}
-        <a href="#" className="back-top-btn" aria-label="Back to top">
-          ↑
-        </a>
-
+        <BackToTop />
       </div>
     </>
   );

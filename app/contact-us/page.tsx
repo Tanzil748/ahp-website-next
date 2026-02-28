@@ -1,5 +1,6 @@
 "use client";
 
+import BackToTop from "@/components/BackToTop";
 import { useState } from "react";
 
 // ── Theme tokens ──────────────────────────────────────────────────────────────
@@ -741,6 +742,7 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+        <BackToTop />
       </div>
     </>
   );
