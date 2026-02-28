@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import SubscribeSection from "@/components/SubscribeSection";
 
 // ─── EXACT THEME TOKENS from style.css ────────────────────────────────────────
 const theme = {
@@ -17,20 +18,40 @@ const theme = {
 
 const faqs = [
   {
-    q: "What's the best way to study JavaScript?",
-    a: "Start with an online course. If you're serious about learning fast, efficiently, and without missing any important information, consider enrolling in a structured online program.",
+    q: "Who do you sell to?",
+    a: "We exclusively serve wholesale clients, distributors, retailers, and e-commerce businesses. We do not sell directly to consumers. If you are interested in becoming a partner, please contact our sales team to begin the onboarding process.",
   },
   {
-    q: "What should I learn after JavaScript?",
-    a: "We suggest taking a look at TypeScript and learning a popular frontend framework such as Angular, React, or Vue. If you are interested in backend, take a look at Node.js.",
+    q: "Do you have a minimum order quantity (MOQ)?",
+    a: "Yes, we maintain minimum order quantities based on product category and brand. MOQs ensure efficient production and logistics. Please contact us for a customized quote based on your needs.",
   },
   {
-    q: "Can I get a job after learning JavaScript?",
-    a: "Absolutely. JavaScript is one of the most in-demand languages. With a strong portfolio and foundational knowledge, you can pursue roles in frontend, backend, or full-stack development.",
+    q: "Are your products authentic?",
+    a: "All products supplied are 100% authentic and sourced directly from authorized manufacturers or brand partners. We maintain strict quality control procedures to ensure product integrity.",
   },
   {
-    q: "How long will it take to learn JavaScript?",
-    a: "With consistent daily practice, you can gain working proficiency in 3–6 months. Mastery, of course, is a lifelong journey.",
+    q: "Which markets do you ship to?",
+    a: "We ship globally and work with distributors across North America, Europe, the Middle East, and other international markets. Shipping terms and lead times vary depending on destination.",
+  },
+  {
+    q: "What payment terms do you offer?",
+    a: "We only accept ACH deposits, zelle or wire transfers. No cash or credit card payments allowed. We do not offer any payment plans.",
+  },
+  {
+    q: "How long does order fulfillment take?",
+    a: "Lead times depend on product availability and order volume. In-stock wholesale orders are typically processed within a few business days. Larger or custom orders may require additional production time.",
+  },
+  {
+    q: "Do you support Amazon or other marketplace sellers?",
+    a: "Yes, we work with qualified e-commerce sellers and marketplace distributors. Compliance with brand policies and marketplace regulations is required.",
+  },
+  {
+    q: "Can you provide compliance documentation?",
+    a: "We can provide required documentation such as MSDS, IFRA certificates, ingredient disclosures, and other regulatory documents upon request.",
+  },
+  {
+    q: "What is your return or damage policy?",
+    a: "Any damaged or defective products must be reported within a specified timeframe after delivery. Claims are reviewed promptly, and resolutions may include replacement or credit.",
   },
 ];
 
@@ -246,83 +267,224 @@ export default function AboutPage() {
           .faq-wrapper { padding: 0 16px; }
         }
 
-        /* ── Leadership ── */
-        .leader-row {
-          display: flex;
-          gap: 60px;
-          margin-bottom: 80px;
-          align-items: stretch;
+        /* ══════════════════════════════
+           LEADERSHIP
+        ══════════════════════════════ */
+
+        /* Each leader block: 50/50 grid */
+        .leader-block {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0;
+          position: relative;
         }
-        .leader-profile {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
+
+        /* ── Image column ── */
+         .leader-img-col {
+          position: relative;
+          overflow: hidden;
+          height: 100%;
+          min-height: 560px;
         }
-        .leader-image {
-          width: 500px;
-          max-width: 100%;
-          height: 400px;
+        .leader-img-col img {
+          width: 100%;
+          height: 100%;
           object-fit: cover;
+          object-position: top center;
+          display: block;
+          transition: transform 700ms ease, filter 700ms ease;
+          filter: brightness(0.88);
+        }
+        .leader-block:hover .leader-img-col img {
+          transform: scale(1.04);
+          filter: brightness(0.95);
+        }
+        /* Gold inset frame — mirrors story section */
+        .leader-img-col::after {
+          content: "";
+          position: absolute;
+          inset: 16px;
           border: 1px solid hsl(38,61%,73%);
-          margin-bottom: 18px;
-          display: block;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0.3;
+          transition: opacity 500ms ease;
         }
-        .leader-name {
-          font-size: 2rem;
+        .leader-block:hover .leader-img-col::after { opacity: 0.55; }
+
+        /* Large watermark number */
+        .leader-number {
+          position: absolute;
+          bottom: -18px;
+          left: -10px;
           font-family: 'Forum', cursive;
-          color: #fff;
-          margin-bottom: 4px;
-        }
-        .leader-role {
-          display: block;
-          font-size: 1.2rem;
-          letter-spacing: 1px;
-          text-transform: uppercase;
+          font-size: 14rem;
           color: hsl(38,61%,73%);
-          margin-bottom: 12px;
-          font-weight: 700;
+          opacity: 0.06;
+          line-height: 1;
+          pointer-events: none;
+          z-index: 0;
+          user-select: none;
         }
-        .leader-info {
-          font-size: 1.4rem;
-          line-height: 1.6;
-          color: hsla(0,0%,65%,1);
-          max-width: 320px;
-          margin: 0 auto;
-        }
-        .leader-quote {
-          flex: 1.2;
+
+        /* ── Text column ── */
+        .leader-text-col {
+          padding: 50px 60px;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          font-style: italic;
-          line-height: 1.8;
-          color: hsla(0,0%,65%,1);
-          padding-left: 30px;
+          background: hsla(210,4%,11%,1);
           position: relative;
-          text-align: center;
         }
-        .leader-quote h2 {
-          font-family: 'Forum', cursive;
-          color: hsl(38,61%,73%);
-          font-size: 2.1rem;
-          margin-bottom: 20px;
-          letter-spacing: 0.4em;
+        /* Thin gradient gold accent on left edge */
+        .leader-text-col::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 40px;
+          bottom: 40px;
+          width: 2px;
+          background: linear-gradient(to bottom, transparent, hsl(38,61%,73%), transparent);
+          opacity: 0.5;
+        }
+        /* Reversed variant: accent moves to right edge */
+        .leader-text-col-reversed::before {
+          left: auto;
+          right: 0;
+        }
+
+        /* Reversed block: image on right, text on left */
+        .leader-block-reversed {
+          direction: rtl;
+        }
+        .leader-block-reversed > * {
+          direction: ltr;
+        }
+        .leader-block-reversed .leader-number {
+          left: auto;
+          right: -10px;
+        }
+
+        /* Role tag */
+        .leader-role-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 1.1rem;
+          font-weight: 700;
+          letter-spacing: 0.3em;
           text-transform: uppercase;
-          font-weight: 400;
-          font-style: normal;
+          color: hsl(38,61%,73%);
+          margin-bottom: 14px;
+          font-family: 'DM Sans', sans-serif;
         }
-        .leader-quote p {
-          font-size: 2rem;
-          line-height: 1.8;
+        .l-diamond {
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border: 1px solid hsl(38,61%,73%);
+          transform: rotate(45deg);
+          flex-shrink: 0;
+        }
+
+        /* Name */
+        .leader-name {
+          font-family: 'Forum', cursive;
+          font-size: 4rem;
+          color: #fff;
+          line-height: 1.1;
+          margin-bottom: 6px;
+          letter-spacing: 0.02em;
+        }
+
+        /* Gold rule */
+        .leader-gold-rule {
+          width: 50px;
+          height: 2px;
+          background: hsl(38,61%,73%);
+          opacity: 0.65;
+          margin: 22px 0;
+        }
+
+        /* Bio paragraphs */
+        .leader-bio {
+          font-size: 1.6rem;
           color: hsla(0,0%,65%,1);
-          font-style: italic;
+          line-height: 1.9;
+          margin-bottom: 28px;
+          font-family: 'DM Sans', sans-serif;
         }
-        @media (max-width: 768px) {
-          .leader-row { flex-direction: column; text-align: center; gap: 40px; }
-          .leader-quote { padding-left: 0; order: 2; }
-          .leader-image { width: 80%; height: auto; }
+
+        /* Pull quote */
+        .leader-quote-block {
+          border-left: 2px solid hsla(38,61%,73%,0.4);
+          padding-left: 20px;
+          margin-top: 4px;
+        }
+        .leader-quote-text {
+          font-family: 'Forum', cursive;
+          font-size: 1.85rem;
+          font-style: italic;
+          color: hsl(38,61%,73%);
+          line-height: 1.7;
+        }
+        .leader-quote-attr {
+          display: block;
+          font-size: 1.2rem;
+          color: hsla(0,0%,50%,1);
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          margin-top: 10px;
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Stat chips */
+        .leader-stats {
+          display: flex;
+          gap: 20px;
+          margin-top: 28px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        .stat-chip {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 2px;
+        }
+        .stat-value {
+          font-family: 'Forum', cursive;
+          font-size: 2.6rem;
+          color: hsl(38,61%,73%);
+          line-height: 1;
+        }
+        .stat-label {
+          font-size: 1.1rem;
+          color: hsla(0,0%,50%,1);
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          font-family: 'DM Sans', sans-serif;
+        }
+        .stat-divider {
+          width: 1px;
+          height: 36px;
+          background: hsla(38,61%,73%,0.2);
+          flex-shrink: 0;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+          .leader-block,
+          .leader-block-reversed {
+            grid-template-columns: 1fr;
+            direction: ltr;
+          }
+          .leader-block-reversed .leader-number { left: -10px; right: auto; }
+          .leader-text-col-reversed::before { left: 0; right: auto; }
+          .leader-img-col img { height: 360px; }
+          .leader-text-col { padding: 36px 28px; }
+          .leader-name { font-size: 3rem; }
+          .leader-number { font-size: 10rem; bottom: auto; top: -30px; }
         }
 
         /* ── Back to top ── */
@@ -340,18 +502,6 @@ export default function AboutPage() {
           text-decoration: none;
         }
         .back-top-btn:hover { background-color: #fff; color: hsl(38,61%,73%); }
-
-        /* ── Subscribe mobile stack ── */
-        @media (max-width: 600px) {
-          .subscribe-form { flex-direction: column !important; }
-          .subscribe-input {
-            border-radius: 12px 12px 0 0 !important;
-            border-right: 1px solid hsla(38,61%,73%,0.35) !important;
-            border-bottom: none !important;
-            height: 52px;
-          }
-          .subscribe-btn { border-radius: 0 0 12px 12px !important; width: 100% !important; }
-        }
       `}</style>
 
       <div
@@ -411,7 +561,6 @@ export default function AboutPage() {
             Who We Are
           </div>
         </section>
-
         {/* ══════════════════════════════════════
             OUR STORY — elegant side-by-side flex
         ══════════════════════════════════════ */}
@@ -483,7 +632,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
         {/* ══════════════════════════════════════
             IMAGE GALLERY
         ══════════════════════════════════════ */}
@@ -517,77 +665,157 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
         {/* ══════════════════════════════════════
             LEADERSHIP
         ══════════════════════════════════════ */}
         <section
           style={{
-            paddingBlock: 70,
-            paddingInline: 20,
+            paddingBlock: 80,
+            paddingInline: 40,
             backgroundColor: theme.eerieBlack1,
             overflow: "hidden",
           }}
         >
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <SectionSubtitle>Leadership</SectionSubtitle>
 
-            {/* CEO */}
-            <div className="leader-row" style={{ marginTop: 60 }}>
-              <div className="leader-profile">
+            {/* ── CEO ── */}
+            <div className="leader-block" style={{ marginTop: 70 }}>
+              {/* Image */}
+              <div className="leader-img-col">
                 <img
                   src="/images/about-page/leadership_pics/ceo.jpg"
-                  alt="Chief Executive Officer"
-                  className="leader-image"
+                  alt="Mohammed Rahman – Chief Executive Officer"
                 />
-                <h3 className="leader-name">Mohammed Rahman</h3>
-                <span className="leader-role">Chief Executive Officer</span>
-                <p className="leader-info">
-                  Oversees company vision, brand direction, and long-term
-                  strategy while maintaining the highest standards of
-                  excellence.
-                </p>
+                <span className="leader-number">01</span>
               </div>
-              <div className="leader-quote">
-                <h2>Message from Our CEO</h2>
-                <p>
-                  "Our mission is to create fragrances that resonate with
-                  elegance and individuality. Every perfume tells a story, and
-                  we are proud to share our passion with the world."
+
+              {/* Text */}
+              <div className="leader-text-col">
+                <span className="leader-role-tag">
+                  <span className="l-diamond" />
+                  Chief Executive Officer
+                </span>
+                <h2 className="leader-name">
+                  Mohammed
+                  <br />
+                  Rahman
+                </h2>
+                <div className="leader-gold-rule" />
+                <p className="leader-bio">
+                  With over a decade at the helm of Al Hussein Perfumes,
+                  Mohammed has transformed a regional distribution operation
+                  into an internationally recognized wholesale fragrance house.
+                  His deep-rooted passion for authentic Arabian oud and his
+                  relentless pursuit of excellence define the company&apos;s
+                  identity and direction.
                 </p>
+                <p className="leader-bio" style={{ marginTop: -8 }}>
+                  Under his leadership, the company forged partnerships with
+                  premier perfume houses across the Gulf, establishing
+                  distribution channels across North America, Europe, and the
+                  Middle East.
+                </p>
+                <div className="leader-quote-block">
+                  <p className="leader-quote-text">
+                    &ldquo;Every bottle carries a story — of craftsmanship, of
+                    culture, of the invisible thread that connects a person to a
+                    memory.&rdquo;
+                  </p>
+                  <span className="leader-quote-attr">
+                    — Mohammed Rahman, CEO
+                  </span>
+                </div>
+                <div className="leader-stats">
+                  <div className="stat-chip">
+                    <span className="stat-value">10+</span>
+                    <span className="stat-label">Years Leading</span>
+                  </div>
+                  <div className="stat-divider" />
+                  <div className="stat-chip">
+                    <span className="stat-value">40+</span>
+                    <span className="stat-label">Brand Partners</span>
+                  </div>
+                  <div className="stat-divider" />
+                  <div className="stat-chip">
+                    <span className="stat-value">3</span>
+                    <span className="stat-label">Continents</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* President */}
-            <div className="leader-row">
-              <div
-                className="leader-quote"
-                style={{ paddingLeft: 0, paddingRight: 30 }}
-              >
-                <h2>Message from Our President</h2>
-                <p>
-                  "We strive to maintain the quality and authenticity of every
-                  fragrance we craft, ensuring that our clients experience
-                  luxury in every bottle."
-                </p>
-              </div>
-              <div className="leader-profile">
+            {/* ── President ── */}
+            <div
+              className="leader-block leader-block-reversed"
+              style={{ marginTop: 100 }}
+            >
+              {/* Image */}
+              <div className="leader-img-col">
                 <img
                   src="/images/about-page/leadership_pics/president.jpg"
-                  alt="President"
-                  className="leader-image"
+                  alt="Hussein Isse – President"
                 />
-                <h3 className="leader-name">Hussein Isse</h3>
-                <span className="leader-role">President</span>
-                <p className="leader-info">
-                  Responsible for day-to-day operations, client relations, and
-                  ensuring the highest standard of service across all branches.
+                <span className="leader-number">02</span>
+              </div>
+
+              {/* Text */}
+              <div className="leader-text-col leader-text-col-reversed">
+                <span className="leader-role-tag">
+                  <span className="l-diamond" />
+                  President
+                </span>
+                <h2 className="leader-name">
+                  Hussein
+                  <br />
+                  Isse
+                </h2>
+                <div className="leader-gold-rule" />
+                <p className="leader-bio">
+                  Hussein oversees the full operational landscape of Al Hussein
+                  Perfumes — from warehouse logistics and client onboarding to
+                  compliance and fulfillment. His background in supply chain
+                  management and his reputation for meticulous attention to
+                  quality assurance have earned the trust of retailers and
+                  distributors across the globe.
                 </p>
+                <p className="leader-bio" style={{ marginTop: -8 }}>
+                  Hussein&apos;s work ethic and approachability have created a
+                  company culture built on reliability, transparency, and
+                  long-term partnership — values that define every client
+                  relationship.
+                </p>
+                <div className="leader-quote-block">
+                  <p className="leader-quote-text">
+                    &ldquo;We don&apos;t just ship perfumes — we build trust,
+                    bottle by bottle, order by order, relationship by
+                    relationship.&rdquo;
+                  </p>
+                  <span className="leader-quote-attr">
+                    — Hussein Isse, President
+                  </span>
+                </div>
+                <div className="leader-stats">
+                  <div className="stat-chip">
+                    <span className="stat-value">500+</span>
+                    <span className="stat-label">Clients Served</span>
+                  </div>
+                  <div className="stat-divider" />
+                  <div className="stat-chip">
+                    <span className="stat-value">99%</span>
+                    <span className="stat-label">Order Accuracy</span>
+                  </div>
+                  <div className="stat-divider" />
+                  <div className="stat-chip">
+                    <span className="stat-value">15+</span>
+                    <span className="stat-label">Markets Reached</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
-
+        ;
         {/* ══════════════════════════════════════
             FAQ — stretched to 1200px max-width
         ══════════════════════════════════════ */}
@@ -652,100 +880,7 @@ export default function AboutPage() {
             ))}
           </div>
         </section>
-
-        {/* ══════════════════════════════════════
-            SUBSCRIBE
-        ══════════════════════════════════════ */}
-        <section
-          style={{
-            paddingBlock: 70,
-            backgroundColor: theme.smokyBlack2,
-            textAlign: "center",
-          }}
-        >
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 16px" }}>
-            <SectionSubtitle>Stay Updated</SectionSubtitle>
-            <p
-              style={{
-                fontSize: "1.8rem",
-                color: "#fff",
-                marginTop: 12,
-                marginBottom: 20,
-                lineHeight: "1.85em",
-              }}
-            >
-              Subscribe to our newsletter to receive exclusive offers and news.
-            </p>
-
-            <div
-              className="subscribe-form"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "stretch",
-                marginTop: 20,
-                maxWidth: 720,
-                width: "100%",
-                marginInline: "auto",
-              }}
-            >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="subscribe-input"
-                style={{
-                  flex: 1,
-                  height: 52,
-                  padding: "0 18px",
-                  borderRadius: "12px 0 0 12px",
-                  border: "1px solid hsla(38,61%,73%,0.35)",
-                  borderRight: "none",
-                  backgroundColor: theme.eerieBlack1,
-                  color: "#fff",
-                  outline: "none",
-                  fontSize: "1.6rem",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-                onFocus={(e) =>
-                  (e.target.style.borderColor = theme.goldCrayola)
-                }
-                onBlur={(e) =>
-                  (e.target.style.borderColor = "hsla(38,61%,73%,0.35)")
-                }
-              />
-              <button
-                className="subscribe-btn"
-                style={{
-                  height: 52,
-                  padding: "0 34px",
-                  borderRadius: "0 12px 12px 0",
-                  border: `1px solid ${theme.goldCrayola}`,
-                  backgroundColor: theme.goldCrayola,
-                  color: "#000",
-                  fontSize: "1.2rem",
-                  fontWeight: 700,
-                  letterSpacing: 3,
-                  textTransform: "uppercase",
-                  whiteSpace: "nowrap",
-                  cursor: "pointer",
-                  fontFamily: "'DM Sans', sans-serif",
-                  transition: "250ms ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = theme.smokyBlack1;
-                  e.currentTarget.style.color = "#fff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = theme.goldCrayola;
-                  e.currentTarget.style.color = "#000";
-                }}
-              >
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </section>
-
+        <SubscribeSection />
         {/* ══════════════════════════════════════
             BACK TO TOP
         ══════════════════════════════════════ */}

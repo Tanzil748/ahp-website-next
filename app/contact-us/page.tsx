@@ -532,7 +532,7 @@ export default function ContactPage() {
                     lineHeight: 1.5,
                   }}
                 >
-                  We are open seven days a week and eager to accommodate your
+                  We are open five days a week and eager to accommodate your
                   needs. Reach us through any of the channels below.
                 </p>
 
