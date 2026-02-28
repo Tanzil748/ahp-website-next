@@ -78,8 +78,8 @@ export default function ContactHero() {
               maxWidth: 520,
             }}
           >
-            Whether you have a question, a reservation request, or simply want
-            to say hello — our team is always happy to connect.
+            Whether you have a question, a sales request, or simply want to say
+            hello — our team is always happy to connect.
           </p>
         </div>
       </section>
