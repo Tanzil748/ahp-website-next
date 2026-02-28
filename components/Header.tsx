@@ -19,7 +19,6 @@ export default function Header() {
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollY = useRef(0);
 
-  // .header.active + .header.hide scroll logic
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
@@ -31,430 +30,49 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // body.nav-active
+  // Lock body scroll when overlay is open
   useEffect(() => {
-    document.body.classList.toggle("nav-active", menuOpen);
-    return () => document.body.classList.remove("nav-active");
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   return (
     <>
-      <style>{`
-        /* ── Google Fonts — same as your original <link> tags ── */
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap');
-
-        /* ── All CSS variables from index.css :root ── */
-        :root {
-          --gold-crayola:      hsl(38, 61%, 73%);
-          --quick-silver:      hsla(0, 0%, 65%, 1);
-          --smoky-black-1:     hsla(40, 12%, 5%, 1);
-          --eerie-black-4:     hsla(0, 0%, 13%, 1);
-          --white:             hsla(0, 0%, 100%, 1);
-          --white-alpha-20:    hsla(0, 0%, 100%, 0.2);
-          --white-alpha-10:    hsla(0, 0%, 100%, 0.1);
-          --black-alpha-80:    hsla(0, 0%, 0%, 0.8);
-          --black-alpha-15:    hsla(0, 0%, 0%, 0.15);
-          --radius-circle:     50%;
-          --transition-1:      250ms ease;
-          --transition-2:      500ms ease;
-          --fontSize-label-1:  1.4rem;
-          --fontSize-label-2:  1.2rem;
-          --weight-bold:       700;
-          --letterSpacing-1:   0.15em;
-          --fontFamily-forum:   "Forum", cursive;
-          --fontFamily-dm_sans: "DM Sans", sans-serif;
-        }
-
-        /* ── Apply fonts to the header/topbar elements ── */
-        .topbar,
-        .topbar-item,
-        .topbar-item .span,
-        .nav-open-btn,
-        .navbar,
-        .navbar-link,
-        .navbar-link .span,
-        .navbar-title,
-        .navbar-text,
-        .sidebar-link,
-        .contact-label {
-          font-family: var(--fontFamily-dm_sans);
-        }
-
-        /* ── html base font-size from index.css (makes 1rem = 10px
-           so 1.2rem = 12px, 1.4rem = 14px etc.)                    ── */
-        html { font-size: 10px; }
-
-        /* ── .separator (reused style from index.css line 236) ── */
-        .separator {
-          width: 8px;
-          height: 8px;
-          border: 1px solid var(--gold-crayola);
-          transform: rotate(45deg);
-        }
-
-        /* ── .hover-underline (index.css line 250) ── */
-        .hover-underline {
-          position: relative;
-          max-width: max-content;
-        }
-        .hover-underline::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          height: 5px;
-          border-top: 1px solid var(--gold-crayola);
-          border-bottom: 1px solid var(--gold-crayola);
-          transform: scaleX(0.2);
-          opacity: 0;
-          transition: var(--transition-2);
-        }
-        .hover-underline:is(:hover, :focus-visible)::after {
-          transform: scaleX(1);
-          opacity: 1;
-        }
-
-        /* ── #TOPBAR ── */
-        /* Mobile: display none */
-        .topbar {
-          display: none;
-        }
-        /* 575px+: fixed topbar shown, only .link items visible */
-        @media (min-width: 575px) {
-          .topbar {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding-block: 10px;
-            border-bottom: 1px solid var(--white-alpha-20);
-            z-index: 4;
-            transition: var(--transition-1);
-          }
-          /* Hides topbar when header becomes active (scrolled) */
-          .topbar.header-active {
-            transform: translateY(-100%);
-          }
-          /* non-link items (address, hours) hidden at 575px */
-          .topbar-item:not(.link),
-          .topbar .separator {
-            display: none;
-          }
-          .topbar .container,
-          .topbar-item {
-            display: flex;
-            align-items: center;
-          }
-          .topbar .container {
-            justify-content: center;
-            gap: 30px;
-          }
-          .topbar-item {
-            gap: 6px;
-          }
-          .topbar-item .span {
-            font-size: var(--fontSize-label-1);
-            color: white;
-          }
-          .topbar .link {
-            transition: var(--transition-1);
-          }
-          .topbar .link:is(:hover, :focus-visible) {
-            color: var(--gold-crayola);
-          }
-        }
-        /* 992px+: non-link items shown, separator shown */
-        @media (min-width: 992px) {
-          .topbar-item:not(.link) {
-            display: flex;
-          }
-          .topbar .item-2 {
-            margin-inline-end: auto;
-          }
-        }
-        /* 1200px+: separator shown */
-        @media (min-width: 1200px) {
-          .topbar .container {
-            max-width: unset;
-          }
-          .topbar .separator {
-            display: block;
-          }
-        }
-
-        /* ── #HEADER ── */
-        .header {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          background-color: transparent;
-          z-index: 4;
-          border-bottom: 1px solid transparent;
-          transition: var(--transition-1);
-        }
-        /* at 575px header sits below topbar */
-        @media (min-width: 575px) {
-          .header {
-            top: 51px;
-          }
-          .header.active {
-            top: 0;
-          }
-        }
-        .header.active {
-          padding-block: 20px;
-          background-color: var(--eerie-black-4);
-          border-color: var(--black-alpha-15);
-        }
-        .header.hide {
-          transform: translateY(-100%);
-          transition-delay: 250ms;
-        }
-        .header .container {
-          padding-inline: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 8px;
-        }
-
-        /* ── hamburger button ── */
-        .nav-open-btn {
-          padding: 12px;
-          padding-inline-end: 0;
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-        .nav-open-btn .line {
-          width: 30px;
-          height: 2px;
-          background-color: var(--white);
-          margin-block: 4px;
-          transform-origin: left;
-          animation: menuBtn 400ms ease-in-out alternate infinite;
-          display: block;
-        }
-        @keyframes menuBtn {
-          0%   { transform: scaleX(1);   }
-          100% { transform: scaleX(0.5); }
-        }
-        .nav-open-btn .line-2 { animation-delay: 150ms; }
-        .nav-open-btn .line-3 { animation-delay: 300ms; }
-
-        /* ── overlay ── */
-        .overlay {
-          position: fixed;
-          top: 0; left: 0; bottom: 0; right: 0;
-          background-color: var(--black-alpha-80);
-          opacity: 0;
-          pointer-events: none;
-          transition: var(--transition-2);
-          z-index: 1;
-        }
-        .overlay.active {
-          opacity: 1;
-          pointer-events: all;
-        }
-
-        /* ── navbar sidebar ── */
-        .navbar {
-          position: fixed;
-          background-color: var(--smoky-black-1);
-          top: 0;
-          left: -360px;
-          bottom: 0;
-          max-width: 360px;
-          width: 100%;
-          padding-inline: 30px;
-          padding-block-end: 50px;
-          overflow-y: auto;
-          visibility: hidden;
-          z-index: 2;
-          transition: var(--transition-2);
-        }
-        .navbar.active {
-          visibility: visible;
-          transform: translateX(360px);
-        }
-        .navbar::-webkit-scrollbar-thumb {
-          background-color: var(--white-alpha-10);
-        }
-
-        /* close button */
-        .navbar .close-btn {
-          color: var(--white);
-          border: 1px solid currentColor;
-          padding: 4px;
-          border-radius: var(--radius-circle);
-          margin-inline-start: auto;
-          margin-block: 30px 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: none;
-          cursor: pointer;
-          transition: var(--transition-1);
-        }
-        .navbar .close-btn:is(:hover, :focus-visible) {
-          color: var(--gold-crayola);
-        }
-
-        /* logo in sidebar */
-        .navbar .logo {
-          max-width: max-content;
-          margin-inline: auto;
-          margin-block-end: 60px;
-          display: block;
-        }
-
-        /* nav list */
-        .navbar-list {
-          border-bottom: 1px solid var(--white-alpha-20);
-          margin-block-end: 100px;
-          list-style: none;
-          padding: 0;
-          margin-top: 0;
-        }
-        .navbar-item {
-          border-top: 1px solid var(--white-alpha-20);
-        }
-        .navbar-link {
-          position: relative;
-          font-size: var(--fontSize-label-2);
-          text-transform: uppercase;
-          padding-block: 10px;
-          max-width: unset;
-          display: flex;
-          align-items: center;
-          color: var(--white);
-          text-decoration: none;
-        }
-        .navbar-link::after {
-          display: none;
-        }
-        .navbar-link .span {
-          transition: var(--transition-1);
-        }
-        .navbar-link:is(:hover, :focus-visible) .span {
-          color: var(--gold-crayola);
-          transform: translateX(20px);
-        }
-        /* the diamond separator inside each nav link */
-        .navbar-link .separator {
-          position: absolute;
-          top: 50%;
-          left: 0;
-          transform: translateY(-50%) rotate(45deg);
-          opacity: 0;
-          transition: var(--transition-1);
-        }
-        .navbar-link:is(:hover, :focus-visible) .separator {
-          opacity: 1;
-        }
-
-        /* sidebar contact section */
-        .navbar-title {
-          margin-block-end: 15px;
-          color: var(--white);
-          font-size: var(--fontSize-label-2);
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          font-weight: var(--weight-bold);
-        }
-        .navbar-text {
-          margin-block: 10px;
-          color: var(--quick-silver);
-          font-size: var(--fontSize-label-2);
-        }
-        .navbar .body-4 {
-          color: var(--quick-silver);
-        }
-        .navbar .contact-label {
-          margin-block-end: 10px;
-          color: var(--white);
-          font-weight: var(--weight-bold);
-        }
-        .navbar .text-center .separator {
-          margin-block: 30px;
-          margin-inline: auto;
-        }
-        .sidebar-link {
-          transition: var(--transition-1);
-          color: var(--quick-silver);
-          font-size: var(--fontSize-label-2);
-          text-decoration: none;
-        }
-        .sidebar-link:is(:hover, :focus-visible) {
-          color: var(--gold-crayola);
-        }
-
-        /* ── 1200px+: desktop nav replaces hamburger ── */
-        @media (min-width: 1200px) {
-          .nav-open-btn,
-          .navbar .close-btn,
-          .navbar .logo,
-          .navbar-title,
-          .navbar-text,
-          .navbar .contact-label,
-          .navbar .text-center,
-          .overlay {
-            display: none;
-          }
-          .header .container {
-            max-width: unset;
-          }
-          /* reset the sidebar styles so navbar acts as inline nav */
-          .navbar,
-          .navbar.active {
-            all: unset;
-            margin-inline: auto 20px;
-          }
-          .navbar-list {
-            all: unset;
-            display: flex;
-            gap: 30px;
-            list-style: none;
-          }
-          .navbar-item {
-            border-top: none;
-          }
-          .navbar .separator {
-            display: none;
-          }
-          .navbar-link {
-            font-weight: var(--weight-bold);
-            letter-spacing: var(--letterSpacing-1);
-          }
-          .navbar-link::after {
-            display: block;
-          }
-          .navbar-link:is(:hover, :focus-visible) .span {
-            transform: unset;
-          }
-        }
-      `}</style>
-
       {/* ════════════════════════════════════
-          TOPBAR
-          — hidden mobile, fixed at 575px+
-          — slides up when header is active
+          TOPBAR — collapses away on scroll
       ════════════════════════════════════ */}
-      <div className={`topbar${isActive ? " header-active" : ""}`}>
-        <div className="container px-7 font-bold">
-          {/* address — hidden below 992px */}
-          <address className="topbar-item">
-            <div className="icon text-white">
-              {/* location-outline SVG */}
+      <div
+        className={[
+          "hidden sm:block fixed top-0 left-0 w-full z-50 overflow-hidden",
+          "border-b bg-transparent",
+          "transition-all duration-300 ease-in-out",
+          isActive
+            ? "max-h-0 py-0 opacity-0 border-transparent"
+            : "max-h-14 py-3 opacity-100 border-white/20",
+        ].join(" ")}
+      >
+        <div className="flex items-center justify-between gap-6 px-7">
+          {/* LEFT: address + separator + hours */}
+          <div className="flex items-center gap-6">
+            <address className="hidden lg:flex items-center gap-1.5 not-italic">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 fill="none"
                 viewBox="0 0 512 512"
+                className="text-white shrink-0"
                 aria-hidden="true"
               >
                 <path
@@ -474,25 +92,22 @@ export default function Header() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
-            <span className="span">
-              201 Christopher St, Ronkonkoma, NY, 11779
-            </span>
-          </address>
-
-          {/* separator — hidden below 1200px */}
-          <div className="separator" aria-hidden="true" />
-
-          {/* hours — hidden below 992px */}
-          <div className="topbar-item item-2">
-            <div className="icon text-white">
-              {/* time-outline SVG */}
+              <span className="text-white text-[1.1rem] font-bold">
+                201 Christopher St, Ronkonkoma, NY, 11779
+              </span>
+            </address>
+            <div
+              className="hidden xl:block w-2 h-2 border border-[hsl(38,61%,73%)] rotate-45 shrink-0"
+              aria-hidden="true"
+            />
+            <div className="hidden lg:flex items-center gap-1.5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 fill="none"
                 viewBox="0 0 512 512"
+                className="text-white shrink-0"
                 aria-hidden="true"
               >
                 <circle
@@ -512,20 +127,25 @@ export default function Header() {
                   strokeLinejoin="round"
                 />
               </svg>
+              <span className="text-white text-[1.1rem] font-bold">
+                M-F : 9:00 am to 5:00 pm
+              </span>
             </div>
-            <span className="span">M-F : 9:00 am to 5:00 pm</span>
           </div>
 
-          {/* phone — always visible (it's a .link) */}
-          <a href="tel:+15169072340" className="topbar-item link">
-            <div className="icon text-white">
-              {/* call-outline SVG */}
+          {/* RIGHT: phone + separator + email */}
+          <div className="flex items-center gap-6">
+            <a
+              href="tel:+15169072340"
+              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 fill="none"
                 viewBox="0 0 512 512"
+                className="shrink-0"
                 aria-hidden="true"
               >
                 <path
@@ -536,26 +156,23 @@ export default function Header() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
-            <span className="span">+1 516 907 2340</span>
-          </a>
-
-          {/* separator — hidden below 1200px */}
-          <div className="separator" aria-hidden="true" />
-
-          {/* email — always visible (it's a .link) */}
-          <a
-            href="mailto:sales@alhusseinperfumes.com"
-            className="topbar-item link"
-          >
-            <div className="icon text-white">
-              {/* mail-outline SVG */}
+              <span className="text-[1.1rem] font-bold">+1 516 907 2340</span>
+            </a>
+            <div
+              className="hidden xl:block w-2 h-2 border border-[hsl(38,61%,73%)] rotate-45 shrink-0"
+              aria-hidden="true"
+            />
+            <a
+              href="mailto:sales@alhusseinperfumes.com"
+              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="14"
+                height="14"
                 fill="none"
                 viewBox="0 0 512 512"
+                className="shrink-0"
                 aria-hidden="true"
               >
                 <rect
@@ -578,9 +195,11 @@ export default function Header() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
-            <span className="span">sales@alhusseinperfumes.com</span>
-          </a>
+              <span className="text-[1.1rem] font-bold">
+                sales@alhusseinperfumes.com
+              </span>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -588,140 +207,283 @@ export default function Header() {
           HEADER
       ════════════════════════════════════ */}
       <header
-        className={`header${isActive ? " active" : ""}${isHidden ? " hide" : ""}`}
+        className={[
+          "fixed left-0 w-full z-40 border-b",
+          "transition-all duration-300 ease-in-out",
+          isActive
+            ? "top-0 bg-black/60 backdrop-blur-md border-black/15"
+            : "top-0 sm:top-14 bg-transparent border-transparent",
+          isHidden ? "-translate-y-full delay-[200ms]" : "translate-y-0",
+        ].join(" ")}
       >
-        <div className="container">
-          {/* Logo */}
-          <Link href="/" className="logo">
-            <Image
-              src="/images/comp-logo/AHP-logo.png"
-              width={125}
-              height={50}
-              alt="Al Hussein Perfumes - Home"
-              priority
-            />
-          </Link>
-
-          {/* Desktop nav (visible at 1200px+, hidden below by CSS) */}
-          <nav className={`navbar${menuOpen ? " active" : ""}`}>
-            {/* Close button — hidden at 1200px+ */}
-            <button
-              className="close-btn"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Close navigation menu"
+        <div className="flex items-center justify-between gap-2 px-5 h-[80px]">
+          {/* LEFT: Logo + desktop nav */}
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className={[
+                "shrink-0 mr-8 transition-transform duration-300",
+                isActive ? "scale-90" : "scale-100",
+              ].join(" ")}
             >
-              {/* close icon — thick stroke matches --ionicon-stroke-width: 40px */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 512 512"
-                aria-hidden="true"
-              >
-                <path
-                  d="M368 368L144 144M368 144L144 368"
-                  stroke="currentColor"
-                  strokeWidth="48"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            {/* Logo in sidebar — hidden at 1200px+ */}
-            <Link href="/" className="logo" onClick={() => setMenuOpen(false)}>
               <Image
                 src="/images/comp-logo/AHP-logo.png"
-                width={110}
-                height={44}
-                alt="Al Hussein Perfumes"
+                width={180}
+                height={72}
+                alt="Al Hussein Perfumes - Home"
+                priority
               />
             </Link>
 
-            {/* Nav links */}
-            <ul className="navbar-list">
+            {/* Desktop nav links — xl+ only */}
+            <nav
+              className="hidden lg:flex items-center gap-8"
+              aria-label="Main navigation"
+            >
               {navLinks.map((link) => (
-                <li key={link.href} className="navbar-item">
-                  <Link
-                    href={link.href}
-                    className="navbar-link hover-underline"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {/* diamond separator — visible in sidebar on hover */}
-                    <div className="separator" aria-hidden="true" />
-                    <span className="span">{link.label}</span>
-                  </Link>
-                </li>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={[
+                    "relative text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
+                    "after:content-[''] after:absolute after:left-0 after:-bottom-2",
+                    "after:w-full after:h-[5px]",
+                    "after:border-t after:border-b after:border-[hsl(38,61%,73%)]",
+                    "after:scale-x-[0.2] after:opacity-0",
+                    "after:transition-all after:duration-500",
+                    "hover:after:scale-x-100 hover:after:opacity-100",
+                    "focus-visible:after:scale-x-100 focus-visible:after:opacity-100",
+                    "outline-none",
+                  ].join(" ")}
+                >
+                  {link.label}
+                </Link>
               ))}
-            </ul>
+            </nav>
+          </div>
 
-            {/* Sidebar contact section — hidden at 1200px+ */}
-            <div className="text-center">
-              <p className="navbar-title">Contact Us</p>
-              <div className="separator" aria-hidden="true" />
-              <p className="navbar-text body-4">
-                201 Christopher St, Ronkonkoma, NY 11779
-              </p>
-              <a
-                href="mailto:sales@alhusseinperfumes.com"
-                className="navbar-text sidebar-link"
-                style={{ display: "block" }}
+          {/* RIGHT: Auth buttons (xl+) + hamburger (below xl) */}
+          <div className="flex items-center gap-3">
+            {/* Desktop auth buttons */}
+            <div className="hidden lg:flex items-center gap-3">
+              <Link
+                href="/signup"
+                className={[
+                  "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
+                  "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
+                  "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
+                  "transition-all duration-200",
+                ].join(" ")}
               >
-                sales@alhusseinperfumes.com
-              </a>
-              <a
-                href="tel:+15169072340"
-                className="navbar-text sidebar-link"
-                style={{ display: "block" }}
+                Sign Up
+              </Link>
+              <Link
+                href="/register"
+                className={[
+                  "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
+                  "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
+                  "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
+                  "transition-all duration-200",
+                ].join(" ")}
               >
-                +1 516 907 2340
-              </a>
-              <div className="separator" aria-hidden="true" />
-              <p className="contact-label">Follow Us</p>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "16px",
-                  marginTop: "8px",
-                }}
-              >
-                {[
-                  { label: "Instagram", href: "#" },
-                  { label: "Facebook", href: "#" },
-                  { label: "Twitter", href: "#" },
-                ].map(({ label, href }) => (
-                  <a key={label} href={href} className="sidebar-link">
-                    {label}
-                  </a>
-                ))}
-              </div>
+                Register
+              </Link>
             </div>
-          </nav>
 
-          {/* Hamburger — hidden at 1200px+ */}
-          <button
-            className="nav-open-btn"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={menuOpen}
-          >
-            <span className="line" />
-            <span className="line line-2" />
-            <span className="line line-3" />
-          </button>
+            {/* Hamburger — below xl */}
+            <button
+              className="lg:hidden flex flex-col justify-center gap-[6px] p-3 pr-0 bg-transparent border-none cursor-pointer"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={menuOpen}
+            >
+              <span
+                className="block w-7 h-0.5 bg-white origin-left"
+                style={{
+                  animation:
+                    "menuLine 400ms ease-in-out 0ms alternate infinite",
+                }}
+              />
+              <span
+                className="block w-7 h-0.5 bg-white origin-left"
+                style={{
+                  animation:
+                    "menuLine 400ms ease-in-out 150ms alternate infinite",
+                }}
+              />
+              <span
+                className="block w-7 h-0.5 bg-white origin-left"
+                style={{
+                  animation:
+                    "menuLine 400ms ease-in-out 300ms alternate infinite",
+                }}
+              />
+            </button>
+          </div>
         </div>
       </header>
 
       {/* ════════════════════════════════════
-          OVERLAY — hidden at 1200px+
+          FULLSCREEN MOBILE OVERLAY MENU
       ════════════════════════════════════ */}
       <div
-        className={`overlay${menuOpen ? " active" : ""}`}
-        onClick={() => setMenuOpen(false)}
-        aria-hidden="true"
-      />
+        className={[
+          "fixed inset-0 z-[100] flex flex-col items-center justify-center",
+          "bg-[hsl(40,12%,5%)]",
+          "transition-opacity duration-500 ease-in-out",
+          menuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
+        ].join(" ")}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+      >
+        {/* Close button */}
+        <button
+          className={[
+            "absolute top-5 right-5 p-2 rounded-full bg-transparent cursor-pointer",
+            "border border-white/30 text-white",
+            "hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+            "transition-all duration-200 flex items-center justify-center",
+          ].join(" ")}
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close navigation menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            fill="none"
+            viewBox="0 0 512 512"
+            aria-hidden="true"
+          >
+            <path
+              d="M368 368L144 144M368 144L144 368"
+              stroke="currentColor"
+              strokeWidth="48"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        {/* Logo */}
+        <Link
+          href="/"
+          onClick={() => setMenuOpen(false)}
+          className={[
+            "mb-10 transition-all duration-300",
+            menuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2",
+          ].join(" ")}
+          style={{ transitionDelay: menuOpen ? "80ms" : "0ms" }}
+        >
+          <Image
+            src="/images/comp-logo/AHP-logo.png"
+            width={140}
+            height={56}
+            alt="Al Hussein Perfumes"
+          />
+        </Link>
+
+        {/* Nav links — staggered fade-up */}
+        <nav
+          className="flex flex-col items-center gap-6 mb-10"
+          aria-label="Mobile navigation"
+        >
+          {navLinks.map((link, i) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={[
+                "text-white font-bold uppercase tracking-[0.2em] text-2xl",
+                "hover:text-[hsl(38,61%,73%)] focus-visible:text-[hsl(38,61%,73%)]",
+                "transition-all duration-300 outline-none",
+                menuOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-3",
+              ].join(" ")}
+              style={{
+                transitionDelay: menuOpen ? `${i * 55 + 120}ms` : "0ms",
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Thin divider */}
+        <div
+          className={[
+            "w-px h-8 bg-white/20 mb-8 transition-all duration-300",
+            menuOpen ? "opacity-100" : "opacity-0",
+          ].join(" ")}
+          style={{ transitionDelay: menuOpen ? "460ms" : "0ms" }}
+          aria-hidden="true"
+        />
+
+        {/* Auth buttons */}
+        <div
+          className={[
+            "flex flex-col sm:flex-row items-center gap-4",
+            "transition-all duration-300",
+            menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
+          ].join(" ")}
+          style={{ transitionDelay: menuOpen ? "500ms" : "0ms" }}
+        >
+          <Link
+            href="/signup"
+            onClick={() => setMenuOpen(false)}
+            className={[
+              "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
+              "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
+              "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
+              "transition-all duration-200",
+            ].join(" ")}
+          >
+            Sign Up
+          </Link>
+          <Link
+            href="/register"
+            onClick={() => setMenuOpen(false)}
+            className={[
+              "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
+              "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
+              "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
+              "transition-all duration-200",
+            ].join(" ")}
+          >
+            Register
+          </Link>
+        </div>
+
+        {/* Contact links at bottom */}
+        <div
+          className={[
+            "absolute bottom-8 flex flex-col items-center gap-1",
+            "transition-opacity duration-300",
+            menuOpen ? "opacity-100" : "opacity-0",
+          ].join(" ")}
+          style={{ transitionDelay: menuOpen ? "580ms" : "0ms" }}
+        >
+          <a
+            href="tel:+15169072340"
+            className="text-white/40 text-[1.1rem] hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+          >
+            +1 516 907 2340
+          </a>
+          <a
+            href="mailto:sales@alhusseinperfumes.com"
+            className="text-white/40 text-[1.1rem] hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+          >
+            sales@alhusseinperfumes.com
+          </a>
+        </div>
+      </div>
+
+      {/* Minimal keyframe for the hamburger lines animation — cannot be expressed in Tailwind */}
+      <style>{`@keyframes menuLine { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.5); } }`}</style>
     </>
   );
 }
