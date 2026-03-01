@@ -88,25 +88,70 @@ export default function BlogGrid() {
     <>
       {/* ── Category filter ── */}
       <section className="px-5 py-5 bg-[hsla(40,12%,5%,1)] border-y border-white/10">
-        <div className="fade-up delay-3 max-w-[1200px] mx-auto flex flex-wrap justify-center gap-3 py-3">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setCurrentPage(1);
-              }}
-              className={`px-6 py-[10px] font-bold uppercase tracking-[3px] border cursor-pointer transition-all duration-[250ms]
-          ${
-            activeCategory === cat
-              ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
-              : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-          }`}
-              style={{ fontSize: "1.2rem", fontFamily: "var(--font-dm-sans)" }}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Mobile: 3 on top row, 2 on bottom row */}
+        <div className="fade-up delay-3 max-w-[1200px] mx-auto py-3">
+          {/* Mobile layout */}
+          <div className="flex flex-col items-center gap-2 sm:hidden">
+            <div className="flex justify-center gap-2 w-full">
+              {CATEGORIES.slice(0, 3).map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    setCurrentPage(1);
+                  }}
+                  className={`flex-1 px-2 py-2 font-[var(--font-dm-sans)] text-[0.75rem] font-bold uppercase tracking-[1.5px] border cursor-pointer transition-all duration-[250ms] text-center
+                    ${
+                      activeCategory === cat
+                        ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
+                        : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <div className="flex justify-center gap-2 w-full">
+              {CATEGORIES.slice(3).map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    setCurrentPage(1);
+                  }}
+                  className={`flex-1 px-2 py-2 font-[var(--font-dm-sans)] text-[0.75rem] font-bold uppercase tracking-[1.5px] border cursor-pointer transition-all duration-[250ms] text-center
+                    ${
+                      activeCategory === cat
+                        ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
+                        : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tablet+ layout */}
+          <div className="hidden sm:flex flex-wrap justify-center gap-3">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  setCurrentPage(1);
+                }}
+                className={`px-6 py-[10px] font-[var(--font-dm-sans)] text-[1.2rem] font-bold uppercase tracking-[3px] border cursor-pointer transition-all duration-[250ms]
+                  ${
+                    activeCategory === cat
+                      ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
+                      : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
+                  }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -121,10 +166,7 @@ export default function BlogGrid() {
               >
                 {/* Banner */}
                 <div className="relative bg-[hsla(0,0%,13%,1)] h-[240px] flex items-center justify-center overflow-hidden">
-                  <span
-                    className="text-white/10 text-lg font-bold uppercase tracking-[0.15em]"
-                    style={{ fontFamily: "var(--font-forum)" }}
-                  >
+                  <span className="text-white/10 text-lg font-bold uppercase tracking-[0.15em] font-[var(--font-forum)]">
                     Blog Post
                   </span>
                   <span className="absolute bottom-4 left-4 bg-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)] text-xs font-bold px-3 py-1">
@@ -138,21 +180,11 @@ export default function BlogGrid() {
                     {post.category}
                   </span>
 
-                  <h3
-                    className="font-normal text-white mb-3.5 transition-colors duration-300 group-hover:text-[hsl(38,61%,73%)]"
-                    style={{
-                      fontFamily: "var(--font-forum)",
-                      fontSize: "2rem",
-                      lineHeight: 1.35,
-                    }}
-                  >
+                  <h3 className="font-[var(--font-forum)] text-[2rem] leading-[1.35] font-normal text-white mb-3.5 transition-colors duration-300 group-hover:text-[hsl(38,61%,73%)]">
                     {post.title}
                   </h3>
 
-                  <p
-                    className="text-[hsla(0,0%,65%,1)] mb-6"
-                    style={{ fontSize: "1.5rem", lineHeight: 1.7 }}
-                  >
+                  <p className="text-[hsla(0,0%,65%,1)] mb-6 text-[1.5rem] leading-[1.7]">
                     {post.excerpt}
                   </p>
 
@@ -160,8 +192,7 @@ export default function BlogGrid() {
 
                   <a
                     href="#"
-                    className="inline-flex items-center gap-2 text-[hsl(38,61%,73%)] font-bold uppercase tracking-[3px] no-underline transition-[gap] duration-300 hover:gap-4"
-                    style={{ fontSize: "1.2rem" }}
+                    className="inline-flex items-center gap-2 text-[hsl(38,61%,73%)] text-[1.2rem] font-bold uppercase tracking-[3px] no-underline transition-[gap] duration-300 hover:gap-4"
                   >
                     <span>Read Article</span>
                     <span>→</span>
@@ -170,10 +201,7 @@ export default function BlogGrid() {
               </article>
             ))
           ) : (
-            <div
-              className="col-span-full text-center py-20 text-[hsla(0,0%,65%,1)]"
-              style={{ fontSize: "1.6rem", fontFamily: "var(--font-forum)" }}
-            >
+            <div className="col-span-full text-center py-20 text-[hsla(0,0%,65%,1)] text-[1.6rem] font-[var(--font-forum)]">
               No posts found in this category.
             </div>
           )}
@@ -186,8 +214,7 @@ export default function BlogGrid() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
-            style={{ fontSize: "1.4rem" }}
+            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             ← Prev
           </button>
@@ -197,18 +224,12 @@ export default function BlogGrid() {
               <>
                 <button
                   onClick={() => handlePageChange(1)}
-                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                  style={{ fontSize: "1.4rem" }}
+                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
                 >
                   1
                 </button>
                 {visiblePages()[0] > 2 && (
-                  <span
-                    className="text-[hsla(0,0%,65%,1)]"
-                    style={{ fontSize: "1.4rem" }}
-                  >
-                    …
-                  </span>
+                  <span className="text-[hsla(0,0%,65%,1)] text-[1.4rem]">…</span>
                 )}
               </>
             )}
@@ -217,13 +238,12 @@ export default function BlogGrid() {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`flex items-center justify-center min-w-[44px] h-11 px-3 border font-bold cursor-pointer transition-all duration-[250ms]
+                className={`flex items-center justify-center min-w-[44px] h-11 px-3 border text-[1.4rem] font-bold cursor-pointer transition-all duration-[250ms]
                   ${
                     currentPage === page
                       ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
                       : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
                   }`}
-                style={{ fontSize: "1.4rem" }}
               >
                 {page}
               </button>
@@ -232,17 +252,11 @@ export default function BlogGrid() {
             {visiblePages()[2] < TOTAL_PAGES && (
               <>
                 {visiblePages()[2] < TOTAL_PAGES - 1 && (
-                  <span
-                    className="text-[hsla(0,0%,65%,1)]"
-                    style={{ fontSize: "1.4rem" }}
-                  >
-                    …
-                  </span>
+                  <span className="text-[hsla(0,0%,65%,1)] text-[1.4rem]">…</span>
                 )}
                 <button
                   onClick={() => handlePageChange(TOTAL_PAGES)}
-                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                  style={{ fontSize: "1.4rem" }}
+                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
                 >
                   {TOTAL_PAGES}
                 </button>
@@ -253,8 +267,7 @@ export default function BlogGrid() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === TOTAL_PAGES}
-            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
-            style={{ fontSize: "1.4rem" }}
+            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next →
           </button>
