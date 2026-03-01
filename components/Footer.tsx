@@ -31,7 +31,6 @@ const columns: FooterColumnData[] = [
   {
     heading: "For Business",
     links: [
-      { label: "Subscription Agreement", href: "/subscription-agreement" },
       { label: "Request Fragrance", href: "/request-fragrance" },
       { label: "Influencer Collaboration", href: "/influencer-collaboration" },
       {
@@ -96,7 +95,7 @@ const Footer: React.FC = () => {
     >
       {/* ── Main grid ── */}
       <div
-        className="footer-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+        className="footer-container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
         style={{ maxWidth: "1400px", margin: "0 auto", gap: "40px" }}
       >
         {/* Nav columns — internal Links */}
