@@ -39,10 +39,7 @@ export default function WhyWorkWithUs() {
           <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3 fade-up delay-4">
             Why Al Hussein Perfumes
           </p>
-          <h2
-            className="text-4xl md:text-5xl font-normal text-white fade-up delay-5"
-            style={{ fontFamily: "var(--font-forum)" }}
-          >
+          <h2 className="text-4xl md:text-5xl font-normal text-white fade-up delay-5 font-[var(--font-forum)]">
             Why Work With Us
           </h2>
         </div>
@@ -56,10 +53,7 @@ export default function WhyWorkWithUs() {
               <div className="w-[70px] h-[70px] mx-auto mb-6 flex items-center justify-center border-2 border-[#d4af7a] rounded-full text-4xl transition-all duration-300 group-hover:bg-[#d4af7a] group-hover:scale-110">
                 {b.icon}
               </div>
-              <h3
-                className="text-2xl font-normal text-white mb-4"
-                style={{ fontFamily: "var(--font-forum)" }}
-              >
+              <h3 className="text-2xl font-normal text-white mb-4 font-[var(--font-forum)]">
                 {b.title}
               </h3>
               <p className="text-[#a6a6a6] leading-relaxed text-sm">{b.text}</p>

@@ -48,7 +48,7 @@ const columns: FooterColumnData[] = [
       { label: "Privacy and Cookies Policy", href: "/privacy" },
       { label: "Return and Refund Policy", href: "/returns" },
       { label: "Shipping Policy", href: "/shipping" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "Contact Us", href: "/contact-us" },
     ],
   },
 ];

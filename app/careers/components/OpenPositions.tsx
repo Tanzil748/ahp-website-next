@@ -56,21 +56,18 @@ export default function OpenPositions() {
           <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3">
             Current Opportunities
           </p>
-          <h2
-            className="text-4xl md:text-5xl font-normal text-white"
-            style={{ fontFamily: "var(--font-forum)" }}
-          >
+          <h2 className="text-4xl md:text-5xl font-normal text-white font-[var(--font-forum)]">
             Open Positions
           </h2>
         </div>
 
         {/* Filter buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16 py-8 border-y border-white/10 bg-[#141414]">
+        <div className="flex flex-wrap justify-center gap-3 mb-16 py-8 px-5 border-y border-white/10 bg-[#141414]">
           {departments.map((dept) => (
             <button
               key={dept}
               onClick={() => setActiveFilter(dept)}
-              className={`px-6 py-3 text-xs font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer ${
+              className={`px-6 py-3 text-[1.2rem] font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer ${
                 activeFilter === dept
                   ? "bg-[#d4af7a] border-[#d4af7a] text-black"
                   : "bg-transparent border-white/10 text-[#a6a6a6] hover:bg-[#d4af7a] hover:border-[#d4af7a] hover:text-black"
@@ -91,10 +88,7 @@ export default function OpenPositions() {
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 mb-5">
                   <div className="flex-1">
-                    <h3
-                      className="text-2xl md:text-3xl font-normal text-white mb-3 transition-colors duration-300 group-hover:text-[#d4af7a]"
-                      style={{ fontFamily: "var(--font-forum)" }}
-                    >
+                    <h3 className="text-2xl md:text-3xl font-normal text-white mb-3 transition-colors duration-300 group-hover:text-[#d4af7a] font-[var(--font-forum)]">
                       {job.title}
                     </h3>
                     <div className="flex flex-wrap items-center gap-3 text-xs text-[#a6a6a6]">

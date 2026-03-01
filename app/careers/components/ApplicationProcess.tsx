@@ -29,23 +29,14 @@ export default function ApplicationProcess() {
           <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3">
             How To Apply
           </p>
-          <h2
-            className="text-4xl md:text-5xl font-normal text-white"
-            style={{ fontFamily: "var(--font-forum)" }}
-          >
+          <h2 className="text-4xl md:text-5xl font-normal text-white font-[var(--font-forum)]">
             Application Process
           </h2>
         </div>
 
         <div className="relative">
           {/* Horizontal connector line — desktop only */}
-          <div
-            className="absolute top-[60px] left-0 right-0 h-px hidden md:block opacity-30"
-            style={{
-              background:
-                "linear-gradient(to right, transparent 0%, #d4af7a 10%, #d4af7a 90%, transparent 100%)",
-            }}
-          />
+          <div className="absolute top-[60px] left-0 right-0 h-px hidden md:block opacity-30 [background:linear-gradient(to_right,transparent_0%,#d4af7a_10%,#d4af7a_90%,transparent_100%)]" />
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6 py-6">
             {steps.map((step) => (
@@ -55,10 +46,7 @@ export default function ApplicationProcess() {
               >
                 {/* Step circle */}
                 <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center border border-[#d4af7a] rounded-full relative z-10 mb-5 bg-[#1a1a1b] transition-all duration-300 group-hover:bg-[#d4af7a] group-hover:scale-110">
-                  <span
-                    className="text-[#d4af7a] text-base font-bold group-hover:text-white transition-colors duration-300"
-                    style={{ fontFamily: "var(--font-forum)" }}
-                  >
+                  <span className="text-[#d4af7a] text-base font-bold group-hover:text-white transition-colors duration-300 font-[var(--font-forum)]">
                     {step.number}
                   </span>
                 </div>
@@ -66,10 +54,7 @@ export default function ApplicationProcess() {
                 {/* Dot */}
                 <div className="w-1 h-1 rounded-full bg-[#d4af7a] opacity-40 mb-4 group-hover:opacity-100 transition-opacity duration-300" />
 
-                <h3
-                  className="text-xl font-normal text-white mb-3 group-hover:text-[#d4af7a] transition-colors duration-300"
-                  style={{ fontFamily: "var(--font-forum)" }}
-                >
+                <h3 className="text-xl font-normal text-white mb-3 group-hover:text-[#d4af7a] transition-colors duration-300 font-[var(--font-forum)]">
                   {step.title}
                 </h3>
                 <p className="text-[#606060] text-sm leading-relaxed group-hover:text-[#a6a6a6] transition-colors duration-300">

@@ -2,10 +2,7 @@ export default function CareersCTA() {
   return (
     <section className="py-24 px-5 lg:px-10 bg-gradient-to-br from-[#141414] to-[#1a1a1b] border-t border-[#d4af7a]">
       <div className="max-w-2xl mx-auto text-center">
-        <h2
-          className="text-4xl md:text-5xl font-normal text-white mb-5"
-          style={{ fontFamily: "var(--font-forum)" }}
-        >
+        <h2 className="text-4xl md:text-5xl font-normal text-white mb-5 font-[var(--font-forum)]">
           Don&apos;t See The Right Position?
         </h2>
 
