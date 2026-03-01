@@ -1,227 +1,137 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const brands = [
-  {
-    name: "Fragrance World",
-    image: "/images/index-page/brands/FW.png",
-    href: "#",
-  },
-  {
-    name: "French Avenue",
-    image: "/images/index-page/brands/FA.png",
-    href: "#",
-  },
-  {
-    name: "Maison",
-    image: "/images/index-page/brands/Maison.png",
-    href: "#",
-  },
-  {
-    name: "Lattafa",
-    image: "/images/index-page/brands/Lattafa.jpeg",
-    href: "#",
-  },
+  { name: "Fragrance World", image: "/images/index-page/brands/FW.png",      href: "#" },
+  { name: "French Avenue",   image: "/images/index-page/brands/FA.png",       href: "#" },
+  { name: "Maison",          image: "/images/index-page/brands/Maison.png",   href: "#" },
+  { name: "Lattafa",         image: "/images/index-page/brands/Lattafa.jpeg", href: "#" },
 ];
 
+// Injects the @keyframes once into <head> — no style tags in JSX, no global CSS, no tailwind.config change
+function useFloatKeyframe() {
+  useEffect(() => {
+    const id = "dist-float-keyframe";
+    if (document.getElementById(id)) return;
+    const el = document.createElement("style");
+    el.id = id;
+    el.textContent = `
+      @keyframes moveFloat {
+        0%, 100% { transform: translateY(0px);  }
+        50%       { transform: translateY(30px); }
+      }
+    `;
+    document.head.appendChild(el);
+    return () => { document.getElementById(id)?.remove(); };
+  }, []);
+}
+
 export default function Distribution() {
+  useFloatKeyframe();
+
   return (
-    <>
-      {/*
-        CSS-only effects that Tailwind cannot express inline:
-          1. .has-before::before  — the SVG pattern strip that flips on hover
-          2. .hover-shine::after  — the diagonal shimmer sweep
-          3. .btn-text::after     — the double-border underline scale
-          4. @keyframes move      — floating shape animation
-          5. staggered nth-child transforms on grid items
-        Everything else is pure Tailwind below.
-      */}
-      <style>{`
-        /* SVG pattern strip behind card image — flips away on hover */
-        .dist-card-link::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 140px;
-          height: 100%;
-          /* NOTE: files in /public are served at / — never use "public/" */
-          background-image: url("/images/patterns/img-pattern.svg");
-          background-position: center;
-          background-size: cover;
-          background-repeat: repeat;
-          transition: 500ms ease;
-          transition-delay: 0ms;
-          z-index: -1;
-          will-change: transform;
-        }
-        .dist-card:is(:hover, :focus-within) .dist-card-link::before {
-          transform: rotateY(0.5turn) translateX(50%);
-          transition-delay: 300ms;
-        }
+    <section
+      aria-label="service"
+      className="relative overflow-hidden z-[1] text-center py-[70px] lg:py-[100px] bg-[hsla(30,8%,5%,1)]"
+    >
+      {/* ── Floating decorative background shapes ── */}
+      <Image
+        src="/images/index-page/bg-images/bg-left-v1.png"
+        width={350}
+        height={412}
+        loading="lazy"
+        alt=""
+        aria-hidden="true"
+        className="hidden lg:block absolute bottom-0 left-0 -z-[1] pointer-events-none max-w-max"
+        style={{ animation: "moveFloat 5s linear infinite" }}
+      />
+      <Image
+        src="/images/index-page/bg-images/bg-right-v1.png"
+        width={343}
+        height={345}
+        loading="lazy"
+        alt=""
+        aria-hidden="true"
+        className="hidden lg:block absolute top-0 right-0 -z-[1] pointer-events-none max-w-max"
+        style={{ animation: "moveFloat 5s linear infinite" }}
+      />
 
-        /* Diagonal shimmer sweep across card image on hover */
-        .dist-card-link::after {
-          content: "";
-          position: absolute;
-          top: 0; left: 0;
-          width: 50%;
-          height: 100%;
-          background-image: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 100%);
-          transform: skewX(-0.08turn) translateX(-180%);
-          pointer-events: none;
-          z-index: 2;
-        }
-        .dist-card:is(:hover, :focus-within) .dist-card-link::after {
-          transform: skewX(-0.08turn) translateX(275%);
-          transition: 1000ms ease;
-        }
+      <div className="relative px-4 max-w-[1200px] mx-auto">
 
-        /* Card image zoom on hover */
-        .dist-card:is(:hover, :focus-within) .dist-card-banner {
-          transform: scale(1.05);
-        }
+        {/* ── Subtitle ── */}
+        <p className="font-bold uppercase text-[1.2rem] mb-3 text-[hsl(38,61%,73%)] [font-family:'DM_Sans',sans-serif] tracking-[0.4em]">
+          Distribution
+        </p>
 
-        /* "View Brand Products" double-border underline that scales in */
-        .dist-btn-text::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          height: 5px;
-          border-top: 1px solid hsl(38, 61%, 73%);
-          border-bottom: 1px solid hsl(38, 61%, 73%);
-          transform: scaleX(0.2);
-          opacity: 0;
-          transition: 500ms ease;
-        }
-        .dist-btn-text:is(:hover, :focus-visible)::after {
-          transform: scaleX(1);
-          opacity: 1;
-        }
-
-        /* Stagger — cards 1 & 4 shift up, 2 & 3 shift down at 992px+ */
-        @media (min-width: 992px) {
-          .dist-grid > li:nth-child(1),
-          .dist-grid > li:nth-child(4) { transform: translateY(-30px); }
-          .dist-grid > li:nth-child(2),
-          .dist-grid > li:nth-child(3) { transform: translateY(30px);  }
-        }
-
-        /* Floating shape animation */
-        @keyframes moveFloat {
-          0%, 100% { transform: translateY(0);    }
-          50%       { transform: translateY(30px); }
-        }
-        .move-anim { animation: moveFloat 5s linear infinite; }
-      `}</style>
-
-      {/* ── Section — .section .service .bg-black-10 .text-center ── */}
-      <section
-        aria-label="service"
-        className="relative overflow-hidden z-[1] text-center py-[70px] lg:py-[100px]"
-        style={{ backgroundColor: "hsla(30, 8%, 5%, 1)" }}
-      >
-        {/* ── Decorative floating shapes — OUTSIDE container so they reach page edges ── */}
+        {/* ── Wavy separator ── */}
+        <div className="flex justify-center mb-3">
           <Image
-            src="/images/index-page/bg-images/bg-left-v1.png"
-            width={350}
-            height={412}
-            loading="lazy"
+            src="/images/patterns/separator.svg"
+            width={100}
+            height={10}
             alt=""
             aria-hidden="true"
-            className="move-anim hidden lg:block absolute bottom-0 left-0 -z-[1] pointer-events-none max-w-max"
           />
-          <Image
-            src="/images/index-page/bg-images/bg-right-v1.png"
-            width={343}
-            height={345}
-            loading="lazy"
-            alt=""
-            aria-hidden="true"
-            className="move-anim hidden lg:block absolute top-0 right-0 -z-[1] pointer-events-none max-w-max"
-          />
+        </div>
 
-        <div className="relative px-4 max-w-[1200px] mx-auto">
+        {/* ── Title ── */}
+        <h2 className="font-normal leading-[1.2] mb-4 text-white [font-family:'Forum',cursive] text-[calc(2rem+2.5vw)]">
+          Authorized Largest Distributor
+        </h2>
 
-          {/* ── Section subtitle ── */}
-          {/*
-            Gold uppercase label with wide letter-spacing.
-            The wavy SVG line underneath is rendered via an inline SVG
-            since Tailwind can't do ::after content with background-image.
-          */}
-          <p
-            className="font-bold uppercase text-[1.2rem] mb-3"
-            style={{
-              color: "hsl(38, 61%, 73%)",
-              fontFamily: '"DM Sans", sans-serif',
-              letterSpacing: "0.4em",
-            }}
-          >
-            Distribution
-          </p>
-          {/* Decorative wavy separator line under subtitle */}
-          <div className="flex justify-center mb-3">
-            <svg width="100" height="10" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M0 5 Q12.5 0 25 5 Q37.5 10 50 5 Q62.5 0 75 5 Q87.5 10 100 5"
-                stroke="hsl(38, 61%, 73%)"
-                strokeWidth="1.5"
-                fill="none"
-              />
-            </svg>
-          </div>
+        {/* ── Description ── */}
+        <p className="text-white leading-[1.6] mb-10 max-w-[560px] mx-auto text-[1.6rem] [font-family:'DM_Sans',sans-serif]">
+          We bring the world&apos;s most prestigious fragrances directly to you,
+          ensuring authenticity, quality, and a luxurious experience with every scent.
+        </p>
 
-          {/* ── Section title — .headline-1 Forum font ── */}
-          <h2
-            className="font-normal leading-[1.2] mb-4 text-white"
-            style={{
-              fontFamily: '"Forum", cursive',
-              fontSize: "calc(2rem + 2.5vw)",
-            }}
-          >
-            Authorized Largest Distributor
-          </h2>
+        {/* ── Brand cards grid ── */}
+        <ul className="grid gap-10 list-none p-0 m-0 sm:grid-cols-2 lg:grid-cols-4">
+          {brands.map((brand, index) => {
+            const staggerClass =
+              index === 0 || index === 3
+                ? "lg:-translate-y-[30px]"
+                : "lg:translate-y-[30px]";
 
-          {/* ── Section description ── */}
-          <p
-            className="text-white leading-[1.6] mb-10 max-w-[560px] mx-auto text-[1.6rem]"
-            style={{ fontFamily: '"DM Sans", sans-serif' }}
-          >
-            We bring the world&apos;s most prestigious fragrances directly to you,
-            ensuring authenticity, quality, and a luxurious experience with every scent.
-          </p>
+            return (
+              <li key={brand.name} className={staggerClass}>
+                <div className="group overflow-hidden">
 
-          {/* ── Brand cards grid ── */}
-          {/*
-            1 col mobile → 2 col 768px → 4 col 992px
-            nth-child stagger applied via .dist-grid CSS above
-          */}
-          <ul className="dist-grid grid gap-10 list-none p-0 m-0 sm:grid-cols-2 lg:grid-cols-4">
-            {brands.map((brand) => (
-              <li key={brand.name}>
-                <div className="dist-card overflow-hidden">
-
-                  {/*
-                    .has-before — the pattern strip + shimmer wrapper.
-                    position:relative + z-[1] creates the stacking context
-                    that ::before/-after pseudo-elements are placed inside.
-                  */}
+                  {/* Card image link */}
                   <Link
                     href={brand.href}
-                    className="dist-card-link relative z-[1] block py-[30px] mb-[26px] no-underline"
+                    className="relative z-[1] block py-[30px] mb-[26px] no-underline overflow-hidden [perspective:600px]"
                   >
-                    {/* Card image — .card-banner .img-holder */}
+                    {/* SVG pattern strip — rotateY flips away on hover */}
+                    <span
+                      className="
+                        absolute top-0 left-1/2 w-[140px] h-full -z-[1]
+                        bg-[url('/images/patterns/img-pattern.svg')] bg-center bg-cover bg-repeat
+                        [transform:translateX(-50%)]
+                        [transition:transform_500ms_ease_0ms]
+                        group-hover:[transform:rotateY(180deg)_translateX(50%)]
+                        group-hover:[transition-delay:300ms]
+                      "
+                      aria-hidden="true"
+                    />
+
+                    {/* Card image — zooms on hover */}
                     <figure
-                      className="dist-card-banner overflow-hidden transition-transform duration-500 ease-in-out m-0"
-                      style={{
-                        aspectRatio: "285 / 336",
-                        backgroundColor: "hsla(0, 0%, 13%, 1)",
-                      }}
+                      className="relative overflow-hidden transition-transform duration-500 ease-in-out m-0 group-hover:scale-105 bg-[hsla(0,0%,13%,1)]"
+                      style={{ aspectRatio: "285 / 336" }}
                     >
+                      {/* Diagonal shimmer sweep — clipped to image bounds */}
+                      <span
+                        className="
+                          absolute top-0 left-0 w-1/2 h-full pointer-events-none z-[2]
+                          bg-gradient-to-r from-transparent to-white/40
+                          -skew-x-[4.6deg] -translate-x-[180%]
+                          group-hover:translate-x-[275%] group-hover:transition-transform group-hover:duration-1000 group-hover:ease-in-out
+                        "
+                        aria-hidden="true"
+                      />
                       <Image
                         src={brand.image}
                         alt={brand.name}
@@ -233,57 +143,40 @@ export default function Distribution() {
                     </figure>
                   </Link>
 
-                  {/* Card text content */}
+                  {/* Card text */}
                   <div className="pt-1">
-
-                    {/* Brand name — .title-4 Forum font */}
-                    <h3
-                      className="font-normal leading-[1.2] mb-3 text-white"
-                      style={{
-                        fontFamily: '"Forum", cursive',
-                        fontSize: "calc(1.6rem + 1.2vw)",
-                      }}
-                    >
-                      <Link
-                        href={brand.href}
-                        className="no-underline"
-                        style={{ color: "inherit" }}
-                      >
+                    <h3 className="font-normal leading-[1.2] mb-3 text-white [font-family:'Forum',cursive] text-[calc(1.6rem+1.2vw)]">
+                      <Link href={brand.href} className="no-underline text-inherit">
                         {brand.name}
                       </Link>
                     </h3>
 
-                    {/*
-                      "View Brand Products" — .btn-text + .hover-underline
-                      The double-border scale effect is in the <style> block above
-                      because Tailwind can't animate ::after pseudo-elements.
-                    */}
+                    {/* "View Brand Products" — double-border underline scales in */}
                     <Link
                       href={brand.href}
-                      className="dist-btn-text relative inline-block pb-1 uppercase font-bold text-[1.2rem] no-underline transition-colors duration-[250ms]"
-                      style={{
-                        color: "hsl(38, 61%, 73%)",
-                        fontFamily: '"DM Sans", sans-serif',
-                        letterSpacing: "0.2em",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.color = "hsla(0, 0%, 100%, 1)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.color = "hsl(38, 61%, 73%)")
-                      }
+                      className="
+                        relative inline-block pb-1 uppercase font-bold text-[1.2rem] no-underline
+                        text-[hsl(38,61%,73%)] hover:text-white transition-colors duration-[250ms]
+                        [font-family:'DM_Sans',sans-serif] tracking-[0.2em]
+                        after:content-[''] after:absolute after:left-0 after:bottom-0
+                        after:w-full after:h-[5px]
+                        after:border-t after:border-b after:border-[hsl(38,61%,73%)]
+                        after:scale-x-[0.2] after:opacity-0
+                        after:transition-all after:duration-500
+                        hover:after:scale-x-100 hover:after:opacity-100
+                      "
                     >
                       View Brand Products
                     </Link>
-
                   </div>
+
                 </div>
               </li>
-            ))}
-          </ul>
+            );
+          })}
+        </ul>
 
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
