@@ -26,34 +26,32 @@ function InfoCard({
 
   return (
     <div
-      className="flex items-start gap-[18px] mb-9"
+      className="flex items-start gap-[18px] max-sm:gap-[14px] mb-9"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Diamond icon box */}
       <div
-        className="flex-shrink-0 w-[52px] h-[52px] grid place-items-center transition-colors duration-300"
+        className="flex-shrink-0 w-[52px] h-[52px] max-sm:w-[44px] max-sm:h-[44px] grid place-items-center transition-colors duration-300"
         style={{
           border: `1px solid ${gold}`,
           transform: "rotate(45deg)",
           backgroundColor: hovered ? gold : "transparent",
         }}
       >
-        <div style={{ transform: "rotate(-45deg)" }}>
+        <div className="-rotate-45">
           <Icon stroke={hovered ? smokyBlack1 : gold} />
         </div>
       </div>
 
       <div>
         <p
-          className="uppercase font-bold mb-1"
-          style={{ fontSize: "1.4rem", letterSpacing: "0.15em", color: gold }}
+          className="uppercase font-bold mb-1 text-[1.4rem] tracking-[0.15em]"
+          style={{ color: gold }}
         >
           {label}
         </p>
-        <div
-          style={{ fontSize: "1.5rem", color: quickSilver, lineHeight: 1.6 }}
-        >
+        <div className="text-[1.5rem] leading-[1.6]" style={{ color: quickSilver }}>
           {children}
         </div>
       </div>
@@ -66,10 +64,10 @@ export default function ContactInfo() {
   return (
     <div className="fade-up delay-2">
       {/* Subtitle */}
-      <div style={{ marginBottom: 12 }}>
+      <div className="mb-3">
         <span
-          className="uppercase font-bold"
-          style={{ color: gold, fontSize: "1.4rem", letterSpacing: "0.4em" }}
+          className="uppercase font-bold text-[1.4rem] tracking-[0.4em]"
+          style={{ color: gold }}
         >
           Find Us
         </span>
@@ -77,11 +75,10 @@ export default function ContactInfo() {
       </div>
 
       <h2
-        className="mb-5"
+        className="mb-5 font-normal leading-[1.4]"
         style={{
           fontFamily: "var(--font-forum)",
           fontSize: "clamp(2.4rem, 3.5vw, 3.6rem)",
-          lineHeight: 1.4,
           fontWeight: 400,
         }}
       >
@@ -91,8 +88,8 @@ export default function ContactInfo() {
       </h2>
 
       <p
-        className="mb-[50px]"
-        style={{ color: quickSilver, fontSize: "1.65rem", lineHeight: 1.5 }}
+        className="mb-[50px] text-[1.65rem] leading-[1.5]"
+        style={{ color: quickSilver }}
       >
         We are open five days a week and eager to accommodate your needs. Reach
         us through any of the channels below.
@@ -114,23 +111,16 @@ export default function ContactInfo() {
 
       {/* Gold divider */}
       <div
-        className="my-[50px]"
+        className="my-[50px] w-full h-px opacity-40"
         style={{
-          width: "100%",
-          height: 1,
           background: `linear-gradient(to right, ${gold}, transparent)`,
-          opacity: 0.4,
         }}
       />
 
       {/* Hours */}
       <h3
-        className="mb-4"
-        style={{
-          fontFamily: "var(--font-forum)",
-          fontSize: "2.2rem",
-          fontWeight: 400,
-        }}
+        className="mb-4 font-normal text-[2.2rem]"
+        style={{ fontFamily: "var(--font-forum)", fontWeight: 400 }}
       >
         Opening Hours
       </h3>
@@ -143,11 +133,8 @@ export default function ContactInfo() {
         ].map(({ day, time }) => (
           <li
             key={day}
-            className="flex justify-between items-center pb-3"
-            style={{
-              fontSize: "1.5rem",
-              borderBottom: `1px solid ${whiteAlpha10}`,
-            }}
+            className="flex justify-between items-center pb-3 text-[1.5rem]"
+            style={{ borderBottom: `1px solid ${whiteAlpha10}` }}
           >
             <span className="font-bold text-white">{day}</span>
             <span style={{ color: gold }}>{time}</span>

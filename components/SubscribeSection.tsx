@@ -417,7 +417,7 @@ export default function SubscribeSection() {
           >
             No spam, ever. Unsubscribe at any time.{" "}
             <a
-              href="/privacy"
+              href="/terms-condition"
               style={{ color: "hsla(38,61%,73%,0.6)", textDecoration: "none" }}
             >
               Privacy Policy

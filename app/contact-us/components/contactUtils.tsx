@@ -18,10 +18,7 @@ export function OrnamentalSep({
       viewBox="0 0 100 12"
       width="100"
       height="12"
-      style={{
-        display: "block",
-        margin: align === "center" ? "5px auto 0" : "5px 0 0",
-      }}
+      className={`block ${align === "center" ? "mx-auto mt-[5px]" : "mt-[5px]"}`}
     >
       <line x1="0" y1="6" x2="38" y2="6" stroke={gold} strokeWidth="1" />
       <rect
@@ -43,13 +40,11 @@ export function OrnamentalSep({
 export function DiamondSep() {
   return (
     <span
+      className="inline-block flex-shrink-0 rotate-45"
       style={{
-        display: "inline-block",
         width: 8,
         height: 8,
         border: `1px solid ${gold}`,
-        transform: "rotate(45deg)",
-        flexShrink: 0,
       }}
     />
   );
