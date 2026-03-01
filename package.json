@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@iconify-json/basil": "^1.2.4",
+    "@iconify-json/fa7-solid": "^1.2.4",
     "@iconify-json/ic": "^1.2.4",
     "@iconify-json/material-symbols": "^1.2.59",
     "@tailwindcss/postcss": "^4",

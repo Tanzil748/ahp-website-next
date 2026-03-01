@@ -21,6 +21,9 @@ importers:
       '@iconify-json/basil':
         specifier: ^1.2.4
         version: 1.2.4
+      '@iconify-json/fa7-solid':
+        specifier: ^1.2.4
+        version: 1.2.4
       '@iconify-json/ic':
         specifier: ^1.2.4
         version: 1.2.4
@@ -190,6 +193,9 @@ packages:
 
   '@iconify-json/basil@1.2.4':
     resolution: {integrity: sha512-KUL5JBdFDF7APY8XiuqvfpiecIby8pIbs6rm3WLgdVDqMlKH0WcWEwd+ilANby8X3AuHQVrjNjByh9MpfAR3lQ==}
+
+  '@iconify-json/fa7-solid@1.2.4':
+    resolution: {integrity: sha512-Ns+ABU21PQpTjMZZ8idaQ9CDNYxjCJ/HY4+gkDsnAiJLkISMB2WIjoR2sjEj+Yok72sFwhXdYKBxwfRaGlwVpA==}
 
   '@iconify-json/ic@1.2.4':
     resolution: {integrity: sha512-pzPMmrZrBQuwT7nmtrYdkttun8KalRGgZPIL1Ny9KpF2zjRGIUPN+npTfuD3lrgO/OnSwAoJWuekQwBpt/Cqrw==}
@@ -2154,6 +2160,10 @@ snapshots:
   '@humanwhocodes/retry@0.4.3': {}
 
   '@iconify-json/basil@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa7-solid@1.2.4':
     dependencies:
       '@iconify/types': 2.0.0
 
