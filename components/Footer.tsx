@@ -43,9 +43,7 @@ const columns: FooterColumnData[] = [
   {
     heading: "Customer Care",
     links: [
-      { label: "Ways To Shop", href: "/ways-to-shop" },
-      { label: "Terms and Conditions", href: "/terms" },
-      { label: "Privacy and Cookies Policy", href: "/privacy" },
+      { label: "Terms and Conditions", href: "/terms-condition" },
       { label: "Return and Refund Policy", href: "/returns" },
       { label: "Shipping Policy", href: "/shipping" },
       { label: "Contact Us", href: "/contact-us" },
