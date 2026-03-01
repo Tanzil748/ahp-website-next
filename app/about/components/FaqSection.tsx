@@ -2,19 +2,11 @@
 
 import { useState } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 interface FaqItem {
   q: string;
   a: string;
 }
 
-// ─── Theme tokens ─────────────────────────────────────────────────────────────
-const theme = {
-  goldCrayola: "hsl(38, 61%, 73%)",
-  eerieBlack1: "hsla(210, 4%, 9%, 1)",
-};
-
-// ─── FAQ data ─────────────────────────────────────────────────────────────────
 const faqs: FaqItem[] = [
   {
     q: "Who do you sell to?",
@@ -54,150 +46,88 @@ const faqs: FaqItem[] = [
   },
 ];
 
-// ─── Ornamental separator ─────────────────────────────────────────────────────
 function OrnamentalSep() {
   return (
     <svg
       viewBox="0 0 100 12"
       width="100"
       height="12"
-      style={{ display: "block", margin: "5px auto 0" }}
+      className="block mx-auto mt-[5px]"
     >
-      <line
-        x1="0"
-        y1="6"
-        x2="38"
-        y2="6"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
-      />
+      <line x1="0" y1="6" x2="38" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
       <rect
-        x="44"
-        y="2"
-        width="8"
-        height="8"
+        x="44" y="2" width="8" height="8"
         transform="rotate(45 48 6)"
-        fill="none"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
+        fill="none" stroke="hsl(38,61%,73%)" strokeWidth="1"
       />
-      <line
-        x1="58"
-        y1="6"
-        x2="100"
-        y2="6"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
-      />
+      <line x1="58" y1="6" x2="100" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
     </svg>
   );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
 
   return (
-    <>
-      <style>{`
-        .faq-wrapper {
-          max-width: 1200px;
-          width: 100%;
-          margin: 40px auto 0;
-          padding: 0 40px;
-        }
-        .faq-answer {
-          font-size: 1.8rem;
-          max-height: 0;
-          opacity: 0;
-          line-height: 1.5;
-          overflow: hidden;
-          transition: all 0.6s ease;
-          color: hsla(0,0%,65%,1);
-          font-family: var(--font-dm-sans);
-          padding: 0 15px;
-        }
-        .faq-answer.open { max-height: 300px; opacity: 1; padding: 0 15px 30px; }
-        .faq-btn { transition: background 0.25s ease; }
-        .faq-btn:hover { background-color: hsla(210,4%,9%,1) !important; }
-        .d-arrow { transition: transform 0.5s ease-in; color: hsl(38,61%,73%); flex-shrink: 0; }
-        .d-arrow.rotate { transform: rotate(180deg); }
-        @media (max-width: 1240px) { .faq-wrapper { padding: 0 24px; } }
-        @media (max-width: 600px)  { .faq-wrapper { padding: 0 16px; } }
-      `}</style>
+    <section className="py-10 sm:py-14 md:py-[70px] bg-[hsla(210,4%,9%,1)]">
+      {/* Section title */}
+      <div className="text-center mb-3">
+        <span
+          className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.4em] text-[1.6rem] sm:text-[1.9rem] md:text-[2.2rem] leading-[1.2em]"
+          style={{ fontFamily: "var(--font-forum)" }}
+        >
+          FAQs
+        </span>
+        <OrnamentalSep />
+      </div>
 
-      <section style={{ paddingBlock: 70, backgroundColor: theme.eerieBlack1 }}>
-        {/* Section title */}
-        <div style={{ textAlign: "center", marginBottom: 12 }}>
-          <span
-            style={{
-              color: theme.goldCrayola,
-              fontFamily: "var(--font-forum)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.4em",
-              fontSize: "2.2rem",
-              lineHeight: "1.2em",
-            }}
-          >
-            FAQs
-          </span>
-          <OrnamentalSep />
-        </div>
-
-        {/* FAQ list */}
-        <div className="faq-wrapper">
-          {faqs.map((item, i) => (
-            <div
-              key={i}
-              style={{ borderBottom: "1px solid hsla(38,61%,73%,0.35)" }}
+      {/* FAQ list */}
+      <div className="max-w-[1200px] w-full mx-auto mt-6 sm:mt-8 md:mt-10 px-4 sm:px-6 md:px-10">
+        {faqs.map((item, i) => (
+          <div key={i} className="border-b border-[hsla(38,61%,73%,0.35)]">
+            <button
+              onClick={() => toggle(i)}
+              className="w-full flex justify-between items-center px-3 sm:px-[15px] py-4 sm:py-5 border-none outline-none text-[1.5rem] sm:text-[1.8rem] md:text-[2.2rem] text-[hsl(38,61%,73%)] font-bold cursor-pointer text-left tracking-[0.5px] sm:tracking-[1px] transition-colors duration-[250ms] hover:bg-[hsla(210,4%,9%,1)]"
+              style={{
+                fontFamily: "var(--font-forum)",
+                backgroundColor: openIndex === i ? "hsla(210,4%,9%,1)" : "#181818",
+              }}
             >
-              <button
-                className="faq-btn"
-                onClick={() => toggle(i)}
-                style={{
-                  width: "100%",
-                  backgroundColor:
-                    openIndex === i ? theme.eerieBlack1 : "#181818",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "20px 15px",
-                  border: "none",
-                  outline: "none",
-                  fontSize: "2.2rem",
-                  color: theme.goldCrayola,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  fontFamily: "var(--font-forum)",
-                  letterSpacing: 1,
-                  textAlign: "left",
-                }}
+              <span className="pr-2">{item.q}</span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                className="ml-2 sm:ml-4 flex-shrink-0 text-[hsl(38,61%,73%)] transition-transform duration-500 ease-in"
+                style={{ transform: openIndex === i ? "rotate(180deg)" : "rotate(0deg)" }}
               >
-                <span>{item.q}</span>
-                <svg
-                  className={`d-arrow${openIndex === i ? " rotate" : ""}`}
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  style={{ marginLeft: 16 }}
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
 
-              <p className={`faq-answer${openIndex === i ? " open" : ""}`}>
+            <div
+              className="overflow-hidden transition-all duration-[600ms] ease-[ease]"
+              style={{
+                maxHeight: openIndex === i ? "400px" : "0",
+                opacity: openIndex === i ? 1 : 0,
+                padding: openIndex === i ? "0 12px 24px" : "0 12px",
+              }}
+            >
+              <p
+                className="text-[1.4rem] sm:text-[1.6rem] md:text-[1.8rem] leading-[1.6] sm:leading-[1.5] text-[hsla(0,0%,65%,1)]"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
+              >
                 {item.a}
               </p>
             </div>
-          ))}
-        </div>
-      </section>
-    </>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

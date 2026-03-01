@@ -2,7 +2,6 @@
 
 import React from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 interface Stat {
   value: string;
   label: string;
@@ -21,7 +20,6 @@ interface Leader {
   reversed: boolean;
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
 const leaders: Leader[] = [
   {
     number: "01",
@@ -65,335 +63,162 @@ const leaders: Leader[] = [
   },
 ];
 
-// ─── Ornamental separator ─────────────────────────────────────────────────────
 function OrnamentalSep() {
   return (
     <svg
       viewBox="0 0 100 12"
       width="100"
       height="12"
-      style={{ display: "block", margin: "5px auto 0" }}
+      className="block mx-auto mt-[5px]"
     >
-      <line
-        x1="0"
-        y1="6"
-        x2="38"
-        y2="6"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
-      />
+      <line x1="0" y1="6" x2="38" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
       <rect
-        x="44"
-        y="2"
-        width="8"
-        height="8"
+        x="44" y="2" width="8" height="8"
         transform="rotate(45 48 6)"
-        fill="none"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
+        fill="none" stroke="hsl(38,61%,73%)" strokeWidth="1"
       />
-      <line
-        x1="58"
-        y1="6"
-        x2="100"
-        y2="6"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
-      />
+      <line x1="58" y1="6" x2="100" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
     </svg>
   );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
 export default function LeadershipSection() {
   return (
-    <>
-      <style>{`
-        .leader-block {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0;
-          position: relative;
-        }
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10 bg-[hsla(210,4%,9%,1)] overflow-hidden">
+      <div className="max-w-[1200px] mx-auto">
+        {/* Section title */}
+        <div className="text-center mb-3">
+          <span
+            className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.4em] text-[1.6rem] sm:text-[1.9rem] md:text-[2.2rem] leading-[1.2em]"
+            style={{ fontFamily: "var(--font-forum)" }}
+          >
+            Leadership
+          </span>
+          <OrnamentalSep />
+        </div>
 
-        /* ── Image column ── */
-        .leader-img-col {
-          position: relative;
-          overflow: hidden;
-          height: 100%;
-          min-height: 560px;
-        }
-        .leader-img-col img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: top center;
-          display: block;
-          transition: transform 700ms ease, filter 700ms ease;
-          filter: brightness(0.88);
-        }
-        .leader-block:hover .leader-img-col img {
-          transform: scale(1.04);
-          filter: brightness(0.95);
-        }
-        .leader-img-col::after {
-          content: "";
-          position: absolute;
-          inset: 16px;
-          border: 1px solid hsl(38,61%,73%);
-          pointer-events: none;
-          z-index: 1;
-          opacity: 0.3;
-          transition: opacity 500ms ease;
-        }
-        .leader-block:hover .leader-img-col::after { opacity: 0.55; }
+        {leaders.map((leader, idx) => (
+          <div
+            key={leader.number}
+            className="group"
+            style={{ marginTop: idx === 0 ? 50 : 70 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 relative">
 
-        /* Watermark number */
-        .leader-number {
-          position: absolute;
-          bottom: -18px;
-          left: -10px;
-          font-family: var(--font-forum);
-          font-size: 14rem;
-          color: hsl(38,61%,73%);
-          opacity: 0.06;
-          line-height: 1;
-          pointer-events: none;
-          z-index: 0;
-          user-select: none;
-        }
+              {/* Image column */}
+              <div
+                className={`relative overflow-hidden min-h-[280px] sm:min-h-[360px] md:min-h-[560px] ${leader.reversed ? "md:order-last" : ""}`}
+              >
+                {/* Hover border overlay */}
+                <div className="absolute inset-3 sm:inset-4 border border-[hsl(38,61%,73%)] pointer-events-none z-10 opacity-30 transition-opacity duration-500 group-hover:opacity-[0.55]" />
 
-        /* ── Text column ── */
-        .leader-text-col {
-          padding: 50px 60px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          background: hsla(210,4%,11%,1);
-          position: relative;
-        }
-        .leader-text-col::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 40px;
-          bottom: 40px;
-          width: 2px;
-          background: linear-gradient(to bottom, transparent, hsl(38,61%,73%), transparent);
-          opacity: 0.5;
-        }
-        .leader-text-col-reversed::before { left: auto; right: 0; }
+                <img
+                  src={leader.image}
+                  alt={leader.imageAlt}
+                  className="w-full h-full object-cover object-top block transition-transform duration-700 brightness-[0.88] group-hover:scale-[1.04] group-hover:brightness-95"
+                  style={{ minHeight: "inherit" }}
+                />
 
-        /* Reversed layout */
-        .leader-block-reversed { direction: rtl; }
-        .leader-block-reversed > * { direction: ltr; }
-        .leader-block-reversed .leader-number { left: auto; right: -10px; }
-
-        /* Typography */
-        .leader-role-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 1.1rem;
-          font-weight: 700;
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          color: hsl(38,61%,73%);
-          margin-bottom: 14px;
-          font-family: var(--font-dm-sans);
-        }
-        .l-diamond {
-          display: inline-block;
-          width: 7px;
-          height: 7px;
-          border: 1px solid hsl(38,61%,73%);
-          transform: rotate(45deg);
-          flex-shrink: 0;
-        }
-        .leader-name {
-          font-family: var(--font-forum);
-          font-size: 4rem;
-          color: #fff;
-          line-height: 1.1;
-          margin-bottom: 6px;
-          letter-spacing: 0.02em;
-        }
-        .leader-gold-rule {
-          width: 50px;
-          height: 2px;
-          background: hsl(38,61%,73%);
-          opacity: 0.65;
-          margin: 22px 0;
-        }
-        .leader-bio {
-          font-size: 1.6rem;
-          color: hsla(0,0%,65%,1);
-          line-height: 1.9;
-          margin-bottom: 28px;
-          font-family: var(--font-dm-sans);
-        }
-        .leader-quote-block {
-          border-left: 2px solid hsla(38,61%,73%,0.4);
-          padding-left: 20px;
-          margin-top: 4px;
-        }
-        .leader-quote-text {
-          font-family: var(--font-forum);
-          font-size: 1.85rem;
-          font-style: italic;
-          color: hsl(38,61%,73%);
-          line-height: 1.7;
-        }
-        .leader-quote-attr {
-          display: block;
-          font-size: 1.2rem;
-          color: hsla(0,0%,50%,1);
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          margin-top: 10px;
-          font-family: var(--font-dm-sans);
-        }
-
-        /* Stats */
-        .leader-stats {
-          display: flex;
-          gap: 20px;
-          margin-top: 28px;
-          flex-wrap: wrap;
-          align-items: center;
-        }
-        .stat-chip {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 2px;
-        }
-        .stat-value {
-          font-family: var(--font-forum);
-          font-size: 2.6rem;
-          color: hsl(38,61%,73%);
-          line-height: 1;
-        }
-        .stat-label {
-          font-size: 1.1rem;
-          color: hsla(0,0%,50%,1);
-          text-transform: uppercase;
-          letter-spacing: 0.15em;
-          font-family: var(--font-dm-sans);
-        }
-        .stat-divider {
-          width: 1px;
-          height: 36px;
-          background: hsla(38,61%,73%,0.2);
-          flex-shrink: 0;
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 900px) {
-          .leader-block,
-          .leader-block-reversed {
-            grid-template-columns: 1fr;
-            direction: ltr;
-          }
-          .leader-block-reversed .leader-number { left: -10px; right: auto; }
-          .leader-text-col-reversed::before     { left: 0; right: auto; }
-          .leader-img-col    { min-height: 360px; }
-          .leader-text-col   { padding: 36px 28px; }
-          .leader-name       { font-size: 3rem; }
-          .leader-number     { font-size: 10rem; bottom: auto; top: -30px; }
-        }
-      `}</style>
-
-      <section
-        style={{
-          paddingBlock: 80,
-          paddingInline: 40,
-          backgroundColor: "hsla(210,4%,9%,1)",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          {/* Section title */}
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <span
-              style={{
-                color: "hsl(38,61%,73%)",
-                fontFamily: "var(--font-forum)",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.4em",
-                fontSize: "2.2rem",
-                lineHeight: "1.2em",
-              }}
-            >
-              Leadership
-            </span>
-            <OrnamentalSep />
-          </div>
-
-          {/* Leader blocks */}
-          {leaders.map((leader, idx) => (
-            <div
-              key={leader.number}
-              className={`leader-block${leader.reversed ? " leader-block-reversed" : ""}`}
-              style={{ marginTop: idx === 0 ? 70 : 100 }}
-            >
-              {/* Image */}
-              <div className="leader-img-col">
-                <img src={leader.image} alt={leader.imageAlt} />
-                <span className="leader-number">{leader.number}</span>
+                {/* Watermark number */}
+                <span
+                  className="absolute bottom-[-14px] left-[-6px] text-[hsl(38,61%,73%)] opacity-[0.06] leading-none pointer-events-none z-0 select-none text-[7rem] sm:text-[10rem] md:text-[14rem]"
+                  style={{ fontFamily: "var(--font-forum)" }}
+                >
+                  {leader.number}
+                </span>
               </div>
 
-              {/* Text */}
+              {/* Text column */}
               <div
-                className={`leader-text-col${leader.reversed ? " leader-text-col-reversed" : ""}`}
+                className={`flex flex-col justify-center bg-[hsla(210,4%,11%,1)] relative px-5 py-8 sm:px-9 sm:py-10 md:px-[60px] md:py-[50px] ${leader.reversed ? "md:order-first" : ""}`}
               >
-                <span className="leader-role-tag">
-                  <span className="l-diamond" />
+                {/* Side rule — hidden on mobile, shown md+ */}
+                <div
+                  className={`hidden md:block absolute top-10 bottom-10 w-[2px] opacity-50 ${leader.reversed ? "left-auto right-0" : "left-0"}`}
+                  style={{ background: "linear-gradient(to bottom, transparent, hsl(38,61%,73%), transparent)" }}
+                />
+
+                {/* Role tag */}
+                <span
+                  className="inline-flex items-center gap-[8px] text-[1rem] sm:text-[1.1rem] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[hsl(38,61%,73%)] mb-3"
+                  style={{ fontFamily: "var(--font-dm-sans)" }}
+                >
+                  <span className="inline-block w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] border border-[hsl(38,61%,73%)] rotate-45 flex-shrink-0" />
                   {leader.role}
                 </span>
 
-                <h2 className="leader-name">
+                {/* Name */}
+                <h2
+                  className="text-[2.8rem] sm:text-[3rem] md:text-[4rem] text-white leading-[1.1] mb-[6px] tracking-[0.02em]"
+                  style={{ fontFamily: "var(--font-forum)" }}
+                >
                   {leader.name[0]}
                   <br />
                   {leader.name[1]}
                 </h2>
 
-                <div className="leader-gold-rule" />
+                {/* Gold rule */}
+                <div className="w-[40px] sm:w-[50px] h-[2px] bg-[hsl(38,61%,73%)] opacity-65 my-4 sm:my-[22px]" />
 
+                {/* Bio */}
                 {leader.bio.map((para, i) => (
                   <p
                     key={i}
-                    className="leader-bio"
-                    style={i > 0 ? { marginTop: -8 } : undefined}
+                    className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] text-[hsla(0,0%,65%,1)] leading-[1.8] sm:leading-[1.9] mb-5 sm:mb-7"
+                    style={{
+                      fontFamily: "var(--font-dm-sans)",
+                      marginTop: i > 0 ? "-8px" : undefined,
+                    }}
                   >
                     {para}
                   </p>
                 ))}
 
-                <div className="leader-quote-block">
-                  <p className="leader-quote-text">
+                {/* Quote */}
+                <div className="border-l-2 border-[hsla(38,61%,73%,0.4)] pl-4 sm:pl-5 mt-1">
+                  <p
+                    className="text-[1.55rem] sm:text-[1.7rem] md:text-[1.85rem] italic text-[hsl(38,61%,73%)] leading-[1.7]"
+                    style={{ fontFamily: "var(--font-forum)" }}
+                  >
                     &ldquo;{leader.quote}&rdquo;
                   </p>
-                  <span className="leader-quote-attr">{leader.quoteAttr}</span>
+                  <span
+                    className="block text-[1.1rem] sm:text-[1.2rem] text-[hsla(0,0%,50%,1)] tracking-[0.12em] sm:tracking-[0.15em] uppercase mt-[8px] sm:mt-[10px]"
+                    style={{ fontFamily: "var(--font-dm-sans)" }}
+                  >
+                    {leader.quoteAttr}
+                  </span>
                 </div>
 
-                <div className="leader-stats">
+                {/* Stats */}
+                <div className="flex gap-4 sm:gap-5 mt-5 sm:mt-7 flex-wrap items-center">
                   {leader.stats.map((stat, i) => (
                     <React.Fragment key={stat.label}>
-                      {i > 0 && <div className="stat-divider" />}
-                      <div className="stat-chip">
-                        <span className="stat-value">{stat.value}</span>
-                        <span className="stat-label">{stat.label}</span>
+                      {i > 0 && (
+                        <div className="w-px h-8 sm:h-9 bg-[hsla(38,61%,73%,0.2)] flex-shrink-0" />
+                      )}
+                      <div className="flex flex-col items-start gap-[2px]">
+                        <span
+                          className="text-[2.2rem] sm:text-[2.4rem] md:text-[2.6rem] text-[hsl(38,61%,73%)] leading-none"
+                          style={{ fontFamily: "var(--font-forum)" }}
+                        >
+                          {stat.value}
+                        </span>
+                        <span
+                          className="text-[1rem] sm:text-[1.1rem] text-[hsla(0,0%,50%,1)] uppercase tracking-[0.12em] sm:tracking-[0.15em]"
+                          style={{ fontFamily: "var(--font-dm-sans)" }}
+                        >
+                          {stat.label}
+                        </span>
                       </div>
                     </React.Fragment>
                   ))}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-    </>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

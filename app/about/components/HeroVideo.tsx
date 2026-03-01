@@ -2,47 +2,23 @@
 
 export default function HeroVideo() {
   return (
-    <section
-      style={{
-        position: "relative",
-        minHeight: "55vh",
-        overflow: "hidden",
-        marginTop: 160,
-      }}
-    >
+    <section className="relative min-h-[35vh] sm:min-h-[45vh] md:min-h-[55vh] overflow-hidden mt-24 sm:mt-32 md:mt-40">
       <video
         autoPlay
         muted
         loop
         playsInline
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          filter: "brightness(0.8)",
-          display: "block",
-        }}
+        className="w-full h-full object-cover brightness-[0.8] block mt-5"
       >
         <source src="/images/about-page/promo-vid.mp4" type="video/mp4" />
       </video>
 
       <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[hsla(210,4%,9%,1)] text-white font-black text-center leading-none px-4 sm:px-6 md:px-[30px] max-w-[95%] sm:max-w-[90%] whitespace-nowrap"
         style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "hsla(210,4%,9%,1)",
-          color: "#fff",
-          fontWeight: 900,
-          fontSize: "clamp(3.5rem, 12vw, 10rem)",
           fontFamily: "var(--font-forum)",
-          padding: "0 30px",
-          textAlign: "center",
-          lineHeight: 1,
+          fontSize: "clamp(2.8rem, 10vw, 10rem)",
           mixBlendMode: "multiply",
-          maxWidth: "90%",
-          whiteSpace: "nowrap",
         }}
       >
         Who We Are
