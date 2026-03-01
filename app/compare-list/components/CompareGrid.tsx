@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ProductCard, AddPlaceholder } from "./ProductCard";
+import { ProductCard, AddPlaceholder, CATALOGUE } from "./ProductCard";
+import type { Product } from "./ProductCard";
 
-// ── Gold button (used only in this file) ──────────────────────────────────────
+// ── Gold button ───────────────────────────────────────────────────────────────
 function GoldButton({
   onClick,
   children,
@@ -16,22 +17,27 @@ function GoldButton({
   return (
     <button
       onClick={onClick}
-      className={`group relative overflow-hidden z-[1] inline-block cursor-pointer
-        text-[1.2rem] font-bold uppercase tracking-[3px]
-        border-2 border-[hsl(38,61%,73%)] px-[45px] py-[12px]
-        transition-colors duration-[250ms]
-        ${secondary ? "bg-[hsl(38,61%,73%)] text-black" : "bg-transparent text-[hsl(38,61%,73%)]"}`}
-      style={{ fontFamily: "var(--font-dm-sans)" }}
+      className={`group relative overflow-hidden z-[1] inline-block cursor-pointer text-[1.2rem] font-bold uppercase tracking-[3px] border-2 border-[hsl(38,61%,73%)] px-[45px] py-[12px] transition-colors duration-[250ms] font-[DM_Sans,sans-serif] ${
+        secondary
+          ? "bg-[hsl(38,61%,73%)] text-black"
+          : "bg-transparent text-[hsl(38,61%,73%)]"
+      }`}
     >
-      {/* Circle fill */}
+      {/* Animated fill circle */}
       <span
-        className={`absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full -z-[1] transition-all duration-500 group-hover:bottom-[-50%] ${secondary ? "bg-[hsla(40,12%,5%,1)]" : "bg-[hsl(38,61%,73%)]"}`}
+        className={`absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full -z-[1] transition-all duration-500 group-hover:bottom-[-50%] ${
+          secondary ? "bg-[hsla(40,12%,5%,1)]" : "bg-[hsl(38,61%,73%)]"
+        }`}
       />
+      {/* Primary label — slides up on hover */}
       <span className="block transition-transform duration-[250ms] group-hover:-translate-y-[40px]">
         {children}
       </span>
+      {/* Secondary label — slides in from below on hover */}
       <span
-        className={`absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap transition-all duration-[250ms] group-hover:top-1/2 group-hover:-translate-y-1/2 group-hover:-translate-x-1/2 ${secondary ? "text-white" : "text-[hsla(40,12%,5%,1)]"}`}
+        className={`absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap transition-all duration-[250ms] group-hover:top-1/2 group-hover:-translate-y-1/2 group-hover:-translate-x-1/2 ${
+          secondary ? "text-white" : "text-[hsla(40,12%,5%,1)]"
+        }`}
         aria-hidden="true"
       >
         {children}
@@ -57,35 +63,22 @@ function ProductModal({
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center p-5"
-      style={{ background: "hsla(0,0%,0%,0.8)", backdropFilter: "blur(8px)" }}
+      className="fixed inset-0 z-[1000] flex items-center justify-center p-5 bg-black/80 backdrop-blur-[8px]"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[700px] max-h-[80vh] flex flex-col rounded-xl overflow-hidden"
-        style={{
-          background: "hsla(210,4%,9%,1)",
-          border: "1px solid hsl(38,61%,73%)",
-        }}
+        className="relative w-full max-w-[700px] max-h-[80vh] flex flex-col rounded-xl overflow-hidden bg-[hsla(210,4%,9%,1)] border border-[hsl(38,61%,73%)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div
-          className="flex justify-between items-center px-[30px] py-[25px]"
-          style={{ borderBottom: "1px solid hsla(0,0%,100%,0.1)" }}
-        >
-          <h2
-            className="text-white font-normal"
-            style={{
-              fontFamily: "var(--font-forum)",
-              fontSize: "calc(1.3rem + 2.4vw)",
-            }}
-          >
+        <div className="flex justify-between items-center px-[30px] py-[25px] border-b border-white/10">
+          <h2 className="text-white font-normal font-[Forum,cursive] text-[calc(1.3rem+2.4vw)]">
             Select a Fragrance
           </h2>
           <button
             onClick={onClose}
             className="flex items-center justify-center p-1 bg-transparent border-none cursor-pointer"
+            aria-label="Close modal"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -108,20 +101,14 @@ function ProductModal({
         {/* Product list */}
         <div className="overflow-y-auto px-[30px] py-5 flex flex-col gap-4">
           {available.length === 0 ? (
-            <p
-              className="text-center py-10 text-[hsla(0,0%,65%,1)]"
-              style={{ fontFamily: "var(--font-dm-sans)" }}
-            >
+            <p className="text-center py-10 text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
               All products are already added to the compare list.
             </p>
           ) : (
             available.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center gap-5 p-[15px] rounded-lg cursor-pointer
-                  border border-white/10 transition-all duration-[250ms]
-                  hover:border-[hsl(38,61%,73%)] hover:translate-x-[5px]"
-                style={{ background: "hsla(210,4%,11%,1)" }}
+                className="flex items-center gap-5 p-[15px] rounded-lg cursor-pointer bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-[250ms] hover:border-[hsl(38,61%,73%)] hover:translate-x-[5px]"
                 onClick={() => {
                   onSelect(product);
                   onClose();
@@ -130,23 +117,13 @@ function ProductModal({
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-[80px] h-[80px] object-contain rounded-md p-[10px]"
-                  style={{ background: "hsla(0,3%,7%,1)" }}
+                  className="w-[80px] h-[80px] object-contain rounded-md p-[10px] bg-[hsla(0,3%,7%,1)]"
                 />
                 <div className="flex-1">
-                  <p
-                    className="text-white mb-1 font-normal"
-                    style={{
-                      fontFamily: "var(--font-forum)",
-                      fontSize: "1.6rem",
-                    }}
-                  >
+                  <p className="text-white mb-1 font-normal font-[Forum,cursive] text-[1.6rem]">
                     {product.name}
                   </p>
-                  <p
-                    className="uppercase text-[1.2rem] tracking-[0.15em] text-[hsl(38,61%,73%)]"
-                    style={{ fontFamily: "var(--font-dm-sans)" }}
-                  >
+                  <p className="uppercase text-[1.2rem] tracking-[0.15em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
                     {product.category}
                   </p>
                 </div>
@@ -198,7 +175,7 @@ export default function CompareGrid() {
 
   return (
     <>
-      <section className="py-[80px]" style={{ minHeight: "600px" }}>
+      <section className="py-[80px] min-h-[600px]">
         <div className="px-4 max-w-[1200px] mx-auto">
           {/* Empty state */}
           {filledCount === 0 && (
@@ -224,24 +201,13 @@ export default function CompareGrid() {
                   strokeLinecap="round"
                 />
               </svg>
-              <h2
-                className="text-white mb-[15px] font-normal leading-[1.4]"
-                style={{
-                  fontFamily: "var(--font-forum)",
-                  fontSize: "calc(1.3rem + 2.4vw)",
-                }}
-              >
+              <h2 className="text-white mb-[15px] font-normal leading-[1.4] font-[Forum,cursive] text-[calc(1.3rem+2.4vw)]">
                 No Products to Compare
               </h2>
-              <p
-                className="mb-[30px] text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)]"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
+              <p className="mb-[30px] text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
                 Add up to 3 fragrances to compare them side by side
               </p>
-              <GoldButton onClick={() => openModal(0)}>
-                Add Fragrance
-              </GoldButton>
+              <GoldButton onClick={() => openModal(0)}>Add Fragrance</GoldButton>
             </div>
           )}
 
@@ -257,11 +223,8 @@ export default function CompareGrid() {
                       onRemove={() => handleRemove(i)}
                     />
                   ) : (
-                    <AddPlaceholder
-                      key={`slot-${i}`}
-                      onClick={() => openModal(i)}
-                    />
-                  ),
+                    <AddPlaceholder key={`slot-${i}`} onClick={() => openModal(i)} />
+                  )
                 )}
               </div>
               <div className="text-center pt-5">

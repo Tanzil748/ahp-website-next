@@ -107,20 +107,14 @@ export const CATALOGUE: Product[] = [
   },
 ];
 
-// ── Attribute row used inside ProductCard ─────────────────────────────────────
+// ── Attribute row ─────────────────────────────────────────────────────────────
 function AttributeRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-2">
-      <span
-        className="uppercase text-[1.4rem] text-[hsla(0,0%,65%,1)] tracking-[0.15em]"
-        style={{ fontFamily: "var(--font-dm-sans)" }}
-      >
+      <span className="uppercase text-[1.4rem] text-[hsla(0,0%,65%,1)] tracking-[0.15em] font-[DM_Sans,sans-serif]">
         {label}
       </span>
-      <span
-        className="font-bold text-white text-[1.6rem]"
-        style={{ fontFamily: "var(--font-dm-sans)" }}
-      >
+      <span className="font-bold text-white text-[1.6rem] font-[DM_Sans,sans-serif]">
         {value}
       </span>
     </div>
@@ -136,20 +130,10 @@ export function ProductCard({
   onRemove: () => void;
 }) {
   return (
-    <div
-      className="group relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px]
-        border border-white/10 transition-all duration-500
-        hover:border-[hsl(38,61%,73%)] hover:shadow-[0_0_30px_rgba(201,171,129,0.15)]"
-      style={{ background: "hsla(210,4%,11%,1)" }}
-    >
-      {/* Remove button — visible on card hover */}
+    <div className="group relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px] bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-500 hover:border-[hsl(38,61%,73%)] hover:shadow-[0_0_30px_rgba(201,171,129,0.15)]">
+      {/* Remove button */}
       <button
-        className="absolute top-[15px] right-[15px] rounded-full w-[35px] h-[35px]
-          flex items-center justify-center z-10
-          border border-white/10 transition-all duration-[250ms]
-          opacity-0 group-hover:opacity-100
-          hover:!bg-[hsl(38,61%,73%)] hover:!border-[hsl(38,61%,73%)]"
-        style={{ background: "hsla(40,12%,5%,1)" }}
+        className="absolute top-[15px] right-[15px] rounded-full w-[35px] h-[35px] flex items-center justify-center z-10 bg-[hsla(40,12%,5%,1)] border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-[250ms] hover:!bg-[hsl(38,61%,73%)] hover:!border-[hsl(38,61%,73%)] hover:[&>svg]:text-[hsla(40,12%,5%,1)]"
         onClick={onRemove}
         aria-label="Remove product"
       >
@@ -159,7 +143,7 @@ export function ProductCard({
           height="20"
           fill="none"
           viewBox="0 0 512 512"
-          className="text-[hsl(38,61%,73%)]"
+          className="text-[hsl(38,61%,73%)] transition-colors duration-[250ms]"
         >
           <path
             d="M368 368L144 144M368 144L144 368"
@@ -172,10 +156,7 @@ export function ProductCard({
 
       <div className="flex flex-col gap-5 flex-1">
         {/* Image */}
-        <div
-          className="w-full h-[250px] flex items-center justify-center rounded-lg overflow-hidden mb-[10px]"
-          style={{ background: "hsla(0,3%,7%,1)" }}
-        >
+        <div className="w-full h-[250px] flex items-center justify-center rounded-lg overflow-hidden mb-[10px] bg-[hsla(0,3%,7%,1)]">
           <img
             src={product.image}
             alt={product.name}
@@ -184,16 +165,10 @@ export function ProductCard({
         </div>
 
         {/* Name & category */}
-        <h3
-          className="text-center text-white mb-[5px] font-normal leading-[1.2]"
-          style={{ fontFamily: "var(--font-forum)", fontSize: "2.2rem" }}
-        >
+        <h3 className="text-center text-white mb-[5px] font-normal leading-[1.2] font-[Forum,cursive] text-[2.2rem]">
           {product.name}
         </h3>
-        <p
-          className="text-center uppercase mb-[15px] text-[1.2rem] font-bold tracking-[0.4em] text-[hsl(38,61%,73%)]"
-          style={{ fontFamily: "var(--font-dm-sans)" }}
-        >
+        <p className="text-center uppercase mb-[15px] text-[1.2rem] font-bold tracking-[0.4em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
           {product.category}
         </p>
 
@@ -207,10 +182,7 @@ export function ProductCard({
 
         {/* Fragrance notes */}
         <div className="mt-[10px]">
-          <h4
-            className="text-center mb-[15px] font-normal text-[hsl(38,61%,73%)]"
-            style={{ fontFamily: "var(--font-forum)", fontSize: "1.8rem" }}
-          >
+          <h4 className="text-center mb-[15px] font-normal text-[hsl(38,61%,73%)] font-[Forum,cursive] text-[1.8rem]">
             Fragrance Notes
           </h4>
           {[
@@ -219,16 +191,10 @@ export function ProductCard({
             { label: "Base Notes", value: product.notes.base },
           ].map(({ label, value }) => (
             <div key={label} className="mb-3">
-              <p
-                className="uppercase font-bold text-[1.2rem] mb-1 tracking-[0.4em] text-[hsl(38,61%,73%)]"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
+              <p className="uppercase font-bold text-[1.2rem] mb-1 tracking-[0.4em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
                 {label}
               </p>
-              <p
-                className="text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)]"
-                style={{ fontFamily: "var(--font-dm-sans)" }}
-              >
+              <p className="text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
                 {value}
               </p>
             </div>
@@ -239,29 +205,21 @@ export function ProductCard({
   );
 }
 
-// ── Empty slot — add product placeholder ──────────────────────────────────────
+// ── Empty slot placeholder ────────────────────────────────────────────────────
 export function AddPlaceholder({ onClick }: { onClick: () => void }) {
   return (
     <div
-      className="relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px]
-        items-center justify-center cursor-pointer
-        border border-white/10 transition-all duration-[250ms]
-        hover:border-[hsl(38,61%,73%)]"
-      style={{ background: "hsla(210,4%,11%,1)" }}
+      className="relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px] items-center justify-center cursor-pointer bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-[250ms] hover:border-[hsl(38,61%,73%)]"
       onClick={onClick}
     >
-      <div
-        className="group flex flex-col items-center justify-center min-h-[400px] w-full
-          rounded-lg transition-all duration-[250ms] hover:bg-white/10"
-        style={{ border: "2px dashed hsla(0,0%,100%,0.2)" }}
-      >
+      <div className="group/inner flex flex-col items-center justify-center min-h-[400px] w-full rounded-lg border-2 border-dashed border-white/20 transition-all duration-[250ms] hover:bg-white/10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="60"
           height="60"
           fill="none"
           viewBox="0 0 512 512"
-          className="mb-4 text-[hsl(38,61%,73%)] transition-transform duration-[250ms] group-hover:scale-110"
+          className="mb-4 text-[hsl(38,61%,73%)] transition-transform duration-[250ms] group-hover/inner:scale-110"
         >
           <path
             d="M256 112v288M112 256h288"
@@ -269,18 +227,9 @@ export function AddPlaceholder({ onClick }: { onClick: () => void }) {
             strokeWidth="32"
             strokeLinecap="round"
           />
-          <circle
-            cx="256"
-            cy="256"
-            r="208"
-            stroke="currentColor"
-            strokeWidth="32"
-          />
+          <circle cx="256" cy="256" r="208" stroke="currentColor" strokeWidth="32" />
         </svg>
-        <p
-          className="uppercase text-[1.4rem] tracking-[0.4em] text-[hsla(0,0%,65%,1)]"
-          style={{ fontFamily: "var(--font-dm-sans)" }}
-        >
+        <p className="uppercase text-[1.4rem] tracking-[0.4em] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
           Add Product
         </p>
       </div>
