@@ -2,6 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import {
+  MaterialSymbolsLocationOnOutline,
+  IcSharpAccessTime,
+  BasilPhoneOutline,
+  MaterialSymbolsMailOutline,
+  IcRoundClose,
+} from "./Icons";
 import { useState, useEffect, useRef } from "react";
 
 const navLinks = [
@@ -65,33 +72,10 @@ export default function Header() {
         <div className="flex items-center justify-between gap-6 px-7">
           {/* LEFT: address + separator + hours */}
           <div className="flex items-center gap-6">
-            <address className="hidden lg:flex items-center gap-1.5 not-italic">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                fill="none"
-                viewBox="0 0 512 512"
-                className="text-white shrink-0"
-                aria-hidden="true"
-              >
-                <path
-                  d="M256 48c-79.5 0-144 61.39-144 137 0 87 96 224.87 131.25 272.49a16 16 0 0025.5 0C304 409.89 400 272 400 185c0-75.61-64.5-137-144-137z"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle
-                  cx="256"
-                  cy="192"
-                  r="48"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <address className="hidden sm:flex items-center gap-1.5 not-italic">
+              {/* Map Icon */}
+              <MaterialSymbolsLocationOnOutline className="text-[15px]" />
+
               <span className="text-white text-[1.1rem] font-bold">
                 201 Christopher St, Ronkonkoma, NY, 11779
               </span>
@@ -100,33 +84,9 @@ export default function Header() {
               className="hidden xl:block w-2 h-2 border border-[hsl(38,61%,73%)] rotate-45 shrink-0"
               aria-hidden="true"
             />
-            <div className="hidden lg:flex items-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                fill="none"
-                viewBox="0 0 512 512"
-                className="text-white shrink-0"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="256"
-                  cy="256"
-                  r="208"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M256 128v144h96"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <div className="hidden md:flex items-center gap-1.5">
+              {/* Clock Icon */}
+              <IcSharpAccessTime className="text-[15px]" />
               <span className="text-white text-[1.1rem] font-bold">
                 M-F : 9:00 am to 5:00 pm
               </span>
@@ -137,25 +97,10 @@ export default function Header() {
           <div className="flex items-center gap-6">
             <a
               href="tel:+15169072340"
-              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200 hidden md:flex"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                fill="none"
-                viewBox="0 0 512 512"
-                className="shrink-0"
-                aria-hidden="true"
-              >
-                <path
-                  d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C57 83 48.24 101.23 49.75 126c1.6 26.4 13.85 60.93 36.72 99.1 22.24 37.2 35.47 52.31 79.17 96s59.12 57.11 96.28 79.62c38.36 22.91 72.93 35.48 99.32 37.33 21.73 1.49 39.65-7.68 58.56-34.52a159.41 159.41 0 0013.58-25.94c4.53-11.05 7.53-11.05-1.38-19.59z"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* phone icone */}
+              <BasilPhoneOutline className="text-[15px]" />
               <span className="text-[1.1rem] font-bold">+1 516 907 2340</span>
             </a>
             <div
@@ -164,37 +109,10 @@ export default function Header() {
             />
             <a
               href="mailto:sales@alhusseinperfumes.com"
-              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200"
+              className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200 hidden sm:flex"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="14"
-                fill="none"
-                viewBox="0 0 512 512"
-                className="shrink-0"
-                aria-hidden="true"
-              >
-                <rect
-                  x="48"
-                  y="96"
-                  width="416"
-                  height="320"
-                  rx="40"
-                  ry="40"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M112 160l144 112 144-112"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {/* mail icon */}
+              <MaterialSymbolsMailOutline className="text-[15px]" />
               <span className="text-[1.1rem] font-bold">
                 sales@alhusseinperfumes.com
               </span>
@@ -350,22 +268,8 @@ export default function Header() {
           onClick={() => setMenuOpen(false)}
           aria-label="Close navigation menu"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
-            fill="none"
-            viewBox="0 0 512 512"
-            aria-hidden="true"
-          >
-            <path
-              d="M368 368L144 144M368 144L144 368"
-              stroke="currentColor"
-              strokeWidth="48"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          {/* close icon - X */}
+          <IcRoundClose className="text-[25px]" />
         </button>
 
         {/* Logo */}
