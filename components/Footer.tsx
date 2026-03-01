@@ -15,16 +15,17 @@ const columns: FooterColumnData[] = [
     heading: "Al Hussein Perfumes\nCorporate",
     links: [
       { label: "About Us", href: "#" },
-      { label: "Events", href: "#" },
+      { label: "Products", href: "#" },
       { label: "Blog", href: "#" },
       { label: "Careers", href: "#" },
+      { label: "Contact Us", href: "#" },
     ],
   },
   {
     heading: "Account",
     links: [
       { label: "My Account", href: "#" },
-      { label: "My Profile", href: "#" },
+      { label: "My Fragrances", href: "#" },
       { label: "My Compare List", href: "#" },
     ],
   },
@@ -106,7 +107,7 @@ const Footer: React.FC = () => {
                   <a
                     href={link.href}
                     style={{
-                      color: "#7d845c",
+                      color: "#9a9a9a",
                       textDecoration: "none",
                       fontSize: "15px",
                     }}
@@ -114,7 +115,7 @@ const Footer: React.FC = () => {
                       (e.currentTarget.style.color = "#ffffff")
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "#7d845c")
+                      (e.currentTarget.style.color = "#9a9a9a")
                     }
                   >
                     {link.label}

@@ -36,11 +36,11 @@ export default function WhyWorkWithUs() {
     <section className="py-24 px-5 lg:px-10 bg-[#1a1a1b]">
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-16">
-          <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3">
+          <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3 fade-up delay-4">
             Why Al Hussein Perfumes
           </p>
           <h2
-            className="text-4xl md:text-5xl font-normal text-white"
+            className="text-4xl md:text-5xl font-normal text-white fade-up delay-5"
             style={{ fontFamily: "var(--font-forum)" }}
           >
             Why Work With Us
@@ -51,7 +51,7 @@ export default function WhyWorkWithUs() {
           {benefits.map((b) => (
             <div
               key={b.title}
-              className="bg-[#141414] border border-white/10 p-10 text-center transition-all duration-300 hover:-translate-y-2 hover:border-[#d4af7a] hover:shadow-[0_10px_30px_rgba(212,175,55,0.15)] group"
+              className="fade-up delay-6 bg-[#141414] border border-white/10 p-10 text-center transition-all duration-300 hover:-translate-y-2 hover:border-[#d4af7a] hover:shadow-[0_10px_30px_rgba(212,175,55,0.15)] group"
             >
               <div className="w-[70px] h-[70px] mx-auto mb-6 flex items-center justify-center border-2 border-[#d4af7a] rounded-full text-4xl transition-all duration-300 group-hover:bg-[#d4af7a] group-hover:scale-110">
                 {b.icon}

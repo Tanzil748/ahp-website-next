@@ -3,7 +3,6 @@
 /* ── Font variables (set via next/font in layout.tsx) ── */
 :root {
   --font-dm-sans: "DM Sans", sans-serif;
-  --font-forum: "Forum", cursive;
 
   /* Keep Geist fonts for any default Next.js elements */
   --font-sans: var(--font-geist-sans);
@@ -74,5 +73,9 @@ body {
 }
 .delay-5 {
   animation-delay: 0.9s;
+  opacity: 0;
+}
+.delay-6 {
+  animation-delay: 1.3s;
   opacity: 0;
 }

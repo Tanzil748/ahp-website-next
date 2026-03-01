@@ -196,7 +196,6 @@ export default function SubscribeSection() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%,-50%)",
-            fontFamily: "'Forum', cursive",
             fontSize: "clamp(8rem, 18vw, 18rem)",
             color: "hsl(38,61%,73%)",
             opacity: 0.03,
@@ -224,7 +223,7 @@ export default function SubscribeSection() {
             <span
               style={{
                 color: "hsl(38,61%,73%)",
-                fontFamily: "'Forum', cursive",
+
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "0.4em",
@@ -239,7 +238,6 @@ export default function SubscribeSection() {
           {/* Headline */}
           <h2
             style={{
-              fontFamily: "'Forum', cursive",
               fontSize: "clamp(3.2rem, 5vw, 5rem)",
               color: "#fff",
               lineHeight: 1.15,

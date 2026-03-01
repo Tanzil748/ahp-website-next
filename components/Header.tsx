@@ -246,7 +246,7 @@ export default function Header() {
                   href={link.href}
                   className={[
                     "relative text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
-                    "after:content-[''] after:absolute after:left-0 after:-bottom-2",
+                    "after:content-[''] after:absolute after:left-0 after:-bottom-4",
                     "after:w-full after:h-[5px]",
                     "after:border-t after:border-b after:border-[hsl(38,61%,73%)]",
                     "after:scale-x-[0.2] after:opacity-0",
@@ -267,7 +267,7 @@ export default function Header() {
             {/* Desktop auth buttons */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
-                href="/signup"
+                href="/signin"
                 className={[
                   "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
                   "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
@@ -275,7 +275,7 @@ export default function Header() {
                   "transition-all duration-200",
                 ].join(" ")}
               >
-                Sign Up
+                Sign In
               </Link>
               <Link
                 href="/register"
