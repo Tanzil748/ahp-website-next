@@ -1,4 +1,4 @@
-"use client";
+import Link from "next/link";
 
 interface FooterLink {
   label: string;
@@ -14,55 +14,76 @@ const columns: FooterColumnData[] = [
   {
     heading: "Al Hussein Perfumes\nCorporate",
     links: [
-      { label: "About Us", href: "#" },
-      { label: "Products", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Contact Us", href: "#" },
+      { label: "About Us", href: "/about" },
+      { label: "Products", href: "/products" },
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
     ],
   },
   {
     heading: "Account",
     links: [
-      { label: "My Account", href: "#" },
-      { label: "My Fragrances", href: "#" },
-      { label: "My Compare List", href: "#" },
+      { label: "My Account", href: "/account" },
+      { label: "My Fragrances", href: "/fragrances" },
+      { label: "My Compare List", href: "/compare-list" },
     ],
   },
   {
     heading: "For Business",
     links: [
-      { label: "Subscription Agreement", href: "#" },
-      { label: "Request Fragrance", href: "#" },
-      { label: "Personal Request", href: "#" },
+      { label: "Subscription Agreement", href: "/subscription-agreement" },
+      { label: "Request Fragrance", href: "/request-fragrance" },
+      { label: "Influencer Collaboration", href: "/influencer-collaboration" },
+      {
+        label: "Wholesaler/Retail Inquiry",
+        href: "/wholesaler-retail-inquiry",
+      },
     ],
   },
   {
     heading: "Customer Care",
     links: [
-      { label: "Ways To Shop", href: "#" },
-      { label: "Terms and Conditions", href: "#" },
-      { label: "Privacy and Cookies Policy", href: "#" },
-      { label: "Return and Refund Policy", href: "#" },
-      { label: "Shipping Policy", href: "#" },
-      { label: "Contact Us", href: "#" },
+      { label: "Ways To Shop", href: "/ways-to-shop" },
+      { label: "Terms and Conditions", href: "/terms" },
+      { label: "Privacy and Cookies Policy", href: "/privacy" },
+      { label: "Return and Refund Policy", href: "/returns" },
+      { label: "Shipping Policy", href: "/shipping" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ];
 
-interface SocialLinkData {
-  name: string;
-  href: string;
-  imgSrc: string;
-}
-
-const socialLinks: SocialLinkData[] = [
-  { name: "Facebook", href: "#", imgSrc: "images/social-icons/facebook.png" },
-  { name: "Instagram", href: "#", imgSrc: "images/social-icons/instagram.png" },
-  { name: "Tiktok", href: "#", imgSrc: "images/social-icons/tik-tok.png" },
-  { name: "Youtube", href: "#", imgSrc: "images/social-icons/youtube.png" },
-  { name: "Linkedin", href: "#", imgSrc: "images/social-icons/linkedin.png" },
-  { name: "Pinterest", href: "#", imgSrc: "images/social-icons/pinterest.png" },
+const socialLinks = [
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/alhusseinperfume/",
+    imgSrc: "images/social-icons/facebook.png",
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/alhusseinperfumes/",
+    imgSrc: "images/social-icons/instagram.png",
+  },
+  {
+    name: "Tiktok",
+    href: "https://www.tiktok.com/@alhusseinperfumes",
+    imgSrc: "images/social-icons/tik-tok.png",
+  },
+  {
+    name: "Youtube",
+    href: "https://www.youtube.com/@AlHusseinPerfumes",
+    imgSrc: "images/social-icons/youtube.png",
+  },
+  {
+    name: "Linkedin",
+    href: "https://www.linkedin.com/in/al-hussein-471a63393/",
+    imgSrc: "images/social-icons/linkedin.png",
+  },
+  {
+    name: "Pinterest",
+    href: "https://www.pinterest.com/ahusseinperfumes",
+    imgSrc: "images/social-icons/pinterest.png",
+  },
 ];
 
 const Footer: React.FC = () => {
@@ -77,16 +98,10 @@ const Footer: React.FC = () => {
     >
       {/* ── Main grid ── */}
       <div
-        className="footer-container"
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: "40px",
-        }}
+        className="footer-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+        style={{ maxWidth: "1400px", margin: "0 auto", gap: "40px" }}
       >
-        {/* Nav columns */}
+        {/* Nav columns — internal Links */}
         {columns.map((col) => (
           <div key={col.heading}>
             <h4
@@ -104,30 +119,25 @@ const Footer: React.FC = () => {
             <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
               {col.links.map((link) => (
                 <li key={link.label} style={{ marginBottom: "12px" }}>
-                  <a
+                  <Link
                     href={link.href}
+                    className="hover:text-white transition-colors duration-300"
                     style={{
                       color: "#9a9a9a",
                       textDecoration: "none",
                       fontSize: "15px",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "#ffffff")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "#9a9a9a")
-                    }
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
         ))}
 
-        {/* Social column */}
-        <div className="footer-social">
+        {/* Social column — external anchor tags */}
+        <div className="footer-social sm:col-span-2 lg:col-span-1">
           <h4
             style={{
               fontSize: "16px",
@@ -136,10 +146,9 @@ const Footer: React.FC = () => {
               textTransform: "uppercase",
             }}
           >
-            LET'S CONNECT
+            LET&apos;S CONNECT
           </h4>
           <div
-            className="social-icons"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -151,27 +160,10 @@ const Footer: React.FC = () => {
               <a
                 key={social.name}
                 href={social.href}
-                className="footer-logo-link"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  textDecoration: "none",
-                }}
-                onMouseEnter={(e) => {
-                  const span =
-                    e.currentTarget.querySelector<HTMLSpanElement>(
-                      ".image-name",
-                    );
-                  if (span) span.style.color = "#ffffff";
-                }}
-                onMouseLeave={(e) => {
-                  const span =
-                    e.currentTarget.querySelector<HTMLSpanElement>(
-                      ".image-name",
-                    );
-                  if (span) span.style.color = "#9a9a9a";
-                }}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center"
+                style={{ gap: "10px", textDecoration: "none" }}
               >
                 <img
                   src={social.imgSrc}
@@ -183,12 +175,8 @@ const Footer: React.FC = () => {
                   }}
                 />
                 <span
-                  className="image-name"
-                  style={{
-                    fontSize: "14px",
-                    color: "#9a9a9a",
-                    transition: "color 0.3s ease",
-                  }}
+                  className="transition-colors duration-300 group-hover:text-white"
+                  style={{ fontSize: "14px", color: "#9a9a9a" }}
                 >
                   {social.name}
                 </span>
@@ -211,30 +199,6 @@ const Footer: React.FC = () => {
       >
         © 2026 Al Hussein Perfumes Corporate.
       </div>
-
-      {/* ── Responsive overrides ── */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700&display=swap');
-
-        @media (max-width: 1024px) {
-          .footer-container {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-          .footer-social {
-            grid-column: span 2;
-          }
-        }
-
-        @media (max-width: 600px) {
-          .footer-container {
-            grid-template-columns: 1fr !important;
-          }
-          .footer-social {
-            grid-column: span 1 !important;
-            align-items: flex-start;
-          }
-        }
-      `}</style>
     </footer>
   );
 };
