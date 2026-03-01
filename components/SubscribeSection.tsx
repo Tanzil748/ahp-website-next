@@ -14,7 +14,7 @@ function OrnamentalSep() {
       viewBox="0 0 100 12"
       width="100"
       height="12"
-      style={{ display: "block", margin: "5px auto 0" }}
+      className="block mx-auto mt-[5px]"
     >
       <line
         x1="0"
@@ -144,288 +144,170 @@ export default function SubscribeSection() {
   };
 
   return (
-    <>
-      <style>{`
-        .sub-section::before,
-        .sub-section::after {
-          content: "";
-          position: absolute;
-          left: 10%; right: 10%;
-          height: 1px;
-          background: linear-gradient(to right, transparent, hsla(38,61%,73%,0.35), transparent);
-        }
-        .sub-section::before { top: 0; }
-        .sub-section::after  { bottom: 0; }
+    <section
+      className="relative overflow-hidden text-center py-[100px] px-10"
+      style={{ backgroundColor: "hsla(30,8%,5%,1)" }}
+    >
+      {/* Top border line */}
+      <div
+        className="absolute top-0 left-[10%] right-[10%] h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, hsla(38,61%,73%,0.35), transparent)",
+        }}
+      />
+      {/* Bottom border line */}
+      <div
+        className="absolute bottom-0 left-[10%] right-[10%] h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, hsla(38,61%,73%,0.35), transparent)",
+        }}
+      />
 
-        .sub-input::placeholder { color: hsla(0,0%,40%,1); }
-        .sub-input:focus { outline: none; }
-
-        .sub-form:focus-within {
-          border-color: hsl(38,61%,73%);
-          box-shadow: 0 0 0 3px hsla(38,61%,73%,0.1);
-        }
-
-        .sub-btn:hover {
-          background: hsla(40,12%,5%,1) !important;
-          color: hsl(38,61%,73%) !important;
-        }
-
-        .social-btn:hover {
-          background: hsl(38,61%,73%) !important;
-          border-color: hsl(38,61%,73%) !important;
-          color: #000 !important;
-          transform: translateY(-3px);
-        }
-
-        @media (max-width: 600px) {
-          .sub-form { flex-direction: column !important; height: auto !important; }
-          .sub-input { border-radius: 12px 12px 0 0 !important; border-right: 1px solid hsla(38,61%,73%,0.3) !important; border-bottom: none !important; }
-          .sub-btn   { border-radius: 0 0 12px 12px !important; width: 100% !important; }
-        }
-      `}</style>
-
-      <section
-        className="sub-section relative overflow-hidden text-center"
-        style={{ backgroundColor: "hsla(30,8%,5%,1)", padding: "100px 40px" }}
+      {/* Ghost background word */}
+      <span
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none select-none leading-none"
+        style={{
+          fontSize: "clamp(8rem, 18vw, 18rem)",
+          color: "hsl(38,61%,73%)",
+          opacity: 0.03,
+          letterSpacing: "0.1em",
+        }}
       >
-        {/* Ghost background word */}
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%,-50%)",
-            fontSize: "clamp(8rem, 18vw, 18rem)",
-            color: "hsl(38,61%,73%)",
-            opacity: 0.03,
-            whiteSpace: "nowrap",
-            pointerEvents: "none",
-            userSelect: "none",
-            letterSpacing: "0.1em",
-            lineHeight: 1,
-          }}
-        >
-          Subscribe
-        </span>
+        Subscribe
+      </span>
 
-        {/* Content */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 760,
-            margin: "0 auto",
-          }}
-        >
-          {/* Eyebrow */}
-          <div style={{ marginBottom: 4 }}>
-            <span
-              style={{
-                color: "hsl(38,61%,73%)",
-
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.4em",
-                fontSize: "2.2rem",
-              }}
-            >
-              Stay Updated
-            </span>
-            <OrnamentalSep />
-          </div>
-
-          {/* Headline */}
-          <h2
-            style={{
-              fontSize: "clamp(3.2rem, 5vw, 5rem)",
-              color: "#fff",
-              lineHeight: 1.15,
-              marginTop: 18,
-              marginBottom: 16,
-              letterSpacing: "0.01em",
-            }}
+      {/* Content */}
+      <div className="relative z-10 max-w-[760px] mx-auto">
+        {/* Eyebrow */}
+        <div className="mb-1">
+          <span
+            className="font-bold uppercase tracking-[0.4em] text-[2.2rem]"
+            style={{ color: "hsl(38,61%,73%)" }}
           >
-            Be the First to{" "}
-            <em style={{ fontStyle: "italic", color: "hsl(38,61%,73%)" }}>
-              Know &amp; Discover
-            </em>
-          </h2>
-
-          {/* Copy */}
-          <p
-            style={{
-              fontSize: "1.6rem",
-              color: "hsla(0,0%,60%,1)",
-              lineHeight: 1.8,
-              marginBottom: 40,
-              maxWidth: 520,
-              marginInline: "auto",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            Join our mailing list for exclusive wholesale offers, new brand
-            arrivals, and fragrance industry news — delivered straight to your
-            inbox.
-          </p>
-
-          {/* ── Form ── */}
-          <form
-            onSubmit={handleSubmit}
-            className="sub-form"
-            style={{
-              display: "flex",
-              alignItems: "stretch",
-              height: 56,
-              maxWidth: 600,
-              margin: "0 auto 48px",
-              border: "1px solid hsla(38,61%,73%,0.3)",
-              borderRadius: 12,
-              overflow: "hidden",
-              transition: "border-color 250ms ease, box-shadow 250ms ease",
-            }}
-          >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email address"
-              className="sub-input"
-              style={{
-                flex: 1,
-                height: "100%",
-                padding: "0 20px",
-                background: "hsla(210,4%,9%,1)",
-                border: "none",
-                color: "#fff",
-                fontSize: "1.5rem",
-                fontFamily: "'DM Sans', sans-serif",
-                borderRadius: "12px 0 0 12px",
-              }}
-            />
-            <button
-              type="submit"
-              className="sub-btn"
-              style={{
-                height: "100%",
-                padding: "0 32px",
-                background: "hsl(38,61%,73%)",
-                border: "none",
-                color: "#000",
-                fontSize: "1.15rem",
-                fontWeight: 700,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-                cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif",
-                transition: "background 250ms ease, color 250ms ease",
-                borderRadius: "0 12px 12px 0",
-                flexShrink: 0,
-              }}
-            >
-              Subscribe
-            </button>
-          </form>
-
-          {/* Follow Us divider */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              maxWidth: 400,
-              margin: "0 auto 28px",
-            }}
-          >
-            <div
-              style={{
-                flex: 1,
-                height: 1,
-                background: "hsla(38,61%,73%,0.15)",
-              }}
-            />
-            <span
-              style={{
-                fontSize: "1.1rem",
-                color: "hsla(0,0%,40%,1)",
-                textTransform: "uppercase",
-                letterSpacing: "0.2em",
-                whiteSpace: "nowrap",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              Follow Us
-            </span>
-            <div
-              style={{
-                flex: 1,
-                height: 1,
-                background: "hsla(38,61%,73%,0.15)",
-              }}
-            />
-          </div>
-
-          {/* Social icons */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 10,
-            }}
-          >
-            {SOCIALS.map(({ label, href, icon }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-btn"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 42,
-                  height: 42,
-                  borderRadius: "50%",
-                  border: "1px solid hsla(38,61%,73%,0.2)",
-                  background: "hsla(38,61%,73%,0.05)",
-                  color: "hsla(38,61%,73%,0.55)",
-                  textDecoration: "none",
-                  transition: "all 220ms ease",
-                  flexShrink: 0,
-                }}
-              >
-                {icon}
-              </a>
-            ))}
-          </div>
-
-          {/* Privacy note */}
-          <p
-            style={{
-              marginTop: 24,
-              fontSize: "1.2rem",
-              color: "hsla(0,0%,35%,1)",
-              fontFamily: "'DM Sans', sans-serif",
-              letterSpacing: "0.03em",
-            }}
-          >
-            No spam, ever. Unsubscribe at any time.{" "}
-            <a
-              href="/terms-condition"
-              style={{ color: "hsla(38,61%,73%,0.6)", textDecoration: "none" }}
-            >
-              Privacy Policy
-            </a>
-            .
-          </p>
+            Stay Updated
+          </span>
+          <OrnamentalSep />
         </div>
-      </section>
-    </>
+
+        {/* Headline */}
+        <h2
+          className="text-white leading-[1.15] mt-[18px] mb-4 tracking-[0.01em]"
+          style={{ fontSize: "clamp(3.2rem, 5vw, 5rem)" }}
+        >
+          Be the First to{" "}
+          <em className="not-italic" style={{ color: "hsl(38,61%,73%)" }}>
+            Know &amp; Discover
+          </em>
+        </h2>
+
+        {/* Copy */}
+        <p
+          className="text-[1.6rem] leading-[1.8] mb-10 max-w-[520px] mx-auto font-['DM_Sans',sans-serif]"
+          style={{ color: "hsla(0,0%,60%,1)" }}
+        >
+          Join our mailing list for exclusive wholesale offers, new brand
+          arrivals, and fragrance industry news — delivered straight to your
+          inbox.
+        </p>
+
+        {/* ── Form ── */}
+        <form
+          onSubmit={handleSubmit}
+          className={[
+            "flex flex-row items-stretch max-w-[600px] mx-auto mb-12 h-14",
+            "border rounded-xl overflow-hidden",
+            "transition-[border-color,box-shadow] duration-[250ms] ease-in-out",
+            "focus-within:border-[hsl(38,61%,73%)] focus-within:shadow-[0_0_0_3px_hsla(38,61%,73%,0.1)]",
+            "border-[hsla(38,61%,73%,0.3)]",
+          ].join(" ")}
+        >
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="Enter your email address"
+            className={[
+              "min-w-0 flex-1 h-full px-3 sm:px-5 border-none text-white",
+              "text-[1.1rem] sm:text-[1.5rem]",
+              "font-['DM_Sans',sans-serif] outline-none",
+              "placeholder:text-[hsla(0,0%,40%,1)] rounded-l-xl",
+            ].join(" ")}
+            style={{ background: "hsla(210,4%,9%,1)" }}
+          />
+          <button
+            type="submit"
+            className={[
+              "h-full px-4 sm:px-8 border-none font-bold uppercase shrink-0",
+              "text-[0.85rem] sm:text-[1.15rem] tracking-[0.15em] sm:tracking-[0.2em]",
+              "whitespace-nowrap cursor-pointer rounded-r-xl",
+              "font-['DM_Sans',sans-serif] transition-[background,color] duration-[250ms] ease-in-out",
+              "bg-[hsl(38,61%,73%)] text-black hover:bg-[hsla(40,12%,5%,1)] hover:text-[hsl(38,61%,73%)]",
+            ].join(" ")}
+          >
+            Subscribe
+          </button>
+        </form>
+
+        {/* Follow Us divider */}
+        <div className="flex items-center gap-4 max-w-[400px] mx-auto mb-7">
+          <div
+            className="flex-1 h-px"
+            style={{ background: "hsla(38,61%,73%,0.15)" }}
+          />
+          <span
+            className="text-[1.1rem] uppercase tracking-[0.2em] whitespace-nowrap font-['DM_Sans',sans-serif]"
+            style={{ color: "hsla(0,0%,40%,1)" }}
+          >
+            Follow Us
+          </span>
+          <div
+            className="flex-1 h-px"
+            style={{ background: "hsla(38,61%,73%,0.15)" }}
+          />
+        </div>
+
+        {/* Social icons */}
+        <div className="flex justify-center items-center flex-wrap gap-[10px]">
+          {SOCIALS.map(({ label, href, icon }) => (
+            <a
+              key={label}
+              href={href}
+              aria-label={label}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={[
+                "flex items-center justify-center w-[42px] h-[42px] rounded-full shrink-0",
+                "border border-[hsla(38,61%,73%,0.2)] bg-[hsla(38,61%,73%,0.05)]",
+                "text-[hsla(38,61%,73%,0.55)] no-underline",
+                "transition-all duration-[220ms] ease-in-out",
+                "hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-black hover:-translate-y-[3px]",
+              ].join(" ")}
+            >
+              {icon}
+            </a>
+          ))}
+        </div>
+
+        {/* Privacy note */}
+        <p
+          className="mt-6 text-[1.2rem] font-['DM_Sans',sans-serif] tracking-[0.03em]"
+          style={{ color: "hsla(0,0%,35%,1)" }}
+        >
+          No spam, ever. Unsubscribe at any time.{" "}
+          <a
+            href="/terms-condition"
+            className="no-underline hover:underline"
+            style={{ color: "hsla(38,61%,73%,0.6)" }}
+          >
+            Privacy Policy
+          </a>
+          .
+        </p>
+      </div>
+    </section>
   );
 }
