@@ -16,14 +16,7 @@ function OrnamentalSep() {
       height="12"
       className="block mx-auto mt-[5px]"
     >
-      <line
-        x1="0"
-        y1="6"
-        x2="38"
-        y2="6"
-        stroke="hsl(38,61%,73%)"
-        strokeWidth="1"
-      />
+      <line x1="0" y1="6" x2="38" y2="6" stroke="var(--gold)" strokeWidth="1" />
       <rect
         x="44"
         y="2"
@@ -31,7 +24,7 @@ function OrnamentalSep() {
         height="8"
         transform="rotate(45 48 6)"
         fill="none"
-        stroke="hsl(38,61%,73%)"
+        stroke="var(--gold)"
         strokeWidth="1"
       />
       <line
@@ -39,7 +32,7 @@ function OrnamentalSep() {
         y1="6"
         x2="100"
         y2="6"
-        stroke="hsl(38,61%,73%)"
+        stroke="var(--gold)"
         strokeWidth="1"
       />
     </svg>
@@ -138,43 +131,22 @@ export default function SubscribeSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire up to mailing list provider
     console.log("Subscribe:", email);
     setEmail("");
   };
 
   return (
-    <section
-      className="relative overflow-hidden text-center py-[100px] px-10"
-      style={{ backgroundColor: "hsla(30,8%,5%,1)" }}
-    >
+    <section className="relative overflow-hidden text-center py-[100px] px-10 bg-[var(--bg-dark)]">
       {/* Top border line */}
-      <div
-        className="absolute top-0 left-[10%] right-[10%] h-px"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, hsla(38,61%,73%,0.35), transparent)",
-        }}
-      />
+      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
       {/* Bottom border line */}
-      <div
-        className="absolute bottom-0 left-[10%] right-[10%] h-px"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, hsla(38,61%,73%,0.35), transparent)",
-        }}
-      />
+      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
 
       {/* Ghost background word */}
       <span
         aria-hidden="true"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none select-none leading-none"
-        style={{
-          fontSize: "clamp(8rem, 18vw, 18rem)",
-          color: "hsl(38,61%,73%)",
-          opacity: 0.03,
-          letterSpacing: "0.1em",
-        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none select-none leading-none text-[var(--gold)] opacity-[0.03] tracking-[0.1em]"
+        style={{ fontSize: "clamp(8rem, 18vw, 18rem)" }}
       >
         Subscribe
       </span>
@@ -183,10 +155,7 @@ export default function SubscribeSection() {
       <div className="relative z-10 max-w-[760px] mx-auto">
         {/* Eyebrow */}
         <div className="mb-1">
-          <span
-            className="font-bold uppercase tracking-[0.4em] text-[2.2rem]"
-            style={{ color: "hsl(38,61%,73%)" }}
-          >
+          <span className="font-bold uppercase tracking-[0.4em] text-[2.2rem] text-[var(--gold)] [font-family:var(--font-display)]">
             Stay Updated
           </span>
           <OrnamentalSep />
@@ -194,59 +163,33 @@ export default function SubscribeSection() {
 
         {/* Headline */}
         <h2
-          className="text-white leading-[1.15] mt-[18px] mb-4 tracking-[0.01em]"
+          className="text-white leading-[1.15] mt-[18px] mb-4 tracking-[0.01em] font-normal [font-family:var(--font-display)]"
           style={{ fontSize: "clamp(3.2rem, 5vw, 5rem)" }}
         >
           Be the First to{" "}
-          <em className="not-italic" style={{ color: "hsl(38,61%,73%)" }}>
-            Know &amp; Discover
-          </em>
+          <em className="not-italic text-[var(--gold)]">Know &amp; Discover</em>
         </h2>
 
         {/* Copy */}
-        <p
-          className="text-[1.6rem] leading-[1.8] mb-10 max-w-[520px] mx-auto font-['DM_Sans',sans-serif]"
-          style={{ color: "hsla(0,0%,60%,1)" }}
-        >
+        <p className="text-[1.6rem] leading-[1.8] mb-10 max-w-[520px] mx-auto text-[hsla(0,0%,60%,1)]">
           Join our mailing list for exclusive wholesale offers, new brand
           arrivals, and fragrance industry news — delivered straight to your
           inbox.
         </p>
 
-        {/* ── Form ── */}
-        <form
-          onSubmit={handleSubmit}
-          className={[
-            "flex flex-row items-stretch max-w-[600px] mx-auto mb-12 h-14",
-            "border rounded-xl overflow-hidden",
-            "transition-[border-color,box-shadow] duration-[250ms] ease-in-out",
-            "focus-within:border-[hsl(38,61%,73%)] focus-within:shadow-[0_0_0_3px_hsla(38,61%,73%,0.1)]",
-            "border-[hsla(38,61%,73%,0.3)]",
-          ].join(" ")}
-        >
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="subscribe-form">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="Enter your email address"
-            className={[
-              "min-w-0 flex-1 h-full px-3 sm:px-5 border-none text-white",
-              "text-[1.1rem] sm:text-[1.5rem]",
-              "font-['DM_Sans',sans-serif] outline-none",
-              "placeholder:text-[hsla(0,0%,40%,1)] rounded-l-xl",
-            ].join(" ")}
-            style={{ background: "hsla(210,4%,9%,1)" }}
+            className="subscribe-input text-[1.1rem] sm:text-[1.5rem] px-3 sm:px-5"
           />
           <button
             type="submit"
-            className={[
-              "h-full px-4 sm:px-8 border-none font-bold uppercase shrink-0",
-              "text-[0.85rem] sm:text-[1.15rem] tracking-[0.15em] sm:tracking-[0.2em]",
-              "whitespace-nowrap cursor-pointer rounded-r-xl",
-              "font-['DM_Sans',sans-serif] transition-[background,color] duration-[250ms] ease-in-out",
-              "bg-[hsl(38,61%,73%)] text-black hover:bg-[hsla(40,12%,5%,1)] hover:text-[hsl(38,61%,73%)]",
-            ].join(" ")}
+            className="subscribe-btn text-[0.85rem] sm:text-[1.15rem] tracking-[0.15em] sm:tracking-[0.2em] px-4 sm:px-8"
           >
             Subscribe
           </button>
@@ -254,20 +197,11 @@ export default function SubscribeSection() {
 
         {/* Follow Us divider */}
         <div className="flex items-center gap-4 max-w-[400px] mx-auto mb-7">
-          <div
-            className="flex-1 h-px"
-            style={{ background: "hsla(38,61%,73%,0.15)" }}
-          />
-          <span
-            className="text-[1.1rem] uppercase tracking-[0.2em] whitespace-nowrap font-['DM_Sans',sans-serif]"
-            style={{ color: "hsla(0,0%,40%,1)" }}
-          >
+          <div className="flex-1 h-px bg-[hsla(38,61%,73%,0.15)]" />
+          <span className="text-[1.1rem] uppercase tracking-[0.2em] whitespace-nowrap text-[hsla(0,0%,40%,1)]">
             Follow Us
           </span>
-          <div
-            className="flex-1 h-px"
-            style={{ background: "hsla(38,61%,73%,0.15)" }}
-          />
+          <div className="flex-1 h-px bg-[hsla(38,61%,73%,0.15)]" />
         </div>
 
         {/* Social icons */}
@@ -279,13 +213,7 @@ export default function SubscribeSection() {
               aria-label={label}
               target="_blank"
               rel="noopener noreferrer"
-              className={[
-                "flex items-center justify-center w-[42px] h-[42px] rounded-full shrink-0",
-                "border border-[hsla(38,61%,73%,0.2)] bg-[hsla(38,61%,73%,0.05)]",
-                "text-[hsla(38,61%,73%,0.55)] no-underline",
-                "transition-all duration-[220ms] ease-in-out",
-                "hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-black hover:-translate-y-[3px]",
-              ].join(" ")}
+              className="social-icon-link"
             >
               {icon}
             </a>
@@ -293,15 +221,11 @@ export default function SubscribeSection() {
         </div>
 
         {/* Privacy note */}
-        <p
-          className="mt-6 text-[1.2rem] font-['DM_Sans',sans-serif] tracking-[0.03em]"
-          style={{ color: "hsla(0,0%,35%,1)" }}
-        >
+        <p className="mt-6 text-[1.2rem] tracking-[0.03em] text-[hsla(0,0%,35%,1)]">
           No spam, ever. Unsubscribe at any time.{" "}
           <a
             href="/terms-condition"
-            className="no-underline hover:underline"
-            style={{ color: "hsla(38,61%,73%,0.6)" }}
+            className="no-underline hover:underline text-[hsla(38,61%,73%,0.6)]"
           >
             Privacy Policy
           </a>

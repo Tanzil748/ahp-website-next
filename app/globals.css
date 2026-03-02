@@ -896,3 +896,93 @@ body {
     transform: translateX(5px);
   }
 }
+
+/* ── Subscribe section shared components ── */
+@layer components {
+  /* Social icon link */
+  .social-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 9999px;
+    flex-shrink: 0;
+    border: 1px solid var(--gold-border-faint);
+    background-color: hsla(38, 61%, 73%, 0.05);
+    color: hsla(38, 61%, 73%, 0.55);
+    text-decoration: none;
+    transition: all 220ms ease-in-out;
+  }
+  .social-icon-link:hover {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: #000000;
+    transform: translateY(-3px);
+  }
+
+  /* Subscribe email form wrapper */
+  .subscribe-form {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    height: 3.5rem;
+    border: 1px solid var(--gold-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition:
+      border-color 250ms ease-in-out,
+      box-shadow 250ms ease-in-out;
+  }
+  .subscribe-form:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px hsla(38, 61%, 73%, 0.1);
+  }
+
+  /* Subscribe email input */
+  .subscribe-input {
+    min-width: 0;
+    flex: 1;
+    height: 100%;
+    padding: 0 1.25rem;
+    border: none;
+    background: var(--bg-section);
+    color: #ffffff;
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    outline: none;
+    border-radius: 0.75rem 0 0 0.75rem;
+  }
+  .subscribe-input::placeholder {
+    color: hsla(0, 0%, 40%, 1);
+  }
+
+  /* Subscribe submit button */
+  .subscribe-btn {
+    height: 100%;
+    padding: 0 2rem;
+    border: none;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: 0 0.75rem 0.75rem 0;
+    background-color: var(--gold);
+    color: #000000;
+    transition:
+      background 250ms ease-in-out,
+      color 250ms ease-in-out;
+  }
+  .subscribe-btn:hover {
+    background-color: var(--bg-dark);
+    color: var(--gold);
+  }
+}
