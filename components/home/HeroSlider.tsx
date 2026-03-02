@@ -1,12 +1,11 @@
 "use client";
-
+import {
+  TablerChevronDownLeft,
+  TablerChevronUpRight,
+} from "@/components/Icons";
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { DM_Sans, Forum } from "next/font/google";
-
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "700"] });
-const forum = Forum({ subsets: ["latin"], weight: "400" });
+import { GoldButton, Separator } from "@/components/ui";
 
 const slides = [
   {
@@ -35,50 +34,11 @@ const slides = [
   },
 ];
 
-// Injects only the keyframes + slider reveal classes needed for text animations —
-// identical to the original CSS logic, just injected via useEffect instead of a style tag.
-function useHeroKeyframes() {
-  useEffect(() => {
-    const id = "hero-keyframes";
-    if (document.getElementById(id)) return;
-    const el = document.createElement("style");
-    el.id = id;
-    el.textContent = `
-      @keyframes smoothScale {
-        0%   { transform: scale(1);    }
-        100% { transform: scale(1.15); }
-      }
-      @keyframes sliderReveal {
-        0%   { transform: translateY(30px); opacity: 0; }
-        100% { transform: translateY(0);    opacity: 1; }
-      }
-      .slider-reveal {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      .slider-item.active .slider-reveal {
-        animation: sliderReveal 1s ease forwards;
-      }
-      .slider-item.active .hero-subtitle  { animation-delay: 500ms;  }
-      .slider-item.active .hero-title     { animation-delay: 1000ms; }
-      .slider-item.active .hero-body      { animation-delay: 1500ms; }
-      .slider-item.active .hero-cta       { animation-delay: 2000ms; }
-    `;
-    document.head.appendChild(el);
-    return () => {
-      document.getElementById(id)?.remove();
-    };
-  }, []);
-}
-
 export default function HeroSlider() {
-  useHeroKeyframes();
-
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // mounted drives nav button slide-in only
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
@@ -107,10 +67,8 @@ export default function HeroSlider() {
       aria-label="home"
       className="relative min-h-screen overflow-hidden py-[120px]"
     >
-      {/* ── Slides ── */}
       {slides.map((slide, i) => {
         const isActive = i === current;
-
         return (
           <div
             key={i}
@@ -120,7 +78,7 @@ export default function HeroSlider() {
               visibility: isActive ? "visible" : "hidden",
             }}
           >
-            {/* Background image — Ken Burns zoom on active */}
+            {/* Ken Burns background */}
             <div
               className="absolute inset-0 -z-[1] pointer-events-none select-none brightness-[0.4]"
               style={{
@@ -137,71 +95,42 @@ export default function HeroSlider() {
               />
             </div>
 
-            {/* Subtitle — .slider-reveal + staggered delay via .hero-subtitle */}
-            <p
-              className={`hero-subtitle slider-reveal relative ${dmSans.className} font-bold uppercase text-[1.2rem] tracking-[0.4em] text-[hsl(38,61%,73%)] mb-3`}
-            >
+            {/* Subtitle + separator */}
+            <p className="hero-subtitle slider-reveal relative section-label mb-3">
               {slide.subtitle}
-              <span className="block mx-auto mt-[14px] mb-[20px] w-[100px] h-[10px]">
-                <Image
-                  src="/images/patterns/separator.svg"
-                  width={100}
-                  height={10}
-                  alt=""
-                  aria-hidden="true"
-                />
-              </span>
             </p>
+            <span className="hero-subtitle slider-reveal block mt-[14px] mb-[20px]">
+              <Separator />
+            </span>
 
             {/* Title */}
-            <h1
-              className={`hero-title slider-reveal ${forum.className} font-normal text-white leading-[1em] text-[calc(1.3rem+6.7vw)] mb-0`}
-            >
+            <h1 className="hero-title slider-reveal card-heading font-normal leading-[1em] text-[calc(1.3rem+6.7vw)] mb-0">
               {slide.title[0]}
               <br />
               {slide.title[1]}
             </h1>
 
-            {/* Body text */}
-            <p
-              className={`hero-body slider-reveal ${dmSans.className} text-white leading-[1.6em] mt-[10px] mb-[40px] max-w-[520px] mx-auto text-[1.6rem] sm:text-[2rem]`}
-            >
+            {/* Body */}
+            <p className="hero-body slider-reveal section-body mt-[10px] mb-[40px] max-w-[520px] mx-auto sm:text-[2rem]">
               {slide.text}
             </p>
 
-            {/* CTA Button */}
-            <Link
+            {/* CTA */}
+            <GoldButton
               href="/products"
-              className={`hero-cta slider-reveal group relative isolate mx-auto block max-w-max overflow-hidden border-2 border-[hsl(38,61%,73%)] px-[45px] py-[12px] text-[hsl(38,61%,73%)] ${dmSans.className} font-bold uppercase text-[1.2rem] tracking-[3px] no-underline`}
+              className="hero-cta slider-reveal mx-auto"
             >
-              {/* Circle fill that wipes up from bottom on hover */}
-              <span
-                className="absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full bg-[hsl(38,61%,73%)] -z-[1] transition-[bottom] duration-500 ease-in-out pointer-events-none group-hover:bottom-[-50%]"
-                aria-hidden="true"
-              />
-              {/* Invisible spacer — prevents button from resizing on hover */}
-              <span className="invisible block">View Our Products</span>
-              {/* text-1 — slides up on hover */}
-              <span className="absolute inset-0 flex items-center justify-center transition-transform duration-[250ms] ease-in-out group-hover:-translate-y-full">
-                View Our Products
-              </span>
-              {/* text-2 — slides in from below on hover */}
-              <span
-                className="absolute inset-x-0 top-full flex items-center justify-center h-full text-[hsla(40,12%,5%,1)] transition-all duration-[250ms] ease-in-out group-hover:top-0"
-                aria-hidden="true"
-              >
-                View Our Products
-              </span>
-            </Link>
+              View Our Products
+            </GoldButton>
           </div>
         );
       })}
 
-      {/* ── Prev button — diamond shape, slides in from left on mount ── */}
+      {/* Prev */}
       <button
         onClick={() => goTo(current - 1)}
         aria-label="Slide to previous"
-        className="hidden md:grid absolute z-[2] top-1/2 left-[30px] w-[45px] h-[45px] place-items-center border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] bg-transparent cursor-pointer hover:bg-[hsl(38,61%,73%)] hover:text-black transition-[transform,opacity,background-color,color] duration-500"
+        className="hero-nav-btn left-[30px]"
         style={{
           transform: mounted
             ? "translateY(-50%) rotate(45deg)"
@@ -210,29 +139,14 @@ export default function HeroSlider() {
           transitionDelay: "200ms",
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          style={{ transform: "rotate(-45deg)" }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
+        <TablerChevronDownLeft className="text-[25px]" />
       </button>
 
-      {/* ── Next button — diamond shape, slides in from right on mount ── */}
+      {/* Next */}
       <button
         onClick={() => goTo(current + 1)}
         aria-label="Slide to next"
-        className="hidden md:grid absolute z-[2] top-1/2 right-[30px] w-[45px] h-[45px] place-items-center border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] bg-transparent cursor-pointer hover:bg-[hsl(38,61%,73%)] hover:text-black transition-[transform,opacity,background-color,color] duration-500"
+        className="hero-nav-btn right-[30px]"
         style={{
           transform: mounted
             ? "translateY(-50%) rotate(45deg)"
@@ -241,22 +155,7 @@ export default function HeroSlider() {
           transitionDelay: "200ms",
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          style={{ transform: "rotate(-45deg)" }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-          />
-        </svg>
+        <TablerChevronUpRight className="text-[25px]" />
       </button>
     </section>
   );

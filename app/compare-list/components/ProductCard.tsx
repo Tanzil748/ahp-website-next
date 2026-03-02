@@ -1,3 +1,8 @@
+import {
+  IcRoundClose,
+  MaterialSymbolsAddCircleOutline,
+} from "@/components/Icons";
+
 export interface Product {
   id: string;
   name: string;
@@ -111,12 +116,10 @@ export const CATALOGUE: Product[] = [
 function AttributeRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-2">
-      <span className="uppercase text-[1.4rem] text-[hsla(0,0%,65%,1)] tracking-[0.15em] font-[DM_Sans,sans-serif]">
+      <span className="uppercase text-[1.4rem] text-[var(--text-muted)] tracking-[0.15em]">
         {label}
       </span>
-      <span className="font-bold text-white text-[1.6rem] font-[DM_Sans,sans-serif]">
-        {value}
-      </span>
+      <span className="font-bold text-white text-[1.6rem]">{value}</span>
     </div>
   );
 }
@@ -130,33 +133,19 @@ export function ProductCard({
   onRemove: () => void;
 }) {
   return (
-    <div className="group relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px] bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-500 hover:border-[hsl(38,61%,73%)] hover:shadow-[0_0_30px_rgba(201,171,129,0.15)]">
+    <div className="compare-card group">
       {/* Remove button */}
       <button
-        className="absolute top-[15px] right-[15px] rounded-full w-[35px] h-[35px] flex items-center justify-center z-10 bg-[hsla(40,12%,5%,1)] border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-[250ms] hover:!bg-[hsl(38,61%,73%)] hover:!border-[hsl(38,61%,73%)] hover:[&>svg]:text-[hsla(40,12%,5%,1)]"
+        className="compare-card__remove"
         onClick={onRemove}
         aria-label="Remove product"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="none"
-          viewBox="0 0 512 512"
-          className="text-[hsl(38,61%,73%)] transition-colors duration-[250ms]"
-        >
-          <path
-            d="M368 368L144 144M368 144L144 368"
-            stroke="currentColor"
-            strokeWidth="48"
-            strokeLinecap="round"
-          />
-        </svg>
+        <IcRoundClose style={{ fontSize: 20, color: "var(--gold)" }} />
       </button>
 
       <div className="flex flex-col gap-5 flex-1">
         {/* Image */}
-        <div className="w-full h-[250px] flex items-center justify-center rounded-lg overflow-hidden mb-[10px] bg-[hsla(0,3%,7%,1)]">
+        <div className="w-full h-[250px] flex items-center justify-center rounded-lg overflow-hidden mb-[10px] bg-[var(--bg-image)]">
           <img
             src={product.image}
             alt={product.name}
@@ -165,15 +154,15 @@ export function ProductCard({
         </div>
 
         {/* Name & category */}
-        <h3 className="text-center text-white mb-[5px] font-normal leading-[1.2] font-[Forum,cursive] text-[2.2rem]">
+        <h3 className="text-center text-white mb-[5px] font-normal leading-[1.2] [font-family:var(--font-display)] text-[2.2rem]">
           {product.name}
         </h3>
-        <p className="text-center uppercase mb-[15px] text-[1.2rem] font-bold tracking-[0.4em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
+        <p className="text-center uppercase mb-[15px] text-[1.2rem] font-bold tracking-[0.4em] text-[var(--gold)]">
           {product.category}
         </p>
 
         {/* Attributes */}
-        <div className="py-5 border-t border-b border-white/10">
+        <div className="py-5 border-t border-b border-[var(--white-10)]">
           <AttributeRow label="Volume" value={product.volume} />
           <AttributeRow label="Longevity" value={product.longevity} />
           <AttributeRow label="Sillage" value={product.sillage} />
@@ -182,7 +171,7 @@ export function ProductCard({
 
         {/* Fragrance notes */}
         <div className="mt-[10px]">
-          <h4 className="text-center mb-[15px] font-normal text-[hsl(38,61%,73%)] font-[Forum,cursive] text-[1.8rem]">
+          <h4 className="text-center mb-[15px] font-normal text-[var(--gold)] [font-family:var(--font-display)] text-[1.8rem]">
             Fragrance Notes
           </h4>
           {[
@@ -191,10 +180,10 @@ export function ProductCard({
             { label: "Base Notes", value: product.notes.base },
           ].map(({ label, value }) => (
             <div key={label} className="mb-3">
-              <p className="uppercase font-bold text-[1.2rem] mb-1 tracking-[0.4em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
+              <p className="uppercase font-bold text-[1.2rem] mb-1 tracking-[0.4em] text-[var(--gold)]">
                 {label}
               </p>
-              <p className="text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
+              <p className="text-[1.6rem] leading-[1.6] text-[var(--text-muted)]">
                 {value}
               </p>
             </div>
@@ -208,28 +197,13 @@ export function ProductCard({
 // ── Empty slot placeholder ────────────────────────────────────────────────────
 export function AddPlaceholder({ onClick }: { onClick: () => void }) {
   return (
-    <div
-      className="relative flex flex-col rounded-xl p-[30px_20px] min-h-[600px] items-center justify-center cursor-pointer bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-[250ms] hover:border-[hsl(38,61%,73%)]"
-      onClick={onClick}
-    >
+    <div className="compare-placeholder" onClick={onClick}>
       <div className="group/inner flex flex-col items-center justify-center min-h-[400px] w-full rounded-lg border-2 border-dashed border-white/20 transition-all duration-[250ms] hover:bg-white/10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="60"
-          height="60"
-          fill="none"
-          viewBox="0 0 512 512"
-          className="mb-4 text-[hsl(38,61%,73%)] transition-transform duration-[250ms] group-hover/inner:scale-110"
-        >
-          <path
-            d="M256 112v288M112 256h288"
-            stroke="currentColor"
-            strokeWidth="32"
-            strokeLinecap="round"
-          />
-          <circle cx="256" cy="256" r="208" stroke="currentColor" strokeWidth="32" />
-        </svg>
-        <p className="uppercase text-[1.4rem] tracking-[0.4em] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
+        <MaterialSymbolsAddCircleOutline
+          className="mb-4 text-[var(--gold)] transition-transform duration-[250ms] group-hover/inner:scale-110"
+          style={{ fontSize: 60 }}
+        />
+        <p className="uppercase text-[1.4rem] tracking-[0.4em] text-[var(--text-muted)]">
           Add Product
         </p>
       </div>

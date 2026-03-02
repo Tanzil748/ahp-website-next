@@ -84,11 +84,13 @@ export default function BlogGrid() {
     return [currentPage - 1, currentPage, currentPage + 1];
   };
 
+  const filterBtn = (cat: string, extra = "") =>
+    `blog-filter-btn ${activeCategory === cat ? "active" : ""} ${extra}`.trim();
+
   return (
     <>
       {/* ── Category filter ── */}
-      <section className="px-5 py-5 bg-[hsla(40,12%,5%,1)] border-y border-white/10">
-        {/* Mobile: 3 on top row, 2 on bottom row */}
+      <section className="px-5 py-5 bg-[var(--bg-dark)] border-y border-[var(--white-10)]">
         <div className="fade-up delay-3 max-w-[1200px] mx-auto py-3">
           {/* Mobile layout */}
           <div className="flex flex-col items-center gap-2 sm:hidden">
@@ -100,12 +102,10 @@ export default function BlogGrid() {
                     setActiveCategory(cat);
                     setCurrentPage(1);
                   }}
-                  className={`flex-1 px-2 py-2 font-[var(--font-dm-sans)] text-[0.75rem] font-bold uppercase tracking-[1.5px] border cursor-pointer transition-all duration-[250ms] text-center
-                    ${
-                      activeCategory === cat
-                        ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
-                        : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                    }`}
+                  className={filterBtn(
+                    cat,
+                    "flex-1 px-2 py-2 text-[0.75rem] tracking-[1.5px]",
+                  )}
                 >
                   {cat}
                 </button>
@@ -119,12 +119,10 @@ export default function BlogGrid() {
                     setActiveCategory(cat);
                     setCurrentPage(1);
                   }}
-                  className={`flex-1 px-2 py-2 font-[var(--font-dm-sans)] text-[0.75rem] font-bold uppercase tracking-[1.5px] border cursor-pointer transition-all duration-[250ms] text-center
-                    ${
-                      activeCategory === cat
-                        ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
-                        : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                    }`}
+                  className={filterBtn(
+                    cat,
+                    "flex-1 px-2 py-2 text-[0.75rem] tracking-[1.5px]",
+                  )}
                 >
                   {cat}
                 </button>
@@ -141,12 +139,10 @@ export default function BlogGrid() {
                   setActiveCategory(cat);
                   setCurrentPage(1);
                 }}
-                className={`px-6 py-[10px] font-[var(--font-dm-sans)] text-[1.2rem] font-bold uppercase tracking-[3px] border cursor-pointer transition-all duration-[250ms]
-                  ${
-                    activeCategory === cat
-                      ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
-                      : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                  }`}
+                className={filterBtn(
+                  cat,
+                  "px-6 py-[10px] text-[1.2rem] tracking-[3px]",
+                )}
               >
                 {cat}
               </button>
@@ -160,40 +156,34 @@ export default function BlogGrid() {
         <div className="fade-up delay-3 max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.length > 0 ? (
             filtered.map((post) => (
-              <article
-                key={post.id}
-                className="bg-[hsla(210,4%,11%,1)] border border-white/10 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-[hsl(38,61%,73%)] hover:shadow-[0_10px_30px_hsla(38,61%,50%,0.15)] group"
-              >
+              <article key={post.id} className="blog-card group">
                 {/* Banner */}
-                <div className="relative bg-[hsla(0,0%,13%,1)] h-[240px] flex items-center justify-center overflow-hidden">
-                  <span className="text-white/10 text-lg font-bold uppercase tracking-[0.15em] font-[var(--font-forum)]">
+                <div className="blog-card-banner">
+                  <span className="text-white/10 text-lg font-bold uppercase tracking-[0.15em] [font-family:var(--font-display)]">
                     Blog Post
                   </span>
-                  <span className="absolute bottom-4 left-4 bg-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)] text-xs font-bold px-3 py-1">
+                  <span className="absolute bottom-4 left-4 blog-badge">
                     {post.date}
                   </span>
                 </div>
 
                 {/* Content */}
                 <div className="px-8 pt-7 pb-8">
-                  <span className="block text-[hsl(38,61%,73%)] text-xs font-bold uppercase tracking-[0.15em] mb-3">
+                  <span className="block text-[var(--gold)] text-xs font-bold uppercase tracking-[0.15em] mb-3">
                     {post.category}
                   </span>
 
-                  <h3 className="font-[var(--font-forum)] text-[2rem] leading-[1.35] font-normal text-white mb-3.5 transition-colors duration-300 group-hover:text-[hsl(38,61%,73%)]">
+                  <h3 className="[font-family:var(--font-display)] text-[2rem] leading-[1.35] font-normal text-white mb-3.5 transition-colors duration-300 group-hover:text-[var(--gold)]">
                     {post.title}
                   </h3>
 
-                  <p className="text-[hsla(0,0%,65%,1)] mb-6 text-[1.5rem] leading-[1.7]">
+                  <p className="text-[var(--text-muted)] mb-6 text-[1.5rem] leading-[1.7]">
                     {post.excerpt}
                   </p>
 
-                  <div className="h-px mb-5 opacity-30 bg-gradient-to-r from-[hsl(38,61%,73%)] to-transparent" />
+                  <div className="blog-card-rule" />
 
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-2 text-[hsl(38,61%,73%)] text-[1.2rem] font-bold uppercase tracking-[3px] no-underline transition-[gap] duration-300 hover:gap-4"
-                  >
+                  <a href="#" className="blog-read-link">
                     <span>Read Article</span>
                     <span>→</span>
                   </a>
@@ -201,7 +191,7 @@ export default function BlogGrid() {
               </article>
             ))
           ) : (
-            <div className="col-span-full text-center py-20 text-[hsla(0,0%,65%,1)] text-[1.6rem] font-[var(--font-forum)]">
+            <div className="col-span-full text-center py-20 text-[var(--text-muted)] text-[1.6rem] [font-family:var(--font-display)]">
               No posts found in this category.
             </div>
           )}
@@ -214,7 +204,7 @@ export default function BlogGrid() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="pagination-btn pagination-btn-nav"
           >
             ← Prev
           </button>
@@ -224,12 +214,14 @@ export default function BlogGrid() {
               <>
                 <button
                   onClick={() => handlePageChange(1)}
-                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
+                  className="pagination-btn"
                 >
                   1
                 </button>
                 {visiblePages()[0] > 2 && (
-                  <span className="text-[hsla(0,0%,65%,1)] text-[1.4rem]">…</span>
+                  <span className="text-[var(--text-muted)] text-[1.4rem]">
+                    …
+                  </span>
                 )}
               </>
             )}
@@ -238,12 +230,7 @@ export default function BlogGrid() {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`flex items-center justify-center min-w-[44px] h-11 px-3 border text-[1.4rem] font-bold cursor-pointer transition-all duration-[250ms]
-                  ${
-                    currentPage === page
-                      ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsla(40,12%,5%,1)]"
-                      : "bg-transparent border-white/10 text-[hsla(0,0%,65%,1)] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
-                  }`}
+                className={`pagination-btn ${currentPage === page ? "active" : ""}`}
               >
                 {page}
               </button>
@@ -252,11 +239,13 @@ export default function BlogGrid() {
             {visiblePages()[2] < TOTAL_PAGES && (
               <>
                 {visiblePages()[2] < TOTAL_PAGES - 1 && (
-                  <span className="text-[hsla(0,0%,65%,1)] text-[1.4rem]">…</span>
+                  <span className="text-[var(--text-muted)] text-[1.4rem]">
+                    …
+                  </span>
                 )}
                 <button
                   onClick={() => handlePageChange(TOTAL_PAGES)}
-                  className="flex items-center justify-center min-w-[44px] h-11 px-3 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)]"
+                  className="pagination-btn"
                 >
                   {TOTAL_PAGES}
                 </button>
@@ -267,7 +256,7 @@ export default function BlogGrid() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === TOTAL_PAGES}
-            className="flex items-center justify-center h-11 px-5 border border-white/10 text-[hsla(0,0%,65%,1)] text-[1.4rem] font-bold uppercase tracking-[2px] bg-transparent cursor-pointer transition-all duration-[250ms] hover:bg-[hsl(38,61%,73%)] hover:border-[hsl(38,61%,73%)] hover:text-[hsla(40,12%,5%,1)] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="pagination-btn pagination-btn-nav"
           >
             Next →
           </button>

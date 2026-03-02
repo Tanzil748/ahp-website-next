@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { ProductCard, AddPlaceholder, CATALOGUE } from "./ProductCard";
 import type { Product } from "./ProductCard";
+import {
+  IcRoundClose,
+  MaterialSymbolsAddBoxOutlineRounded,
+} from "@/components/Icons";
 
 // ── Gold button ───────────────────────────────────────────────────────────────
 function GoldButton({
@@ -17,29 +21,11 @@ function GoldButton({
   return (
     <button
       onClick={onClick}
-      className={`group relative overflow-hidden z-[1] inline-block cursor-pointer text-[1.2rem] font-bold uppercase tracking-[3px] border-2 border-[hsl(38,61%,73%)] px-[45px] py-[12px] transition-colors duration-[250ms] font-[DM_Sans,sans-serif] ${
-        secondary
-          ? "bg-[hsl(38,61%,73%)] text-black"
-          : "bg-transparent text-[hsl(38,61%,73%)]"
-      }`}
+      className={`gold-btn ${secondary ? "gold-btn--secondary" : ""}`}
     >
-      {/* Animated fill circle */}
-      <span
-        className={`absolute bottom-full left-1/2 -translate-x-1/2 w-[200%] h-[200%] rounded-full -z-[1] transition-all duration-500 group-hover:bottom-[-50%] ${
-          secondary ? "bg-[hsla(40,12%,5%,1)]" : "bg-[hsl(38,61%,73%)]"
-        }`}
-      />
-      {/* Primary label — slides up on hover */}
-      <span className="block transition-transform duration-[250ms] group-hover:-translate-y-[40px]">
-        {children}
-      </span>
-      {/* Secondary label — slides in from below on hover */}
-      <span
-        className={`absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap transition-all duration-[250ms] group-hover:top-1/2 group-hover:-translate-y-1/2 group-hover:-translate-x-1/2 ${
-          secondary ? "text-white" : "text-[hsla(40,12%,5%,1)]"
-        }`}
-        aria-hidden="true"
-      >
+      <span className="gold-btn__fill" />
+      <span className="gold-btn__label">{children}</span>
+      <span className="gold-btn__label-dup" aria-hidden="true">
         {children}
       </span>
     </button>
@@ -62,17 +48,11 @@ function ProductModal({
   const available = CATALOGUE.filter((p) => !alreadyAdded.includes(p.id));
 
   return (
-    <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center p-5 bg-black/80 backdrop-blur-[8px]"
-      onClick={onClose}
-    >
-      <div
-        className="relative w-full max-w-[700px] max-h-[80vh] flex flex-col rounded-xl overflow-hidden bg-[hsla(210,4%,9%,1)] border border-[hsl(38,61%,73%)]"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="compare-modal-overlay" onClick={onClose}>
+      <div className="compare-modal-panel" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="flex justify-between items-center px-[30px] py-[25px] border-b border-white/10">
-          <h2 className="text-white font-normal font-[Forum,cursive] text-[calc(1.3rem+2.4vw)]">
+        <div className="flex justify-between items-center px-[30px] py-[25px] border-b border-[var(--white-10)]">
+          <h2 className="text-white font-normal [font-family:var(--font-display)] text-[calc(1.3rem+2.4vw)]">
             Select a Fragrance
           </h2>
           <button
@@ -80,35 +60,21 @@ function ProductModal({
             className="flex items-center justify-center p-1 bg-transparent border-none cursor-pointer"
             aria-label="Close modal"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              fill="none"
-              viewBox="0 0 512 512"
-              className="text-[hsl(38,61%,73%)]"
-            >
-              <path
-                d="M368 368L144 144M368 144L144 368"
-                stroke="currentColor"
-                strokeWidth="48"
-                strokeLinecap="round"
-              />
-            </svg>
+            <IcRoundClose style={{ fontSize: 30, color: "var(--gold)" }} />
           </button>
         </div>
 
         {/* Product list */}
         <div className="overflow-y-auto px-[30px] py-5 flex flex-col gap-4">
           {available.length === 0 ? (
-            <p className="text-center py-10 text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
+            <p className="text-center py-10 text-[var(--text-muted)]">
               All products are already added to the compare list.
             </p>
           ) : (
             available.map((product) => (
               <div
                 key={product.id}
-                className="flex items-center gap-5 p-[15px] rounded-lg cursor-pointer bg-[hsla(210,4%,11%,1)] border border-white/10 transition-all duration-[250ms] hover:border-[hsl(38,61%,73%)] hover:translate-x-[5px]"
+                className="compare-modal-row"
                 onClick={() => {
                   onSelect(product);
                   onClose();
@@ -117,13 +83,13 @@ function ProductModal({
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-[80px] h-[80px] object-contain rounded-md p-[10px] bg-[hsla(0,3%,7%,1)]"
+                  className="w-[80px] h-[80px] object-contain rounded-md p-[10px] bg-[var(--bg-image)]"
                 />
                 <div className="flex-1">
-                  <p className="text-white mb-1 font-normal font-[Forum,cursive] text-[1.6rem]">
+                  <p className="text-white mb-1 font-normal [font-family:var(--font-display)] text-[1.6rem]">
                     {product.name}
                   </p>
-                  <p className="uppercase text-[1.2rem] tracking-[0.15em] text-[hsl(38,61%,73%)] font-[DM_Sans,sans-serif]">
+                  <p className="uppercase text-[1.2rem] tracking-[0.15em] text-[var(--gold)]">
                     {product.category}
                   </p>
                 </div>
@@ -180,34 +146,19 @@ export default function CompareGrid() {
           {/* Empty state */}
           {filledCount === 0 && (
             <div className="text-center py-[80px] px-5 max-w-[600px] mx-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="80"
-                height="80"
-                fill="none"
-                viewBox="0 0 512 512"
-                className="mx-auto mb-[30px] text-[hsl(38,61%,73%)] opacity-60"
-              >
-                <path
-                  d="M432 64H80a16 16 0 00-16 16v352a16 16 0 0016 16h352a16 16 0 0016-16V80a16 16 0 00-16-16z"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M256 176v160M176 256h160"
-                  stroke="currentColor"
-                  strokeWidth="32"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <h2 className="text-white mb-[15px] font-normal leading-[1.4] font-[Forum,cursive] text-[calc(1.3rem+2.4vw)]">
+              <MaterialSymbolsAddBoxOutlineRounded
+                className="mx-auto mb-[30px] text-[var(--gold)] opacity-60"
+                style={{ fontSize: 80 }}
+              />
+              <h2 className="text-white mb-[15px] font-normal leading-[1.4] [font-family:var(--font-display)] text-[calc(1.3rem+2.4vw)]">
                 No Products to Compare
               </h2>
-              <p className="mb-[30px] text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)] font-[DM_Sans,sans-serif]">
+              <p className="mb-[30px] text-[1.6rem] leading-[1.6] text-[var(--text-muted)]">
                 Add up to 3 fragrances to compare them side by side
               </p>
-              <GoldButton onClick={() => openModal(0)}>Add Fragrance</GoldButton>
+              <GoldButton onClick={() => openModal(0)}>
+                Add Fragrance
+              </GoldButton>
             </div>
           )}
 
@@ -223,8 +174,11 @@ export default function CompareGrid() {
                       onRemove={() => handleRemove(i)}
                     />
                   ) : (
-                    <AddPlaceholder key={`slot-${i}`} onClick={() => openModal(i)} />
-                  )
+                    <AddPlaceholder
+                      key={`slot-${i}`}
+                      onClick={() => openModal(i)}
+                    />
+                  ),
                 )}
               </div>
               <div className="text-center pt-5">

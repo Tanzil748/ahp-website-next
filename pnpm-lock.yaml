@@ -24,12 +24,12 @@ importers:
       '@iconify-json/fa7-solid':
         specifier: ^1.2.4
         version: 1.2.4
-      '@iconify-json/ic':
-        specifier: ^1.2.4
-        version: 1.2.4
       '@iconify-json/material-symbols':
         specifier: ^1.2.59
         version: 1.2.59
+      '@iconify-json/tabler':
+        specifier: ^1.2.28
+        version: 1.2.28
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.2.1
@@ -197,11 +197,11 @@ packages:
   '@iconify-json/fa7-solid@1.2.4':
     resolution: {integrity: sha512-Ns+ABU21PQpTjMZZ8idaQ9CDNYxjCJ/HY4+gkDsnAiJLkISMB2WIjoR2sjEj+Yok72sFwhXdYKBxwfRaGlwVpA==}
 
-  '@iconify-json/ic@1.2.4':
-    resolution: {integrity: sha512-pzPMmrZrBQuwT7nmtrYdkttun8KalRGgZPIL1Ny9KpF2zjRGIUPN+npTfuD3lrgO/OnSwAoJWuekQwBpt/Cqrw==}
-
   '@iconify-json/material-symbols@1.2.59':
     resolution: {integrity: sha512-difuedW4jZyiDDu2SySjPCr+UsM65PRkEg3zUuKz0YRGMkNyBsk3R6j9s/ofP1NaKr2y32XxrzTawmnJZbzOAw==}
+
+  '@iconify-json/tabler@1.2.28':
+    resolution: {integrity: sha512-HKF7K9Ba67GdB2b2tYWF1DS2Ydpxmo1Fsda7bQRwKUPYOiYM99F7rgJp6BN7TFQiRmCaxilfro6FQeCMSjuV1g==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -2167,11 +2167,11 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/ic@1.2.4':
+  '@iconify-json/material-symbols@1.2.59':
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/material-symbols@1.2.59':
+  '@iconify-json/tabler@1.2.28':
     dependencies:
       '@iconify/types': 2.0.0
 

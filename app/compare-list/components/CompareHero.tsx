@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function CompareHero() {
   return (
-    <section className="relative text-center overflow-hidden pt-[120px] pb-[60px] bg-gradient-to-b from-[hsla(210,4%,11%,1)] to-[hsla(30,8%,5%,1)]">
-      {/* Dot pattern overlay — inline SVG background via Tailwind arbitrary value */}
+    <section className="relative text-center overflow-hidden pt-[120px] pb-[60px] bg-gradient-to-b from-[var(--bg-card)] to-[var(--bg-dark)]">
+      {/* Dot pattern overlay */}
       <div
         className="absolute inset-0 opacity-30 pointer-events-none"
         style={{
@@ -14,11 +14,10 @@ export default function CompareHero() {
       />
 
       <div className="relative z-[1] px-4 max-w-[1200px] mx-auto">
-        <p className="font-bold uppercase mb-3 text-[hsl(38,61%,73%)] text-[1.2rem] tracking-[0.4em] font-[DM_Sans,sans-serif] fade-up delay-1">
+        <p className="section-label mb-3 fade-up delay-1">
           Find Your Perfect Scent
         </p>
 
-        {/* ── Wavy separator ── */}
         <div className="flex justify-center mb-3 fade-up delay-2">
           <Image
             src="/images/patterns/separator.svg"
@@ -29,11 +28,11 @@ export default function CompareHero() {
           />
         </div>
 
-        <h1 className="text-white font-normal font-[Forum,cursive] text-[calc(2rem+2.5vw)] leading-[1.2em] fade-up delay-3">
+        <h1 className="text-white font-normal [font-family:var(--font-display)] text-[calc(2rem+2.5vw)] leading-[1.2em] fade-up delay-3">
           Compare Fragrances
         </h1>
 
-        <p className="mx-auto mt-5 text-[1.6rem] leading-[1.6] text-[hsla(0,0%,65%,1)] max-w-[600px] font-[DM_Sans,sans-serif] fade-up delay-4">
+        <p className="mx-auto mt-5 text-[1.6rem] leading-[1.6] text-[var(--text-muted)] max-w-[600px] fade-up delay-4">
           Compare up to 3 fragrances side by side to find your ideal signature
           scent
         </p>

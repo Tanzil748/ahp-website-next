@@ -14,9 +14,8 @@ export default function HeroVideo() {
       </video>
 
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[hsla(210,4%,9%,1)] text-white font-black text-center leading-none px-4 sm:px-6 md:px-[30px] max-w-[95%] sm:max-w-[90%] whitespace-nowrap"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[var(--bg-section)] text-white font-black text-center leading-none px-4 sm:px-6 md:px-[30px] max-w-[95%] sm:max-w-[90%] whitespace-nowrap [font-family:var(--font-display)]"
         style={{
-          fontFamily: "var(--font-forum)",
           fontSize: "clamp(2.8rem, 10vw, 10rem)",
           mixBlendMode: "multiply",
         }}

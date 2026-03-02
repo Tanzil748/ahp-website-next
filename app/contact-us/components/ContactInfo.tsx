@@ -2,10 +2,6 @@
 
 import { useState } from "react";
 import {
-  gold,
-  smokyBlack1,
-  quickSilver,
-  whiteAlpha10,
   OrnamentalSep,
   LocationIcon,
   PhoneIcon,
@@ -32,26 +28,22 @@ function InfoCard({
     >
       {/* Diamond icon box */}
       <div
-        className="flex-shrink-0 w-[52px] h-[52px] max-sm:w-[44px] max-sm:h-[44px] grid place-items-center transition-colors duration-300"
+        className="flex-shrink-0 w-[52px] h-[52px] max-sm:w-[44px] max-sm:h-[44px] grid place-items-center transition-colors duration-300 border border-[var(--gold)]"
         style={{
-          border: `1px solid ${gold}`,
           transform: "rotate(45deg)",
-          backgroundColor: hovered ? gold : "transparent",
+          backgroundColor: hovered ? "var(--gold)" : "transparent",
         }}
       >
         <div className="-rotate-45">
-          <Icon stroke={hovered ? smokyBlack1 : gold} />
+          <Icon stroke={hovered ? "var(--bg-dark)" : "var(--gold)"} />
         </div>
       </div>
 
       <div>
-        <p
-          className="uppercase font-bold mb-1 text-[1.4rem] tracking-[0.15em]"
-          style={{ color: gold }}
-        >
+        <p className="uppercase font-bold mb-1 text-[1.4rem] tracking-[0.15em] text-[var(--gold)]">
           {label}
         </p>
-        <div className="text-[1.5rem] leading-[1.6]" style={{ color: quickSilver }}>
+        <div className="text-[1.5rem] leading-[1.6] text-[var(--text-muted)]">
           {children}
         </div>
       </div>
@@ -65,32 +57,22 @@ export default function ContactInfo() {
     <div className="fade-up delay-2">
       {/* Subtitle */}
       <div className="mb-3">
-        <span
-          className="uppercase font-bold text-[1.4rem] tracking-[0.4em]"
-          style={{ color: gold }}
-        >
+        <span className="uppercase font-bold text-[1.4rem] tracking-[0.4em] text-[var(--gold)]">
           Find Us
         </span>
         <OrnamentalSep align="left" />
       </div>
 
       <h2
-        className="mb-5 font-normal leading-[1.4]"
-        style={{
-          fontFamily: "var(--font-forum)",
-          fontSize: "clamp(2.4rem, 3.5vw, 3.6rem)",
-          fontWeight: 400,
-        }}
+        className="mb-5 font-normal leading-[1.4] text-white [font-family:var(--font-display)]"
+        style={{ fontSize: "clamp(2.4rem, 3.5vw, 3.6rem)" }}
       >
         Contact
         <br />
         Information
       </h2>
 
-      <p
-        className="mb-[50px] text-[1.65rem] leading-[1.5]"
-        style={{ color: quickSilver }}
-      >
+      <p className="mb-[50px] text-[1.65rem] leading-[1.5] text-[var(--text-muted)]">
         We are open five days a week and eager to accommodate your needs. Reach
         us through any of the channels below.
       </p>
@@ -110,18 +92,10 @@ export default function ContactInfo() {
       </InfoCard>
 
       {/* Gold divider */}
-      <div
-        className="my-[50px] w-full h-px opacity-40"
-        style={{
-          background: `linear-gradient(to right, ${gold}, transparent)`,
-        }}
-      />
+      <div className="my-[50px] w-full h-px opacity-40 bg-gradient-to-r from-[var(--gold)] to-transparent" />
 
       {/* Hours */}
-      <h3
-        className="mb-4 font-normal text-[2.2rem]"
-        style={{ fontFamily: "var(--font-forum)", fontWeight: 400 }}
-      >
+      <h3 className="mb-4 font-normal text-[2.2rem] [font-family:var(--font-display)]">
         Opening Hours
       </h3>
 
@@ -133,11 +107,10 @@ export default function ContactInfo() {
         ].map(({ day, time }) => (
           <li
             key={day}
-            className="flex justify-between items-center pb-3 text-[1.5rem]"
-            style={{ borderBottom: `1px solid ${whiteAlpha10}` }}
+            className="flex justify-between items-center pb-3 text-[1.5rem] border-b border-[var(--white-10)]"
           >
             <span className="font-bold text-white">{day}</span>
-            <span style={{ color: gold }}>{time}</span>
+            <span className="text-[var(--gold)]">{time}</span>
           </li>
         ))}
       </ul>

@@ -50,28 +50,20 @@ export default function OpenPositions() {
       : jobs.filter((job) => job.department === activeFilter);
 
   return (
-    <section className="py-24 px-5 lg:px-10 bg-[#0c0c0c]">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-[#d4af7a] uppercase tracking-[0.4em] text-xs font-bold mb-3">
-            Current Opportunities
-          </p>
-          <h2 className="text-4xl md:text-5xl font-normal text-white font-[var(--font-forum)]">
-            Open Positions
-          </h2>
+    <section className="careers-section bg-[var(--bg-careers-1)]">
+      <div className="careers-container">
+        <div className="careers-section-header">
+          <p className="careers-eyebrow">Current Opportunities</p>
+          <h2 className="careers-heading">Open Positions</h2>
         </div>
 
         {/* Filter buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16 py-8 px-5 border-y border-white/10 bg-[#141414]">
+        <div className="flex flex-wrap justify-center gap-3 mb-16 py-8 px-5 border-y border-[var(--white-10)] bg-[var(--bg-careers-3)]">
           {departments.map((dept) => (
             <button
               key={dept}
               onClick={() => setActiveFilter(dept)}
-              className={`px-6 py-3 text-[1.2rem] font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer ${
-                activeFilter === dept
-                  ? "bg-[#d4af7a] border-[#d4af7a] text-black"
-                  : "bg-transparent border-white/10 text-[#a6a6a6] hover:bg-[#d4af7a] hover:border-[#d4af7a] hover:text-black"
-              }`}
+              className={`dept-filter-btn ${activeFilter === dept ? "active" : ""}`}
             >
               {dept}
             </button>
@@ -82,17 +74,14 @@ export default function OpenPositions() {
         <div className="flex flex-col gap-6">
           {filteredJobs.length > 0 ? (
             filteredJobs.map((job) => (
-              <div
-                key={job.title}
-                className="bg-[#1a1a1b] border border-white/10 p-8 transition-all duration-300 hover:border-[#d4af7a] hover:translate-x-1 hover:shadow-[0_5px_20px_rgba(212,175,55,0.15)] group"
-              >
+              <div key={job.title} className="job-card group">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 mb-5">
                   <div className="flex-1">
-                    <h3 className="text-2xl md:text-3xl font-normal text-white mb-3 transition-colors duration-300 group-hover:text-[#d4af7a] font-[var(--font-forum)]">
+                    <h3 className="text-2xl md:text-3xl font-normal text-white mb-3 transition-colors duration-300 group-hover:text-[var(--gold-raw)] [font-family:var(--font-display)]">
                       {job.title}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#a6a6a6]">
-                      <span className="text-[#d4af7a] font-bold uppercase tracking-wider">
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--text-dim)]">
+                      <span className="text-[var(--gold-raw)] font-bold uppercase tracking-wider">
                         {job.department}
                       </span>
                       <span>•</span>
@@ -101,19 +90,12 @@ export default function OpenPositions() {
                       <span>{job.type}</span>
                     </div>
                   </div>
-                  <button className="flex items-center justify-center gap-2 px-7 py-3 border border-[#d4af7a] text-[#d4af7a] text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:bg-[#d4af7a] hover:text-black whitespace-nowrap">
-                    Apply Now →
-                  </button>
+                  <button className="job-apply-btn">Apply Now →</button>
                 </div>
-                <p className="text-[#a6a6a6] leading-relaxed text-sm mb-5">
-                  {job.description}
-                </p>
+                <p className="careers-body mb-5">{job.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {job.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1.5 bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] text-[#d4af7a] text-xs font-bold uppercase tracking-wide"
-                    >
+                    <span key={tag} className="job-tag">
                       {tag}
                     </span>
                   ))}
@@ -121,7 +103,7 @@ export default function OpenPositions() {
               </div>
             ))
           ) : (
-            <p className="text-center text-[#a6a6a6] py-12">
+            <p className="text-center text-[var(--text-dim)] py-12">
               No positions available in this department.
             </p>
           )}

@@ -2,16 +2,44 @@
 
 /* ── Font variables (set via next/font in layout.tsx) ── */
 :root {
-  --font-dm-sans: "DM Sans", sans-serif;
+  --font-primary: "DM Sans", sans-serif; /* body / UI font    */
+  --font-display: "Forum", serif; /* headings / titles */
 
-  /* Keep Geist fonts for any default Next.js elements */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Brand color tokens ── */
+  --gold: hsl(38, 61%, 73%);
+  --gold-mid: hsl(38, 61%, 50%);
+  --gold-raw: #d4af7a;
+  --gold-border: hsla(38, 61%, 73%, 0.35);
+  --gold-border-mid: hsla(38, 61%, 73%, 0.4);
+  --gold-border-faint: hsla(38, 61%, 73%, 0.2);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* ── Background tokens ── */
+  --bg-base: #0a0a0a;
+  --bg-dark: hsla(40, 12%, 5%, 1);
+  --bg-section: hsla(210, 4%, 9%, 1);
+  --bg-card: hsla(210, 4%, 11%, 1);
+  --bg-image: hsla(0, 3%, 7%, 1);
+  --bg-careers-1: #0c0c0c;
+  --bg-careers-2: #1a1a1b;
+  --bg-careers-3: #141414;
+  --bg-faq-item: #181818;
+
+  /* ── Text tokens ── */
+  --text-muted: hsla(0, 0%, 65%, 1);
+  --text-dim: #a6a6a6;
+  --text-dimmer: #606060;
+  --text-faint: hsla(0, 0%, 50%, 1);
+
+  /* ── Utility tokens ── */
+  --white-10: hsla(0, 0%, 100%, 0.1);
+
+  /* ── Spacing tokens ── */
+  --section-py: 70px;
+  --section-py-lg: 100px;
+  --container-max: 1200px;
+  --container-px: 1rem;
+
+  /* Keep Geist fonts for default Next.js elements */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -20,14 +48,13 @@
 html {
   font-size: 10px;
   scroll-behavior: smooth;
-  /* Always dark — prevents white flash on slider transitions */
   background: #0a0a0a;
 }
 
 body {
   background: #0a0a0a;
   color: #ededed;
-  font-family: var(--font-dm-sans);
+  font-family: var(--font-primary);
 }
 
 /* ── Scrollbar ── */
@@ -35,10 +62,229 @@ body {
   width: 5px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(38, 61%, 73%);
+  background-color: var(--gold);
 }
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* ── Shared component layers ── */
+@layer components {
+  /* Container */
+  .section-container {
+    padding-left: var(--container-px);
+    padding-right: var(--container-px);
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Section wrapper */
+  .section-base {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    text-align: center;
+    padding-top: var(--section-py);
+    padding-bottom: var(--section-py);
+  }
+  @media (min-width: 1024px) {
+    .section-base {
+      padding-top: var(--section-py-lg);
+      padding-bottom: var(--section-py-lg);
+    }
+  }
+
+  /* Section label (eyebrow text above titles) */
+  .section-label {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+  }
+
+  /*
+   * Page section title — used by FaqSection, LeadershipSection, TeamGallery
+   * Responsive: 1.6rem → 1.9rem → 2.2rem
+   */
+  .page-section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    line-height: 1.2em;
+    color: var(--gold);
+  }
+
+  /* Section title block wrapper (title + ornamental sep) */
+  .page-section-header {
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Brand/event card heading */
+  .card-heading {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+
+  /* Gold underline link */
+  .gold-link {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.25rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: var(--gold);
+    font-family: var(--font-primary);
+    letter-spacing: 0.2em;
+    transition: color 250ms;
+  }
+  .gold-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    transform: scaleX(0.2);
+    opacity: 0;
+    transition:
+      transform 500ms,
+      opacity 500ms;
+  }
+  .gold-link:hover {
+    color: #ffffff;
+  }
+  .gold-link:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* Section body text */
+  .section-body {
+    color: #ffffff;
+    line-height: 1.6;
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+  }
+
+  /* Muted body text (about page paragraphs) */
+  .body-muted {
+    font-family: var(--font-primary);
+    color: var(--text-muted);
+    line-height: 1.85em;
+  }
+
+  /* Gold rule divider */
+  .gold-rule {
+    height: 2px;
+    background-color: var(--gold);
+    opacity: 0.65;
+  }
+
+  /* Image hover border overlay */
+  .img-border-overlay {
+    position: absolute;
+    inset: 14px;
+    border: 1px solid var(--gold);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.35;
+    transition: opacity 500ms;
+  }
+  .group:hover .img-border-overlay {
+    opacity: 0.6;
+  }
+
+  /* Carousel track */
+  .carousel-track {
+    display: flex;
+    will-change: transform;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Carousel item */
+  .carousel-item {
+    flex: 0 0 25%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 1024px) {
+    .carousel-item {
+      flex: 0 0 50%;
+    }
+  }
+  @media (max-width: 600px) {
+    .carousel-item {
+      flex: 0 0 100%;
+    }
+  }
+
+  /* Carousel arrow button */
+  .carousel-arrow {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 2;
+    padding: 0 10px;
+    transition: color 200ms;
+  }
+  .carousel-arrow:hover {
+    color: var(--gold);
+  }
+
+  /* Event card gradient overlay */
+  .event-card-gradient {
+    background-image: linear-gradient(
+      to top,
+      hsla(0, 0%, 0%, 0.9),
+      hsla(0, 0%, 0%, 0.7),
+      transparent
+    );
+  }
+
+  /* Nav diamond button (HeroSlider) */
+  .hero-nav-btn {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    width: 45px;
+    height: 45px;
+    place-items: center;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      transform 500ms,
+      opacity 500ms,
+      background-color 500ms,
+      color 500ms;
+  }
+  @media (min-width: 768px) {
+    .hero-nav-btn {
+      display: grid;
+    }
+  }
+  .hero-nav-btn:hover {
+    background: var(--gold);
+    color: #000000;
+  }
 }
 
 /* ── Fade-up entrance animation ── */
@@ -78,4 +324,575 @@ body {
 .delay-6 {
   animation-delay: 1.3s;
   opacity: 0;
+}
+
+/* ── Hero slider animations ── */
+@keyframes smoothScale {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.15);
+  }
+}
+@keyframes sliderReveal {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.slider-reveal {
+  transform: translateY(30px);
+  opacity: 0;
+}
+.slider-item.active .slider-reveal {
+  animation: sliderReveal 1s ease forwards;
+}
+.slider-item.active .hero-subtitle {
+  animation-delay: 500ms;
+}
+.slider-item.active .hero-title {
+  animation-delay: 1000ms;
+}
+.slider-item.active .hero-body {
+  animation-delay: 1500ms;
+}
+.slider-item.active .hero-cta {
+  animation-delay: 2000ms;
+}
+
+/* ── Floating background shapes ── */
+@keyframes moveFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(30px);
+  }
+}
+
+/* ── Event card button ── */
+.event-view-btn:is(:hover, :focus-visible) .event-btn-before {
+  bottom: -50%;
+}
+.event-view-btn:is(:hover, :focus-visible) .event-btn-text1 {
+  transform: translateY(-150%);
+}
+.event-view-btn:is(:hover, :focus-visible) .event-btn-text2 {
+  top: 0;
+}
+
+/* ── Careers page shared components ── */
+@layer components {
+  /* Shared section padding + container used across all careers sections */
+  .careers-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 1024px) {
+    .careers-section {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .careers-container {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Section title block (eyebrow + heading) */
+  .careers-section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  /* Eyebrow label */
+  .careers-eyebrow {
+    color: var(--gold-raw);
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Section heading */
+  .careers-heading {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 2.25rem;
+  }
+  @media (min-width: 768px) {
+    .careers-heading {
+      font-size: 3rem;
+    }
+  }
+
+  /* Dim body text used throughout careers */
+  .careers-body {
+    color: var(--text-dim);
+    line-height: 1.625;
+    font-size: 0.875rem;
+  }
+
+  /* Gold CTA button (CareersCTA send resume) */
+  .careers-cta-btn {
+    display: inline-block;
+    padding: 1.25rem 3rem;
+    background-color: var(--gold-raw);
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--gold-raw);
+    transition: all 300ms;
+    text-decoration: none;
+  }
+  .careers-cta-btn:hover {
+    background-color: transparent;
+    color: var(--gold-raw);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Job card */
+  .job-card {
+    background-color: var(--bg-careers-2);
+    border: 1px solid var(--white-10);
+    padding: 2rem;
+    transition: all 300ms;
+  }
+  .job-card:hover {
+    border-color: var(--gold-raw);
+    transform: translateX(4px);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.15);
+  }
+
+  /* Job tag pill */
+  .job-tag {
+    padding: 0.375rem 0.75rem;
+    background-color: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--gold-raw);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Apply Now button on job cards */
+  .job-apply-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border: 1px solid var(--gold-raw);
+    color: var(--gold-raw);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 300ms;
+    white-space: nowrap;
+    background: transparent;
+    cursor: pointer;
+  }
+  .job-apply-btn:hover {
+    background-color: var(--gold-raw);
+    color: #000000;
+  }
+
+  /* Benefit card (WhyWorkWithUs) */
+  .benefit-card {
+    background-color: var(--bg-careers-3);
+    border: 1px solid var(--white-10);
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 300ms;
+  }
+  .benefit-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold-raw);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+  }
+
+  /* Benefit icon circle */
+  .benefit-icon {
+    width: 70px;
+    height: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--gold-raw);
+    border-radius: 9999px;
+    font-size: 2.25rem;
+    transition: all 300ms;
+  }
+  .group:hover .benefit-icon {
+    background-color: var(--gold-raw);
+    transform: scale(1.1);
+  }
+
+  /* Department filter button — inactive state */
+  .dept-filter-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--white-10);
+    background: transparent;
+    color: var(--text-dim);
+    transition: all 300ms;
+    cursor: pointer;
+  }
+  .dept-filter-btn:hover,
+  .dept-filter-btn.active {
+    background-color: var(--gold-raw);
+    border-color: var(--gold-raw);
+    color: #000000;
+  }
+
+  /* Step circle (ApplicationProcess) */
+  .step-circle {
+    width: 4rem;
+    height: 4rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gold-raw);
+    border-radius: 9999px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 1.25rem;
+    background-color: var(--bg-careers-2);
+    transition: all 300ms;
+  }
+  .group:hover .step-circle {
+    background-color: var(--gold-raw);
+    transform: scale(1.1);
+  }
+}
+
+/* ── Blog page shared components ── */
+@layer components {
+  /* Gold diamond bullet (used in BlogHero eyebrow) */
+  .gold-diamond {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* Blog/filter toggle button — base state */
+  .blog-filter-btn {
+    font-family: var(--font-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid var(--white-10);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 250ms;
+    text-align: center;
+  }
+  .blog-filter-btn:hover,
+  .blog-filter-btn.active {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg-dark);
+  }
+
+  /* Blog post card */
+  .blog-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--white-10);
+    overflow: hidden;
+    transition: all 300ms;
+  }
+  .blog-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 30px hsla(38, 61%, 50%, 0.15);
+  }
+
+  /* Blog card image placeholder area */
+  .blog-card-banner {
+    position: relative;
+    background-color: var(--bg-image);
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Gold date/label badge on cards */
+  .blog-badge {
+    background-color: var(--gold);
+    color: var(--bg-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+  }
+
+  /* Gold "Read Article" / "Read More" inline link */
+  .blog-read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gold);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-decoration: none;
+    transition: gap 300ms;
+  }
+  .blog-read-link:hover {
+    gap: 1rem;
+  }
+
+  /* Horizontal gold gradient rule used inside blog cards */
+  .blog-card-rule {
+    height: 1px;
+    margin-bottom: 1.25rem;
+    opacity: 0.3;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  /* Pagination button — base */
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    min-width: 44px;
+    border: 1px solid var(--white-10);
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: transparent;
+    cursor: pointer;
+    transition: all 250ms;
+  }
+  .pagination-btn:hover,
+  .pagination-btn.active {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg-dark);
+  }
+  .pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* Pagination prev/next (wider padding) */
+  .pagination-btn-nav {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+
+/* ── Compare page shared components ── */
+@layer components {
+  /* Animated gold fill button */
+  .gold-btn {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    display: inline-block;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border: 2px solid var(--gold);
+    padding: 12px 45px;
+    transition: colors 250ms;
+    background: transparent;
+    color: var(--gold);
+  }
+  .gold-btn.gold-btn--secondary {
+    background: var(--gold);
+    color: #000000;
+  }
+
+  /* Animated fill circle inside gold-btn */
+  .gold-btn__fill {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    height: 200%;
+    border-radius: 9999px;
+    z-index: -1;
+    transition: bottom 500ms;
+    background: var(--gold);
+  }
+  .gold-btn--secondary .gold-btn__fill {
+    background: var(--bg-dark);
+  }
+  .gold-btn:hover .gold-btn__fill {
+    bottom: -50%;
+  }
+
+  /* Primary label — slides up on hover */
+  .gold-btn__label {
+    display: block;
+    transition: transform 250ms;
+  }
+  .gold-btn:hover .gold-btn__label {
+    transform: translateY(-40px);
+  }
+
+  /* Secondary label — slides in from below */
+  .gold-btn__label-dup {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition:
+      top 250ms,
+      transform 250ms;
+    color: var(--bg-dark);
+  }
+  .gold-btn--secondary .gold-btn__label-dup {
+    color: #ffffff;
+  }
+  .gold-btn:hover .gold-btn__label-dup {
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  /* Compare product card */
+  .compare-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    padding: 30px 20px;
+    min-height: 600px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--white-10);
+    transition: all 500ms;
+  }
+  .compare-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(201, 171, 129, 0.15);
+  }
+
+  /* Compare card remove button */
+  .compare-card__remove {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border-radius: 9999px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background: var(--bg-dark);
+    border: 1px solid var(--white-10);
+    opacity: 0;
+    transition: all 250ms;
+    cursor: pointer;
+  }
+  .group:hover .compare-card__remove {
+    opacity: 1;
+  }
+  .compare-card__remove:hover {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--bg-dark);
+  }
+
+  /* Compare add placeholder card */
+  .compare-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    padding: 30px 20px;
+    min-height: 600px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--bg-card);
+    border: 1px solid var(--white-10);
+    transition: all 250ms;
+  }
+  .compare-placeholder:hover {
+    border-color: var(--gold);
+  }
+
+  /* Modal overlay */
+  .compare-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Modal panel */
+  .compare-modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: var(--bg-section);
+    border: 1px solid var(--gold);
+  }
+
+  /* Modal product row */
+  .compare-modal-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 15px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: var(--bg-card);
+    border: 1px solid var(--white-10);
+    transition: all 250ms;
+  }
+  .compare-modal-row:hover {
+    border-color: var(--gold);
+    transform: translateX(5px);
+  }
 }

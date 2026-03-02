@@ -71,27 +71,36 @@ function OrnamentalSep() {
       height="12"
       className="block mx-auto mt-[5px]"
     >
-      <line x1="0" y1="6" x2="38" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
+      <line x1="0" y1="6" x2="38" y2="6" stroke="var(--gold)" strokeWidth="1" />
       <rect
-        x="44" y="2" width="8" height="8"
+        x="44"
+        y="2"
+        width="8"
+        height="8"
         transform="rotate(45 48 6)"
-        fill="none" stroke="hsl(38,61%,73%)" strokeWidth="1"
+        fill="none"
+        stroke="var(--gold)"
+        strokeWidth="1"
       />
-      <line x1="58" y1="6" x2="100" y2="6" stroke="hsl(38,61%,73%)" strokeWidth="1" />
+      <line
+        x1="58"
+        y1="6"
+        x2="100"
+        y2="6"
+        stroke="var(--gold)"
+        strokeWidth="1"
+      />
     </svg>
   );
 }
 
 export default function LeadershipSection() {
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10 bg-[hsla(210,4%,9%,1)] overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-10 bg-[var(--bg-section)] overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
         {/* Section title */}
-        <div className="text-center mb-3">
-          <span
-            className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.4em] text-[1.6rem] sm:text-[1.9rem] md:text-[2.2rem] leading-[1.2em]"
-            style={{ fontFamily: "var(--font-forum)" }}
-          >
+        <div className="page-section-header">
+          <span className="page-section-title text-[1.6rem] sm:text-[1.9rem] md:text-[2.2rem]">
             Leadership
           </span>
           <OrnamentalSep />
@@ -104,13 +113,12 @@ export default function LeadershipSection() {
             style={{ marginTop: idx === 0 ? 50 : 70 }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0 relative">
-
               {/* Image column */}
               <div
                 className={`relative overflow-hidden min-h-[280px] sm:min-h-[360px] md:min-h-[560px] ${leader.reversed ? "md:order-last" : ""}`}
               >
                 {/* Hover border overlay */}
-                <div className="absolute inset-3 sm:inset-4 border border-[hsl(38,61%,73%)] pointer-events-none z-10 opacity-30 transition-opacity duration-500 group-hover:opacity-[0.55]" />
+                <div className="absolute inset-3 sm:inset-4 border border-[var(--gold)] pointer-events-none z-10 opacity-30 transition-opacity duration-500 group-hover:opacity-[0.55]" />
 
                 <img
                   src={leader.image}
@@ -120,72 +128,57 @@ export default function LeadershipSection() {
                 />
 
                 {/* Watermark number */}
-                <span
-                  className="absolute bottom-[-14px] left-[-6px] text-[hsl(38,61%,73%)] opacity-[0.06] leading-none pointer-events-none z-0 select-none text-[7rem] sm:text-[10rem] md:text-[14rem]"
-                  style={{ fontFamily: "var(--font-forum)" }}
-                >
+                <span className="absolute bottom-[-14px] left-[-6px] text-[var(--gold)] opacity-[0.06] leading-none pointer-events-none z-0 select-none text-[7rem] sm:text-[10rem] md:text-[14rem] [font-family:var(--font-display)]">
                   {leader.number}
                 </span>
               </div>
 
               {/* Text column */}
               <div
-                className={`flex flex-col justify-center bg-[hsla(210,4%,11%,1)] relative px-5 py-8 sm:px-9 sm:py-10 md:px-[60px] md:py-[50px] ${leader.reversed ? "md:order-first" : ""}`}
+                className={`flex flex-col justify-center bg-[var(--bg-card)] relative px-5 py-8 sm:px-9 sm:py-10 md:px-[60px] md:py-[50px] ${leader.reversed ? "md:order-first" : ""}`}
               >
-                {/* Side rule — hidden on mobile, shown md+ */}
+                {/* Side rule */}
                 <div
                   className={`hidden md:block absolute top-10 bottom-10 w-[2px] opacity-50 ${leader.reversed ? "left-auto right-0" : "left-0"}`}
-                  style={{ background: "linear-gradient(to bottom, transparent, hsl(38,61%,73%), transparent)" }}
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, transparent, var(--gold), transparent)",
+                  }}
                 />
 
                 {/* Role tag */}
-                <span
-                  className="inline-flex items-center gap-[8px] text-[1rem] sm:text-[1.1rem] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[hsl(38,61%,73%)] mb-3"
-                  style={{ fontFamily: "var(--font-dm-sans)" }}
-                >
-                  <span className="inline-block w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] border border-[hsl(38,61%,73%)] rotate-45 flex-shrink-0" />
+                <span className="inline-flex items-center gap-[8px] text-[1rem] sm:text-[1.1rem] font-bold tracking-[0.25em] sm:tracking-[0.3em] uppercase text-[var(--gold)] mb-3 [font-family:var(--font-primary)]">
+                  <span className="inline-block w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] border border-[var(--gold)] rotate-45 flex-shrink-0" />
                   {leader.role}
                 </span>
 
                 {/* Name */}
-                <h2
-                  className="text-[2.8rem] sm:text-[3rem] md:text-[4rem] text-white leading-[1.1] mb-[6px] tracking-[0.02em]"
-                  style={{ fontFamily: "var(--font-forum)" }}
-                >
+                <h2 className="text-[2.8rem] sm:text-[3rem] md:text-[4rem] text-white leading-[1.1] mb-[6px] tracking-[0.02em] [font-family:var(--font-display)]">
                   {leader.name[0]}
                   <br />
                   {leader.name[1]}
                 </h2>
 
                 {/* Gold rule */}
-                <div className="w-[40px] sm:w-[50px] h-[2px] bg-[hsl(38,61%,73%)] opacity-65 my-4 sm:my-[22px]" />
+                <div className="gold-rule w-[40px] sm:w-[50px] my-4 sm:my-[22px]" />
 
                 {/* Bio */}
                 {leader.bio.map((para, i) => (
                   <p
                     key={i}
-                    className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] text-[hsla(0,0%,65%,1)] leading-[1.8] sm:leading-[1.9] mb-5 sm:mb-7"
-                    style={{
-                      fontFamily: "var(--font-dm-sans)",
-                      marginTop: i > 0 ? "-8px" : undefined,
-                    }}
+                    className="body-muted text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] leading-[1.8] sm:leading-[1.9] mb-5 sm:mb-7"
+                    style={{ marginTop: i > 0 ? "-8px" : undefined }}
                   >
                     {para}
                   </p>
                 ))}
 
                 {/* Quote */}
-                <div className="border-l-2 border-[hsla(38,61%,73%,0.4)] pl-4 sm:pl-5 mt-1">
-                  <p
-                    className="text-[1.55rem] sm:text-[1.7rem] md:text-[1.85rem] italic text-[hsl(38,61%,73%)] leading-[1.7]"
-                    style={{ fontFamily: "var(--font-forum)" }}
-                  >
+                <div className="border-l-2 border-[var(--gold-border-mid)] pl-4 sm:pl-5 mt-1">
+                  <p className="text-[1.55rem] sm:text-[1.7rem] md:text-[1.85rem] italic text-[var(--gold)] leading-[1.7] [font-family:var(--font-display)]">
                     &ldquo;{leader.quote}&rdquo;
                   </p>
-                  <span
-                    className="block text-[1.1rem] sm:text-[1.2rem] text-[hsla(0,0%,50%,1)] tracking-[0.12em] sm:tracking-[0.15em] uppercase mt-[8px] sm:mt-[10px]"
-                    style={{ fontFamily: "var(--font-dm-sans)" }}
-                  >
+                  <span className="block text-[1.1rem] sm:text-[1.2rem] text-[var(--text-faint)] tracking-[0.12em] sm:tracking-[0.15em] uppercase mt-[8px] sm:mt-[10px] [font-family:var(--font-primary)]">
                     {leader.quoteAttr}
                   </span>
                 </div>
@@ -195,19 +188,13 @@ export default function LeadershipSection() {
                   {leader.stats.map((stat, i) => (
                     <React.Fragment key={stat.label}>
                       {i > 0 && (
-                        <div className="w-px h-8 sm:h-9 bg-[hsla(38,61%,73%,0.2)] flex-shrink-0" />
+                        <div className="w-px h-8 sm:h-9 bg-[var(--gold-border-faint)] flex-shrink-0" />
                       )}
                       <div className="flex flex-col items-start gap-[2px]">
-                        <span
-                          className="text-[2.2rem] sm:text-[2.4rem] md:text-[2.6rem] text-[hsl(38,61%,73%)] leading-none"
-                          style={{ fontFamily: "var(--font-forum)" }}
-                        >
+                        <span className="text-[2.2rem] sm:text-[2.4rem] md:text-[2.6rem] text-[var(--gold)] leading-none [font-family:var(--font-display)]">
                           {stat.value}
                         </span>
-                        <span
-                          className="text-[1rem] sm:text-[1.1rem] text-[hsla(0,0%,50%,1)] uppercase tracking-[0.12em] sm:tracking-[0.15em]"
-                          style={{ fontFamily: "var(--font-dm-sans)" }}
-                        >
+                        <span className="text-[1rem] sm:text-[1.1rem] text-[var(--text-faint)] uppercase tracking-[0.12em] sm:tracking-[0.15em] [font-family:var(--font-primary)]">
                           {stat.label}
                         </span>
                       </div>

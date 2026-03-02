@@ -39,8 +39,8 @@ export function IcSharpAccessTime(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-// phone
 
+// phone
 export function BasilPhoneOutline(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -60,8 +60,8 @@ export function BasilPhoneOutline(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-// mail icon
 
+// mail icon
 export function MaterialSymbolsMailOutline(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -81,7 +81,6 @@ export function MaterialSymbolsMailOutline(props: SVGProps<SVGSVGElement>) {
 }
 
 // close icon
-
 export function IcRoundClose(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -114,6 +113,95 @@ export function Fa7SolidChevronUp(props: SVGProps<SVGSVGElement>) {
       <path
         fill="currentColor"
         d="M297.4 169.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L320 237.3L150.6 406.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+      />
+    </svg>
+  );
+}
+
+// chevron left
+export function TablerChevronDownLeft(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      {/* Icon from Tabler Icons by Paweł Kuna - https://github.com/tabler/tabler-icons/blob/master/LICENSE */}
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M8 8v8h8"
+      />
+    </svg>
+  );
+}
+
+// Chevron Right
+export function TablerChevronUpRight(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      {/* Icon from Tabler Icons by Paweł Kuna - https://github.com/tabler/tabler-icons/blob/master/LICENSE */}
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M8 8h8v8"
+      />
+    </svg>
+  );
+}
+
+// empty compare list icon
+export function MaterialSymbolsAddBoxOutlineRounded(
+  props: SVGProps<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      {/* Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE */}
+      <path
+        fill="currentColor"
+        d="M11 13v3q0 .425.288.713T12 17t.713-.288T13 16v-3h3q.425 0 .713-.288T17 12t-.288-.712T16 11h-3V8q0-.425-.288-.712T12 7t-.712.288T11 8v3H8q-.425 0-.712.288T7 12t.288.713T8 13zm-6 8q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z"
+      />
+    </svg>
+  );
+}
+
+// placeholder compare list icon
+
+export function MaterialSymbolsAddCircleOutline(
+  props: SVGProps<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      {/* Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE */}
+      <path
+        fill="currentColor"
+        d="M11 17h2v-4h4v-2h-4V7h-2v4H7v2h4zm1 5q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8"
       />
     </svg>
   );

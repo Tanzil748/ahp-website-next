@@ -1,6 +1,6 @@
 export default function BlogHero() {
   return (
-    <section className="relative pt-40 pb-24 px-5 text-center overflow-hidden z-[1] bg-[hsla(210,4%,9%,1)]">
+    <section className="relative pt-40 pb-24 px-5 text-center overflow-hidden z-[1] bg-[var(--bg-section)]">
       {/* Radial gold glow */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,hsla(38,61%,50%,0.1)_0%,transparent_70%)]" />
 
@@ -16,18 +16,18 @@ export default function BlogHero() {
       <div className="max-w-[1200px] mx-auto">
         {/* Eyebrow */}
         <div className="fade-up delay-1 flex justify-center items-center gap-3 mb-4">
-          <span className="inline-block w-2 h-2 border border-[hsl(38,61%,73%)] rotate-45 shrink-0" />
-          <span className="text-[hsl(38,61%,73%)] uppercase font-bold tracking-[0.4em] font-[var(--font-forum)] text-[1.4rem]">
+          <span className="gold-diamond" />
+          <span className="text-[var(--gold)] uppercase font-bold tracking-[0.4em] [font-family:var(--font-display)] text-[1.4rem]">
             Insights &amp; Stories
           </span>
-          <span className="inline-block w-2 h-2 border border-[hsl(38,61%,73%)] rotate-45 shrink-0" />
+          <span className="gold-diamond" />
         </div>
 
-        <h1 className="fade-up delay-2 font-normal text-white mb-5 font-[var(--font-forum)] text-[clamp(4rem,8vw,8rem)] leading-[1.1]">
+        <h1 className="fade-up delay-2 font-normal text-white mb-5 [font-family:var(--font-display)] text-[clamp(4rem,8vw,8rem)] leading-[1.1]">
           Our Blog
         </h1>
 
-        <p className="fade-up delay-3 mx-auto text-[hsla(0,0%,65%,1)] text-[1.7rem] leading-[1.5] max-w-[520px]">
+        <p className="fade-up delay-3 mx-auto text-[var(--text-muted)] text-[1.7rem] leading-[1.5] max-w-[520px]">
           Discover the art of perfumery, fragrance trends, and behind-the-scenes
           stories
         </p>
