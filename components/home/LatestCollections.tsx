@@ -5,15 +5,52 @@ import Image from "next/image";
 import { SectionHeader } from "@/components/ui";
 
 const products = [
-  { name: "Product One", image: "/images/index-page/collections/1.png" },
-  { name: "Product Two", image: "/images/index-page/collections/2.png" },
-  { name: "Product Three", image: "/images/index-page/collections/3.png" },
-  { name: "Product Four", image: "/images/index-page/collections/4.png" },
-  { name: "Product Five", image: "/images/index-page/collections/5.png" },
-  { name: "Product Six", image: "/images/index-page/collections/6.png" },
+  { name: "Spectre Collection", image: "/images/index-page/collections/1.png" },
+  { name: "Sultan Collection", image: "/images/index-page/collections/2.png" },
+  { name: "Trilogy Collection", image: "/images/index-page/collections/3.png" },
+  { name: "Veneno Collection", image: "/images/index-page/collections/4.png" },
+  {
+    name: "Signature Collection",
+    image: "/images/index-page/collections/5.png",
+  },
+  { name: "Vulcan Collection", image: "/images/index-page/collections/6.png" },
+  {
+    name: "Royal Blend Collection",
+    image: "/images/index-page/collections/7.png",
+  },
+  {
+    name: "Prive Series Collection",
+    image: "/images/index-page/collections/8.png",
+  },
+  { name: "Nudo Collection", image: "/images/index-page/collections/9.png" },
+  {
+    name: "Pinnace Collection",
+    image: "/images/index-page/collections/10.png",
+  },
+  { name: "Notes Collection", image: "/images/index-page/collections/11.png" },
+  { name: "Just Collection", image: "/images/index-page/collections/13.png" },
+  { name: "Expose Collection", image: "/images/index-page/collections/14.png" },
+  {
+    name: "An Equistrean Series Collection",
+    image: "/images/index-page/collections/15.png",
+  },
+  { name: "Enigma Collection", image: "/images/index-page/collections/16.png" },
+  { name: "Coffee Collection", image: "/images/index-page/collections/17.png" },
+  {
+    name: "Champion Collection",
+    image: "/images/index-page/collections/18.png",
+  },
+  {
+    name: "Bavaria Collection",
+    image: "/images/index-page/collections/19.png",
+  },
+  {
+    name: "Artisan Collection",
+    image: "/images/index-page/collections/20.png",
+  },
 ];
 
-export default function NewArrivals() {
+export default function LatestCollections() {
   const trackRef = useRef<HTMLUListElement>(null!);
   const viewportRef = useRef<HTMLDivElement>(null!);
   const nextBtnRef = useRef<HTMLButtonElement>(null!);
@@ -102,8 +139,8 @@ export default function NewArrivals() {
     <div className="section-base bg-[var(--bg-section)]">
       <div className="section-container">
         <SectionHeader
-          label="New Arrivals"
-          title="Our Latest Products"
+          label="Collections"
+          title="Our Latest Collections"
           titleClassName="mb-10"
         />
       </div>
