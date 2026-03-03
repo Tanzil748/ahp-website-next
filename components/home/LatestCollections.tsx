@@ -31,7 +31,7 @@ const products = [
   { name: "Just Collection", image: "/images/index-page/collections/13.png" },
   { name: "Expose Collection", image: "/images/index-page/collections/14.png" },
   {
-    name: "An Equistrean Series Collection",
+    name: "An Equestrian Series Collection",
     image: "/images/index-page/collections/15.png",
   },
   { name: "Enigma Collection", image: "/images/index-page/collections/16.png" },
