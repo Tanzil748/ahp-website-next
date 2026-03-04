@@ -10,6 +10,7 @@ import {
   IcRoundClose,
 } from "./Icons";
 import { useState, useEffect, useRef } from "react";
+import { Show, UserButton } from "@clerk/nextjs";
 
 const navLinks = [
   { label: "About Us", href: "/about" },
@@ -19,6 +20,116 @@ const navLinks = [
   { label: "Careers", href: "/careers" },
   { label: "Contact Us", href: "/contact-us" },
 ];
+
+const userButtonAppearance = {
+  variables: {
+    colorBackground: "hsla(0, 0%, 16%, 1)",
+    colorText: "#ffffff",
+    colorTextSecondary: "#ffffff",
+    colorPrimary: "hsl(38, 61%, 73%)",
+    colorNeutral: "#ffffff",
+    borderRadius: "0px",
+    fontFamily: "var(--font-primary)",
+  },
+  elements: {
+    userButtonPopoverCard: {
+      border: "1px solid hsla(38, 61%, 73%, 0.35)",
+      boxShadow: "0 0 40px rgba(0,0,0,0.8)",
+      backgroundColor: "hsla(0, 0%, 16%, 1)",
+    },
+    userButtonPopoverActionButton: {
+      fontFamily: "var(--font-primary)",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "2px",
+      fontSize: "1.2rem",
+      borderRadius: "0",
+      color: "#ffffff",
+    },
+    userButtonPopoverActionButtonText: {
+      color: "#ffffff",
+    },
+    userButtonPopoverFooter: {
+      display: "none",
+    },
+    userPreviewMainIdentifier__userButton: {
+      color: "#ffffff",
+    },
+    userPreviewMainIdentifierText__userButton: {
+      color: "#ffffff",
+    },
+    userPreviewSecondaryIdentifier__userButton: {
+      color: "#ffffff",
+    },
+  },
+};
+
+const userProfileAppearance = {
+  variables: {
+    colorBackground: "hsla(0, 0%, 16%, 1)",
+    colorText: "#ffffff",
+    colorTextSecondary: "#ffffff",
+    colorPrimary: "hsl(38, 61%, 73%)",
+    colorNeutral: "#ffffff",
+    borderRadius: "0px",
+    fontFamily: "var(--font-primary)",
+  },
+  elements: {
+    cardBox: {
+      border: "1px solid hsla(38, 61%, 73%, 0.35)",
+      boxShadow: "0 0 80px rgba(0,0,0,0.9)",
+    },
+    navbar: {
+      backgroundColor: "hsla(0, 0%, 12%, 1)",
+      borderRight: "1px solid hsla(38, 61%, 73%, 0.2)",
+    },
+    navbarButton: {
+      fontFamily: "var(--font-primary)",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "2px",
+      borderRadius: "0",
+      color: "#ffffff",
+    },
+    navbarButtonText: { color: "#ffffff" },
+    scrollBox: { backgroundColor: "hsla(0, 0%, 16%, 1)" },
+    pageScrollBox: { backgroundColor: "hsla(0, 0%, 16%, 1)" },
+    headerTitle: {
+      fontFamily: "var(--font-display)",
+      fontWeight: "400",
+      color: "#ffffff",
+    },
+    profileSectionTitleText: {
+      fontFamily: "var(--font-primary)",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "3px",
+      color: "hsl(38, 61%, 73%)",
+    },
+    profileSectionPrimaryButton: {
+      fontFamily: "var(--font-primary)",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "2px",
+      color: "hsl(38, 61%, 73%)",
+    },
+    profileSectionContent: { color: "#ffffff" },
+    formFieldLabel: { color: "#ffffff" },
+    identityPreviewText: { color: "#ffffff" },
+    userPreviewMainIdentifierText: { color: "#ffffff" },
+    userPreviewSecondaryIdentifier: { color: "#ffffff" },
+    badge: {
+      backgroundColor: "hsla(38, 61%, 73%, 0.15)",
+      border: "1px solid hsla(38, 61%, 73%, 0.4)",
+      color: "hsl(38, 61%, 73%)",
+      borderRadius: "0",
+      fontWeight: "700",
+      textTransform: "uppercase",
+      letterSpacing: "2px",
+    },
+    footer: { display: "none" },
+  },
+};
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,7 +148,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when overlay is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -45,7 +155,6 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  // Close on Escape
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMenuOpen(false);
@@ -57,7 +166,7 @@ export default function Header() {
   return (
     <>
       {/* ════════════════════════════════════
-          TOPBAR — collapses away on scroll
+          TOPBAR
       ════════════════════════════════════ */}
       <div
         className={[
@@ -70,12 +179,9 @@ export default function Header() {
         ].join(" ")}
       >
         <div className="flex items-center justify-between gap-6 px-7">
-          {/* LEFT: address + separator + hours */}
           <div className="flex items-center gap-6">
             <address className="hidden sm:flex items-center gap-1.5 not-italic">
-              {/* Map Icon */}
               <MaterialSymbolsLocationOnOutline className="text-[15px]" />
-
               <span className="text-white text-[1.1rem] font-bold">
                 201 Christopher St, Ronkonkoma, NY, 11779
               </span>
@@ -85,21 +191,17 @@ export default function Header() {
               aria-hidden="true"
             />
             <div className="hidden md:flex items-center gap-1.5">
-              {/* Clock Icon */}
               <IcSharpAccessTime className="text-[15px]" />
               <span className="text-white text-[1.1rem] font-bold">
                 M-F : 9:00 am to 5:00 pm
               </span>
             </div>
           </div>
-
-          {/* RIGHT: phone + separator + email */}
           <div className="flex items-center gap-6">
             <a
               href="tel:+15169072340"
               className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200 hidden md:flex"
             >
-              {/* phone icone */}
               <BasilPhoneOutline className="text-[15px]" />
               <span className="text-[1.1rem] font-bold">+1 516 907 2340</span>
             </a>
@@ -111,7 +213,6 @@ export default function Header() {
               href="mailto:sales@alhusseinperfumes.com"
               className="flex items-center gap-1.5 text-white hover:text-[hsl(38,61%,73%)] transition-colors duration-200 hidden sm:flex"
             >
-              {/* mail icon */}
               <MaterialSymbolsMailOutline className="text-[15px]" />
               <span className="text-[1.1rem] font-bold">
                 sales@alhusseinperfumes.com
@@ -135,7 +236,6 @@ export default function Header() {
         ].join(" ")}
       >
         <div className="flex items-center justify-between gap-2 px-5 h-[80px]">
-          {/* LEFT: Logo + desktop nav */}
           <div className="flex items-center">
             <Link
               href="/"
@@ -152,8 +252,6 @@ export default function Header() {
                 priority
               />
             </Link>
-
-            {/* Desktop nav links — xl+ only */}
             <nav
               className="hidden lg:flex items-center gap-8"
               aria-label="Main navigation"
@@ -180,35 +278,46 @@ export default function Header() {
             </nav>
           </div>
 
-          {/* RIGHT: Auth buttons (xl+) + hamburger (below xl) */}
           <div className="flex items-center gap-3">
-            {/* Desktop auth buttons */}
-            <div className="hidden lg:flex items-center gap-3">
-              <Link
-                href="/sign-in"
-                className={[
-                  "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
-                  "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
-                  "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
-                  "transition-all duration-200",
-                ].join(" ")}
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className={[
-                  "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
-                  "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
-                  "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
-                  "transition-all duration-200",
-                ].join(" ")}
-              >
-                Register
-              </Link>
-            </div>
+            {/* Desktop auth — lg+ only */}
+            <Show when="signed-out">
+              <div className="hidden lg:flex items-center gap-3">
+                <Link
+                  href="/sign-in"
+                  className={[
+                    "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
+                    "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
+                    "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
+                    "transition-all duration-200",
+                  ].join(" ")}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className={[
+                    "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
+                    "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
+                    "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
+                    "transition-all duration-200",
+                  ].join(" ")}
+                >
+                  Register
+                </Link>
+              </div>
+            </Show>
 
-            {/* Hamburger — below xl */}
+            {/* UserButton — lg+ only, hidden on mobile */}
+            <Show when="signed-in">
+              <div className="hidden lg:flex">
+                <UserButton
+                  userProfileProps={{ appearance: userProfileAppearance }}
+                  appearance={userButtonAppearance}
+                />
+              </div>
+            </Show>
+
+            {/* Hamburger */}
             <button
               className="lg:hidden flex flex-col justify-center gap-[6px] p-3 pr-0 bg-transparent border-none cursor-pointer"
               onClick={() => setMenuOpen(true)}
@@ -257,7 +366,6 @@ export default function Header() {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        {/* Close button */}
         <button
           className={[
             "absolute top-5 right-5 p-2 rounded-full bg-transparent cursor-pointer",
@@ -268,11 +376,9 @@ export default function Header() {
           onClick={() => setMenuOpen(false)}
           aria-label="Close navigation menu"
         >
-          {/* close icon - X */}
           <IcRoundClose className="text-[25px]" />
         </button>
 
-        {/* Logo */}
         <Link
           href="/"
           onClick={() => setMenuOpen(false)}
@@ -290,7 +396,6 @@ export default function Header() {
           />
         </Link>
 
-        {/* Nav links — staggered fade-up */}
         <nav
           className="flex flex-col items-center gap-6 mb-10"
           aria-label="Mobile navigation"
@@ -317,7 +422,6 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Thin divider */}
         <div
           className={[
             "w-px h-8 bg-white/20 mb-8 transition-all duration-300",
@@ -327,42 +431,64 @@ export default function Header() {
           aria-hidden="true"
         />
 
-        {/* Auth buttons */}
-        <div
-          className={[
-            "flex flex-col sm:flex-row items-center gap-4",
-            "transition-all duration-300",
-            menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-          ].join(" ")}
-          style={{ transitionDelay: menuOpen ? "500ms" : "0ms" }}
-        >
-          <Link
-            href="/sign-in"
-            onClick={() => setMenuOpen(false)}
+        {/* Mobile auth — signed out */}
+        <Show when="signed-out">
+          <div
             className={[
-              "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
-              "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
-              "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
-              "transition-all duration-200",
+              "flex flex-col sm:flex-row items-center gap-4",
+              "transition-all duration-300",
+              menuOpen
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-3",
             ].join(" ")}
+            style={{ transitionDelay: menuOpen ? "500ms" : "0ms" }}
           >
-            Sign In
-          </Link>
-          <Link
-            href="/register"
-            onClick={() => setMenuOpen(false)}
-            className={[
-              "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
-              "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
-              "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
-              "transition-all duration-200",
-            ].join(" ")}
-          >
-            Register
-          </Link>
-        </div>
+            <Link
+              href="/sign-in"
+              onClick={() => setMenuOpen(false)}
+              className={[
+                "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
+                "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
+                "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
+                "transition-all duration-200",
+              ].join(" ")}
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/register"
+              onClick={() => setMenuOpen(false)}
+              className={[
+                "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
+                "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
+                "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
+                "transition-all duration-200",
+              ].join(" ")}
+            >
+              Register
+            </Link>
+          </div>
+        </Show>
 
-        {/* Contact links at bottom */}
+        {/* Mobile auth — signed in: show UserButton */}
+        <Show when="signed-in">
+          <div
+            className={[
+              "flex items-center justify-center",
+              "transition-all duration-300",
+              menuOpen
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-3",
+            ].join(" ")}
+            style={{ transitionDelay: menuOpen ? "500ms" : "0ms" }}
+          >
+            <UserButton
+              userProfileProps={{ appearance: userProfileAppearance }}
+              appearance={userButtonAppearance}
+            />
+          </div>
+        </Show>
+
         <div
           className={[
             "absolute bottom-8 flex flex-col items-center gap-1",
@@ -386,7 +512,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Minimal keyframe for the hamburger lines animation — cannot be expressed in Tailwind */}
       <style>{`@keyframes menuLine { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.5); } }`}</style>
     </>
   );

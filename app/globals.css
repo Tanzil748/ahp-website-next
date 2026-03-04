@@ -990,7 +990,7 @@ body {
 /* ══════════════════════════════════════════════
    CLERK AUTH FORM
 ══════════════════════════════════════════════ */
-/* this centers clerk card in page & makes slightly wider */
+
 .cl-signIn-root,
 .cl-signUp-root {
   width: 100%;
@@ -1004,7 +1004,6 @@ body {
   background-color: hsla(0, 0%, 16%, 1);
 }
 
-/* ── Card ── */
 .cl-card {
   background-color: hsla(0, 0%, 16%, 1);
 }
@@ -1029,19 +1028,8 @@ body {
   padding: 0 !important;
 }
 
-/* ── Social buttons ── */
-.cl-socialButtonsRoot {
-  width: 100% !important;
-  margin-bottom: 0 !important;
-}
-
-.cl-socialButtons {
-  width: 100% !important;
-}
-
+/* ── Social button ── */
 .cl-socialButtonsBlockButton {
-  position: relative !important;
-  overflow: hidden !important;
   width: 100% !important;
   height: 50px !important;
   display: flex !important;
@@ -1091,8 +1079,7 @@ body {
   display: flex !important;
   align-items: center !important;
   gap: 14px !important;
-  margin-top: 20px !important;
-  margin-bottom: 20px !important;
+  margin: 20px 0 !important;
 }
 
 .cl-dividerLine {
@@ -1120,23 +1107,25 @@ body {
   letter-spacing: 3px;
 }
 
-/* ── Input wrappers — must allow height to grow ── */
-.cl-formFieldInputGroup,
-.cl-internal-17uj465,
-.cl-formField,
-.cl-formFieldRow {
+/* ── Input wrappers — scoped to auth forms only ── */
+.cl-signIn-root .cl-formFieldInputGroup,
+.cl-signUp-root .cl-formFieldInputGroup,
+.cl-signIn-root .cl-internal-17uj465,
+.cl-signUp-root .cl-internal-17uj465,
+.cl-signIn-root .cl-formField,
+.cl-signUp-root .cl-formField,
+.cl-signIn-root .cl-formFieldRow,
+.cl-signUp-root .cl-formFieldRow {
   height: auto !important;
   min-height: unset !important;
 }
 
-/* ── Inputs ── */
-.cl-formFieldInput {
+/* ── Inputs — scoped to auth forms only ── */
+.cl-signIn-root .cl-formFieldInput,
+.cl-signUp-root .cl-formFieldInput {
   min-height: 40px !important;
   height: auto !important;
-  padding-top: 14px !important;
-  padding-bottom: 14px !important;
-  padding-left: 18px !important;
-  padding-right: 18px !important;
+  padding: 14px 18px !important;
   background-color: hsla(210, 4%, 9%, 1) !important;
   border: 1px solid hsla(0, 0%, 100%, 0.15) !important;
   border-radius: 0 !important;
@@ -1149,20 +1138,23 @@ body {
     box-shadow 0.4s ease !important;
 }
 
-.cl-formFieldInput:focus {
+.cl-signIn-root .cl-formFieldInput:focus,
+.cl-signUp-root .cl-formFieldInput:focus {
   border-color: hsl(38, 61%, 73%) !important;
   box-shadow: 0 0 0 3px hsla(38, 61%, 73%, 0.08) !important;
 }
 
-/* ── Password input group ── */
-.cl-formFieldInputGroup {
+/* ── Password input group — scoped to auth forms only ── */
+.cl-signIn-root .cl-formFieldInputGroup,
+.cl-signUp-root .cl-formFieldInputGroup {
   position: relative !important;
   display: flex !important;
   align-items: center !important;
   width: 100% !important;
 }
 
-.cl-formFieldInputGroup .cl-formFieldInput {
+.cl-signIn-root .cl-formFieldInputGroup .cl-formFieldInput,
+.cl-signUp-root .cl-formFieldInputGroup .cl-formFieldInput {
   padding-right: 50px !important;
 }
 
@@ -1214,8 +1206,9 @@ body {
   color: #ffffff !important;
 }
 
-/* ── Primary button — slide-up gold fill ── */
-.cl-formButtonPrimary {
+/* ── Auth form primary button — scoped, full width, slide-up gold fill ── */
+.cl-signIn-root .cl-formButtonPrimary,
+.cl-signUp-root .cl-formButtonPrimary {
   position: relative !important;
   overflow: hidden !important;
   width: 100% !important;
@@ -1233,9 +1226,13 @@ body {
   cursor: pointer !important;
   transition: color 0.35s ease !important;
   box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.cl-formButtonPrimary::before {
+.cl-signIn-root .cl-formButtonPrimary::before,
+.cl-signUp-root .cl-formButtonPrimary::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1245,15 +1242,18 @@ body {
   z-index: 0;
 }
 
-.cl-formButtonPrimary:hover::before {
+.cl-signIn-root .cl-formButtonPrimary:hover::before,
+.cl-signUp-root .cl-formButtonPrimary:hover::before {
   transform: translateY(0);
 }
 
-.cl-formButtonPrimary:hover {
+.cl-signIn-root .cl-formButtonPrimary:hover,
+.cl-signUp-root .cl-formButtonPrimary:hover {
   color: hsla(40, 12%, 5%, 1) !important;
 }
 
-.cl-formButtonPrimary * {
+.cl-signIn-root .cl-formButtonPrimary *,
+.cl-signUp-root .cl-formButtonPrimary * {
   position: relative !important;
   z-index: 1 !important;
 }
@@ -1264,8 +1264,102 @@ body {
   margin-left: 8px !important;
 }
 
-/* ── Footer ── */
-.cl-footer {
+/* ── Profile modal button row ── */
+.cl-userProfile-root .cl-internal-imuk4n {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  margin-top: 16px !important;
+}
+
+/* ── Profile modal save button ── */
+.cl-userProfile-root .cl-formButtonPrimary {
+  position: relative !important;
+  overflow: hidden !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+  max-width: 50% !important;
+  height: 36px !important;
+  margin-top: 0 !important;
+  padding: 0 12px !important;
+  background: transparent !important;
+  border: 2px solid hsl(38, 61%, 73%) !important;
+  border-radius: 0 !important;
+  color: hsl(38, 61%, 73%) !important;
+  font-family: var(--font-primary) !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: color 0.35s ease !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+.cl-userProfile-root .cl-formButtonPrimary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: hsl(38, 61%, 73%);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.cl-userProfile-root .cl-formButtonPrimary:hover::before {
+  transform: translateY(0);
+}
+
+.cl-userProfile-root .cl-formButtonPrimary:hover {
+  color: hsla(40, 12%, 5%, 1) !important;
+}
+
+.cl-userProfile-root .cl-formButtonPrimary * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* ── Profile modal cancel button ── */
+.cl-userProfile-root .cl-formButtonReset {
+  flex: 1 !important;
+  min-width: 0 !important;
+  max-width: 50% !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  background: transparent !important;
+  border: 1px solid hsla(0, 0%, 100%, 0.15) !important;
+  border-radius: 0 !important;
+  color: hsla(0, 0%, 65%, 1) !important;
+  font-family: var(--font-primary) !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  cursor: pointer !important;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+.cl-userProfile-root .cl-formButtonReset:hover {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+/* ── Footer — scoped to auth forms only ── */
+.cl-signIn-root .cl-footer,
+.cl-signUp-root .cl-footer {
   width: 100% !important;
   background: transparent !important;
   border-top: 1px solid hsla(38, 61%, 73%, 0.2) !important;
@@ -1282,24 +1376,24 @@ body {
   box-sizing: border-box !important;
 }
 
-.cl-footerAction {
+.cl-signIn-root .cl-footerAction,
+.cl-signUp-root .cl-footerAction {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
   flex-wrap: wrap !important;
-  margin-bottom: 0 !important;
 }
 
-.cl-footerActionText {
+.cl-signIn-root .cl-footerActionText,
+.cl-signUp-root .cl-footerActionText {
   color: hsla(0, 0%, 65%, 1) !important;
   font-family: var(--font-primary) !important;
   font-size: 1.3rem !important;
-  display: inline !important;
-  visibility: visible !important;
 }
 
-.cl-footerActionLink {
+.cl-signIn-root .cl-footerActionLink,
+.cl-signUp-root .cl-footerActionLink {
   color: #d4af7a !important;
   font-family: var(--font-primary) !important;
   font-weight: 700 !important;
@@ -1308,16 +1402,15 @@ body {
   letter-spacing: 2px !important;
   text-decoration: none !important;
   transition: color 0.25s ease !important;
-  display: inline !important;
-  visibility: visible !important;
 }
 
-.cl-footerActionLink:hover {
+.cl-signIn-root .cl-footerActionLink:hover,
+.cl-signUp-root .cl-footerActionLink:hover {
   color: #ffffff !important;
 }
 
-/* Hide "Secured by Clerk" + dev mode badge */
-.cl-footer > div:last-child {
+.cl-signIn-root .cl-footer > div:last-child,
+.cl-signUp-root .cl-footer > div:last-child {
   display: none !important;
 }
 
@@ -1353,4 +1446,80 @@ body {
 .cl-formResendCodeLink:hover,
 .cl-identityPreviewEditButton:hover {
   color: #ffffff !important;
+}
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 480px) {
+  .cl-cardBox {
+    max-width: 100% !important;
+  }
+
+  .cl-card {
+    padding: 32px 24px 20px !important;
+  }
+
+  .cl-signIn-root .cl-footer,
+  .cl-signUp-root .cl-footer {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* ── UserButton size ── */
+.cl-userButtonAvatarBox {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.cl-userButtonAvatarImage {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.cl-identityPreviewText {
+  color: #ffffff !important;
+}
+
+/* ── Clerk internal text — force white on all variants ── */
+[class*="cl-internal"] {
+  color: #ffffff !important;
+}
+
+/* ── Restore gold where needed after wildcard ── */
+.cl-profileSectionTitleText {
+  color: hsl(38, 61%, 73%) !important;
+}
+
+.cl-badge {
+  color: hsl(38, 61%, 73%) !important;
+}
+
+/* ── Restore muted grey where needed after wildcard ── */
+.cl-lastAuthenticationStrategyBadge,
+[class*="cl-lastAuthenticationStrategyBadge"],
+.cl-userProfile-root [class*="cl-internal-1ctdd73"] {
+  color: hsla(0, 0%, 65%, 1) !important;
+}
+
+/* ── Last used badge on social buttons ── */
+.cl-lastAuthenticationStrategyBadge,
+[class*="cl-lastAuthenticationStrategyBadge"] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  padding: 2px 8px !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  position: absolute !important;
+  top: -1px !important;
+  right: -1px !important;
+  line-height: 1.4 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ── Profile modal header title — smaller ── */
+.cl-userProfile-root .cl-headerTitle {
+  font-size: 1.8rem !important;
 }
