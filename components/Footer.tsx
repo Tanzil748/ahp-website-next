@@ -23,7 +23,6 @@ const columns: FooterColumnData[] = [
   {
     heading: "Account",
     links: [
-      { label: "My Account", href: "/account" },
       { label: "My Fragrances", href: "/fragrances" },
       { label: "My Compare List", href: "/compare-list" },
     ],
