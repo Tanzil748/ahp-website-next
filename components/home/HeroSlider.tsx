@@ -27,7 +27,7 @@ const slides = [
     text: "Bold, refined perfumes made for those who stand out.",
   },
   {
-    image: "/images/index-page/hero-banners/4.png",
+    image: "/images/index-page/hero-banners/4.jpeg",
     subtitle: "Scent Reverie",
     title: ["Flavors For", "All Seasons"],
     text: "Embrace a collection of fragrances crafted to delight every moment of the year.",
