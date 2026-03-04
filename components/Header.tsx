@@ -185,7 +185,7 @@ export default function Header() {
             {/* Desktop auth buttons */}
             <div className="hidden lg:flex items-center gap-3">
               <Link
-                href="/signin"
+                href="/sign-in"
                 className={[
                   "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
                   "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
@@ -337,7 +337,7 @@ export default function Header() {
           style={{ transitionDelay: menuOpen ? "500ms" : "0ms" }}
         >
           <Link
-            href="/signup"
+            href="/sign-in"
             onClick={() => setMenuOpen(false)}
             className={[
               "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
@@ -346,7 +346,7 @@ export default function Header() {
               "transition-all duration-200",
             ].join(" ")}
           >
-            Sign Up
+            Sign In
           </Link>
           <Link
             href="/register"
