@@ -12,13 +12,19 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { Show, UserButton } from "@clerk/nextjs";
 
-const navLinks = [
+// ── Always-visible links ──────────────────────────────────────────────────────
+const publicLinks = [
   { label: "About Us", href: "/about" },
   { label: "Products", href: "/products" },
-  { label: "Compare List", href: "/compare-list" },
   { label: "Blog", href: "/blog" },
   { label: "Careers", href: "/careers" },
   { label: "Contact Us", href: "/contact-us" },
+];
+
+// ── Only shown when signed in ─────────────────────────────────────────────────
+const authLinks = [
+  { label: "Compare List", href: "/compare-list" },
+  { label: "My Fragrances", href: "/fragrances" },
 ];
 
 const userButtonAppearance = {
@@ -46,21 +52,11 @@ const userButtonAppearance = {
       borderRadius: "0",
       color: "#ffffff",
     },
-    userButtonPopoverActionButtonText: {
-      color: "#ffffff",
-    },
-    userButtonPopoverFooter: {
-      display: "none",
-    },
-    userPreviewMainIdentifier__userButton: {
-      color: "#ffffff",
-    },
-    userPreviewMainIdentifierText__userButton: {
-      color: "#ffffff",
-    },
-    userPreviewSecondaryIdentifier__userButton: {
-      color: "#ffffff",
-    },
+    userButtonPopoverActionButtonText: { color: "#ffffff" },
+    userButtonPopoverFooter: { display: "none" },
+    userPreviewMainIdentifier__userButton: { color: "#ffffff" },
+    userPreviewMainIdentifierText__userButton: { color: "#ffffff" },
+    userPreviewSecondaryIdentifier__userButton: { color: "#ffffff" },
   },
 };
 
@@ -130,6 +126,19 @@ const userProfileAppearance = {
     footer: { display: "none" },
   },
 };
+
+// ── Reusable nav link style ───────────────────────────────────────────────────
+const navLinkClass = [
+  "relative text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
+  "after:content-[''] after:absolute after:left-0 after:-bottom-4",
+  "after:w-full after:h-[5px]",
+  "after:border-t after:border-b after:border-[hsl(38,61%,73%)]",
+  "after:scale-x-[0.2] after:opacity-0",
+  "after:transition-all after:duration-500",
+  "hover:after:scale-x-100 hover:after:opacity-100",
+  "focus-visible:after:scale-x-100 focus-visible:after:opacity-100",
+  "outline-none",
+].join(" ");
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -252,62 +261,56 @@ export default function Header() {
                 priority
               />
             </Link>
+
+            {/* ── Desktop nav ── */}
             <nav
               className="hidden lg:flex items-center gap-8"
               aria-label="Main navigation"
             >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={[
-                    "relative text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
-                    "after:content-[''] after:absolute after:left-0 after:-bottom-4",
-                    "after:w-full after:h-[5px]",
-                    "after:border-t after:border-b after:border-[hsl(38,61%,73%)]",
-                    "after:scale-x-[0.2] after:opacity-0",
-                    "after:transition-all after:duration-500",
-                    "hover:after:scale-x-100 hover:after:opacity-100",
-                    "focus-visible:after:scale-x-100 focus-visible:after:opacity-100",
-                    "outline-none",
-                  ].join(" ")}
-                >
+              {/* Public links — always visible */}
+              {publicLinks.map((link) => (
+                <Link key={link.href} href={link.href} className={navLinkClass}>
                   {link.label}
                 </Link>
               ))}
+
+              {/* Auth-only links — only when signed in */}
+              <Show when="signed-in">
+                <>
+                  {authLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={navLinkClass}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </>
+              </Show>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Desktop auth — lg+ only */}
+            {/* Desktop auth buttons — signed out */}
             <Show when="signed-out">
               <div className="hidden lg:flex items-center gap-3">
                 <Link
                   href="/sign-in"
-                  className={[
-                    "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
-                    "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
-                    "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
-                    "transition-all duration-200",
-                  ].join(" ")}
+                  className="text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)] transition-all duration-200"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/register"
-                  className={[
-                    "text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap",
-                    "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
-                    "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
-                    "transition-all duration-200",
-                  ].join(" ")}
+                  className="text-[1.2rem] font-bold tracking-wide px-5 py-2 rounded whitespace-nowrap bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)] hover:bg-transparent hover:text-[hsl(38,61%,73%)] transition-all duration-200"
                 >
                   Register
                 </Link>
               </div>
             </Show>
 
-            {/* UserButton — lg+ only, hidden on mobile */}
+            {/* Desktop UserButton — signed in */}
             <Show when="signed-in">
               <div className="hidden lg:flex">
                 <UserButton
@@ -366,19 +369,16 @@ export default function Header() {
         aria-modal="true"
         aria-label="Navigation menu"
       >
+        {/* Close button */}
         <button
-          className={[
-            "absolute top-5 right-5 p-2 rounded-full bg-transparent cursor-pointer",
-            "border border-white/30 text-white",
-            "hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
-            "transition-all duration-200 flex items-center justify-center",
-          ].join(" ")}
+          className="absolute top-5 right-5 p-2 rounded-full bg-transparent cursor-pointer border border-white/30 text-white hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)] transition-all duration-200 flex items-center justify-center"
           onClick={() => setMenuOpen(false)}
           aria-label="Close navigation menu"
         >
           <IcRoundClose className="text-[25px]" />
         </button>
 
+        {/* Logo */}
         <Link
           href="/"
           onClick={() => setMenuOpen(false)}
@@ -396,11 +396,13 @@ export default function Header() {
           />
         </Link>
 
+        {/* Nav links */}
         <nav
           className="flex flex-col items-center gap-6 mb-10"
           aria-label="Mobile navigation"
         >
-          {navLinks.map((link, i) => (
+          {/* Public links — always visible */}
+          {publicLinks.map((link, i) => (
             <Link
               key={link.href}
               href={link.href}
@@ -420,8 +422,37 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+
+          {/* Auth-only links — only when signed in */}
+          <Show when="signed-in">
+            <>
+              {authLinks.map((link, i) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={[
+                    "text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.2em] text-2xl",
+                    "hover:text-white focus-visible:text-white",
+                    "transition-all duration-300 outline-none",
+                    menuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-3",
+                  ].join(" ")}
+                  style={{
+                    transitionDelay: menuOpen
+                      ? `${(publicLinks.length + i) * 55 + 120}ms`
+                      : "0ms",
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </>
+          </Show>
         </nav>
 
+        {/* Divider */}
         <div
           className={[
             "w-px h-8 bg-white/20 mb-8 transition-all duration-300",
@@ -435,8 +466,7 @@ export default function Header() {
         <Show when="signed-out">
           <div
             className={[
-              "flex flex-col sm:flex-row items-center gap-4",
-              "transition-all duration-300",
+              "flex flex-col sm:flex-row items-center gap-4 transition-all duration-300",
               menuOpen
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-3",
@@ -446,36 +476,25 @@ export default function Header() {
             <Link
               href="/sign-in"
               onClick={() => setMenuOpen(false)}
-              className={[
-                "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
-                "border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)]",
-                "hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)]",
-                "transition-all duration-200",
-              ].join(" ")}
+              className="text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] hover:bg-[hsl(38,61%,73%)] hover:text-[hsl(40,12%,5%)] transition-all duration-200"
             >
               Sign In
             </Link>
             <Link
               href="/register"
               onClick={() => setMenuOpen(false)}
-              className={[
-                "text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center",
-                "bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]",
-                "hover:bg-transparent hover:text-[hsl(38,61%,73%)]",
-                "transition-all duration-200",
-              ].join(" ")}
+              className="text-[1.4rem] font-bold tracking-wide px-8 py-3 rounded w-48 text-center bg-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)] hover:bg-transparent hover:text-[hsl(38,61%,73%)] transition-all duration-200"
             >
               Register
             </Link>
           </div>
         </Show>
 
-        {/* Mobile auth — signed in: show UserButton */}
+        {/* Mobile auth — signed in: UserButton */}
         <Show when="signed-in">
           <div
             className={[
-              "flex items-center justify-center",
-              "transition-all duration-300",
+              "flex items-center justify-center transition-all duration-300",
               menuOpen
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-3",
@@ -489,10 +508,10 @@ export default function Header() {
           </div>
         </Show>
 
+        {/* Footer contact info */}
         <div
           className={[
-            "absolute bottom-8 flex flex-col items-center gap-1",
-            "transition-opacity duration-300",
+            "absolute bottom-8 flex flex-col items-center gap-1 transition-opacity duration-300",
             menuOpen ? "opacity-100" : "opacity-0",
           ].join(" ")}
           style={{ transitionDelay: menuOpen ? "580ms" : "0ms" }}
