@@ -1,6 +1,20 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export default clerkMiddleware();
+// this methods lets you target all subroutes too
+const isProtectedRoute = createRouteMatcher([
+  "/compare-list(.*)",
+  "/fragrances(.*)",
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  const authObject = await auth();
+
+  if (isProtectedRoute(req) && !authObject.userId) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
+  }
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: [
