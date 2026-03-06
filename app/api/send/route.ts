@@ -1,0 +1,149 @@
+import { Resend } from "resend";
+import { NextResponse } from "next/server";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const { type } = body;
+
+  // ── Subscribe ────────────────────────────────────────────────────────────────
+  if (type === "subscribe") {
+    const { email } = body;
+
+    const { data, error } = await resend.emails.send({
+      from: "Al Hussein Perfumes <onboarding@resend.dev>",
+      to: "tanzilhassan333@gmail.com",
+      replyTo: email,
+      subject: `New Mailing List Request — ${email}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:0;background:#0e0e0e;color:#fff;">
+
+          <!-- Header bar -->
+          <div style="background:#1a1a1a;padding:32px 40px;border-bottom:2px solid hsl(38,61%,73%);">
+            <div style="width:40px;height:2px;background:hsl(38,61%,73%);margin-bottom:16px;"></div>
+            <h2 style="margin:0;font-size:22px;font-weight:400;color:#fff;letter-spacing:1px;font-family:Georgia,serif;">
+              New Mailing List Request
+            </h2>
+            <p style="margin:6px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#888;">
+              Al Hussein Perfumes
+            </p>
+          </div>
+
+          <!-- Body -->
+          <div style="background:#1a1a1a;padding:32px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <p style="margin:0 0 24px;font-size:15px;color:#aaa;line-height:1.7;">
+              The following email address has requested to be added to the mailing list:
+            </p>
+
+            <div style="background:#111;border:1px solid #2a2a2a;padding:20px 24px;margin-bottom:24px;">
+              <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#666;font-weight:700;">
+                Email Address
+              </p>
+              <a href="mailto:${email}" style="font-size:17px;color:hsl(38,61%,73%);text-decoration:none;font-weight:600;">
+                ${email}
+              </a>
+            </div>
+
+            <p style="margin:0;font-size:13px;color:#555;line-height:1.6;">
+              Please add this address to your mailing list at your earliest convenience.
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div style="background:#111;padding:20px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#444;">
+              Sent from the subscribe form at alhusseinperfumes.com
+            </p>
+          </div>
+
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ id: data?.id });
+  }
+
+  // ── Contact form ─────────────────────────────────────────────────────────────
+  const { firstName, lastName, email, phone, company, message, to } = body;
+
+  const { data, error } = await resend.emails.send({
+    from: "Al Hussein Perfumes <onboarding@resend.dev>",
+    to: to ?? "tanzilhassan333@gmail.com",
+    replyTo: email,
+    subject: `New Contact Form Submission — ${firstName} ${lastName}`,
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:0;background:#0e0e0e;color:#fff;">
+
+        <!-- Header bar -->
+        <div style="background:#1a1a1a;padding:32px 40px;border-bottom:2px solid hsl(38,61%,73%);">
+          <div style="width:40px;height:2px;background:hsl(38,61%,73%);margin-bottom:16px;"></div>
+          <h2 style="margin:0;font-size:22px;font-weight:400;color:#fff;letter-spacing:1px;font-family:Georgia,serif;">
+            New Contact Form Submission
+          </h2>
+          <p style="margin:6px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#888;">
+            Al Hussein Perfumes
+          </p>
+        </div>
+
+        <!-- Body -->
+        <div style="background:#1a1a1a;padding:32px 40px;border:1px solid #2a2a2a;border-top:none;">
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;width:130px;vertical-align:top;">Name</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${firstName} ${lastName}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Email</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;">
+                <a href="mailto:${email}" style="color:hsl(38,61%,73%);text-decoration:none;">${email}</a>
+              </td>
+            </tr>
+            ${
+              phone
+                ? `
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Phone</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${phone}</td>
+            </tr>`
+                : ""
+            }
+            ${
+              company
+                ? `
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Company</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${company}</td>
+            </tr>`
+                : ""
+            }
+            <tr>
+              <td style="padding:12px 0;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Message</td>
+              <td style="padding:12px 0;color:#fff;font-size:15px;white-space:pre-wrap;line-height:1.6;">${message}</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div style="background:#111;padding:20px 40px;border:1px solid #2a2a2a;border-top:none;">
+          <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#444;">
+            Sent from the contact form at alhusseinperfumes.com
+          </p>
+        </div>
+
+      </div>
+    `,
+  });
+
+  if (error) {
+    console.error("Resend error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ id: data?.id });
+}

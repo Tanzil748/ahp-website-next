@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   gold,
   eerieBlack2,
-  smokyBlack1,
   smokyBlack2,
   quickSilver,
   whiteAlpha10,
@@ -95,8 +94,8 @@ function TextareaField({
   );
 }
 
-// ─── Animated submit button ───────────────────────────────────────────────────
-function SubmitButton() {
+// ─── Submit button ────────────────────────────────────────────────────────────
+function SubmitButton({ loading }: { loading: boolean }) {
   return (
     <>
       <style>{`
@@ -118,6 +117,10 @@ function SubmitButton() {
           color: hsl(38,61%,73%);
           transition: color 0.35s ease;
         }
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
         .submit-btn::before {
           content: '';
           position: absolute;
@@ -127,25 +130,18 @@ function SubmitButton() {
           transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
           z-index: 0;
         }
-        .submit-btn:hover::before {
-          transform: translateY(0);
-        }
-        .submit-btn:hover {
-          color: hsla(40,12%,5%,1);
-        }
-        .submit-btn span {
-          position: relative;
-          z-index: 1;
-        }
+        .submit-btn:not(:disabled):hover::before { transform: translateY(0); }
+        .submit-btn:not(:disabled):hover { color: hsla(40,12%,5%,1); }
+        .submit-btn span { position: relative; z-index: 1; }
       `}</style>
-      <button type="submit" className="submit-btn">
-        <span>Send Message</span>
+      <button type="submit" className="submit-btn" disabled={loading}>
+        <span>{loading ? "Sending…" : "Send Message"}</span>
       </button>
     </>
   );
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Main component ───────────────────────────────────────────────────────────
 export default function ContactForm() {
   const [form, setForm] = useState({
     firstName: "",
@@ -157,6 +153,8 @@ export default function ContactForm() {
   });
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -165,8 +163,11 @@ export default function ContactForm() {
     setErrors((prev) => ({ ...prev, [e.target.name]: false }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSendError(false);
+
+    // Validation
     const newErrors: Record<string, boolean> = {};
     if (!form.firstName.trim()) newErrors.firstName = true;
     if (!form.lastName.trim()) newErrors.lastName = true;
@@ -178,12 +179,27 @@ export default function ContactForm() {
       setErrors(newErrors);
       return;
     }
+
+    setLoading(true);
+
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    setLoading(false);
+
+    if (!res.ok) {
+      setSendError(true);
+      return;
+    }
+
     setSubmitted(true);
   };
 
   return (
     <div className="fade-up delay-3">
-      {/* Card with corner accent lines implemented as real DOM elements */}
       <div
         className="relative overflow-hidden px-[45px] py-[50px] max-lg:px-[22px] max-lg:py-[35px] max-sm:px-[16px] max-sm:py-[28px]"
         style={{ backgroundColor: smokyBlack2 }}
@@ -226,7 +242,6 @@ export default function ContactForm() {
             </p>
 
             <form onSubmit={handleSubmit} noValidate>
-              {/* Row 1 — Name */}
               <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-x-5">
                 <InputField
                   label="First Name"
@@ -250,7 +265,6 @@ export default function ContactForm() {
                 />
               </div>
 
-              {/* Row 2 — Contact */}
               <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-x-5">
                 <InputField
                   label="Email Address"
@@ -272,7 +286,6 @@ export default function ContactForm() {
                 />
               </div>
 
-              {/* Company */}
               <InputField
                 label="Company / Business Name"
                 name="company"
@@ -282,7 +295,6 @@ export default function ContactForm() {
                 onChange={handleChange}
               />
 
-              {/* Message */}
               <TextareaField
                 label="Message"
                 name="message"
@@ -293,11 +305,19 @@ export default function ContactForm() {
                 error={errors.message}
               />
 
-              <SubmitButton />
+              <SubmitButton loading={loading} />
+
+              {sendError && (
+                <p
+                  className="mt-4 text-center text-[1.3rem]"
+                  style={{ color: "hsl(0,70%,60%)" }}
+                >
+                  Something went wrong. Please try again.
+                </p>
+              )}
             </form>
           </>
         ) : (
-          /* Success state */
           <div className="text-center py-10">
             <div
               className="w-[70px] h-[70px] rounded-full grid place-items-center mx-auto mb-6"

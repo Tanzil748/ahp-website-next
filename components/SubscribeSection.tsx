@@ -128,10 +128,29 @@ const SOCIALS: SocialLink[] = [
 
 export default function SubscribeSection() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Subscribe:", email);
+    setError(false);
+    setLoading(true);
+
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "subscribe", email }),
+    });
+
+    setLoading(false);
+
+    if (!res.ok) {
+      setError(true);
+      return;
+    }
+
+    setSubmitted(true);
     setEmail("");
   };
 
@@ -177,26 +196,56 @@ export default function SubscribeSection() {
           inbox.
         </p>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="subscribe-form">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Enter your email address"
-            className="subscribe-input text-[1.1rem] sm:text-[1.5rem] px-3 sm:px-5"
-          />
-          <button
-            type="submit"
-            className="subscribe-btn text-[0.85rem] sm:text-[1.15rem] tracking-[0.15em] sm:tracking-[0.2em] px-4 sm:px-8"
-          >
-            Subscribe
-          </button>
-        </form>
+        {/* Form / success state */}
+        {submitted ? (
+          <div className="mb-10 py-5 px-8 border border-[hsla(38,61%,73%,0.3)] inline-block">
+            <p className="text-[1.5rem] text-[var(--gold)] font-bold uppercase tracking-[3px]">
+              You&apos;re on the list!
+            </p>
+            <p className="text-[1.3rem] text-[hsla(0,0%,60%,1)] mt-1">
+              We&apos;ll be in touch with updates and exclusive offers.
+            </p>
+          </div>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit} className="subscribe-form">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError(false);
+                }}
+                required
+                placeholder="Enter your email address"
+                className="subscribe-input text-[1.1rem] sm:text-[1.5rem] px-3 sm:px-5"
+                disabled={loading}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="subscribe-btn text-[0.85rem] sm:text-[1.15rem] tracking-[0.15em] sm:tracking-[0.2em] px-4 sm:px-8"
+                style={{
+                  opacity: loading ? 0.6 : 1,
+                  cursor: loading ? "not-allowed" : "pointer",
+                }}
+              >
+                {loading ? "Sending…" : "Subscribe"}
+              </button>
+            </form>
+            {error && (
+              <p
+                className="mt-3 text-[1.2rem]"
+                style={{ color: "hsl(0,70%,60%)" }}
+              >
+                Something went wrong. Please try again.
+              </p>
+            )}
+          </>
+        )}
 
         {/* Follow Us divider */}
-        <div className="flex items-center gap-4 max-w-[400px] mx-auto mb-7">
+        <div className="flex items-center gap-4 max-w-[400px] mx-auto mb-7 mt-2">
           <div className="flex-1 h-px bg-[hsla(38,61%,73%,0.15)]" />
           <span className="text-[1.1rem] uppercase tracking-[0.2em] whitespace-nowrap text-[hsla(0,0%,40%,1)]">
             Follow Us
