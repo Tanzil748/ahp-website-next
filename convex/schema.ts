@@ -12,6 +12,16 @@ export default defineSchema({
     savedPerfumes: v.optional(v.array(v.id("savedPerfumes"))),
   }).index("byClerkUserId", ["clerkUserId"]),
 
+  posts: defineTable({
+    title: v.string(),
+    category: v.string(),
+    excerpt: v.optional(v.string()),
+    body: v.string(),
+    coverImageId: v.optional(v.id("_storage")),
+    authorId: v.string(),
+    createdAt: v.number(),
+  }),
+
   products: defineTable({
     itemName: v.string(),
     brand: v.string(),

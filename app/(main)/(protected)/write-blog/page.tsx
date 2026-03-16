@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useMutation } from "convex/react";
+import { useRouter } from "next/navigation";
+import { api } from "@/convex/_generated/api";
 
 // ── Input field ───────────────────────────────────────────────────────────────
 function InputField({
@@ -230,6 +233,10 @@ const CATEGORIES = [
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function NewBlogPost() {
+  const router = useRouter();
+  const createPost = useMutation(api.posts.createPost);
+  const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
+
   const [form, setForm] = useState({
     title: "",
     category: "",
@@ -265,21 +272,37 @@ export default function NewBlogPost() {
 
     setLoading(true);
 
-    const data = new FormData();
-    data.append("title", form.title);
-    data.append("category", form.category);
-    data.append("excerpt", form.excerpt);
-    data.append("body", form.body);
-    if (form.imageFile) data.append("image", form.imageFile);
+    try {
+      let coverImageId = undefined;
 
-    const res = await fetch("/api/blog/new", { method: "POST", body: data });
+      // Step 1: upload image to Convex storage if provided
+      if (form.imageFile) {
+        const uploadUrl = await generateUploadUrl();
+        const uploadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": form.imageFile.type },
+          body: form.imageFile,
+        });
+        const { storageId } = await uploadRes.json();
+        coverImageId = storageId;
+      }
 
-    setLoading(false);
-    if (!res.ok) {
+      // Step 2: insert post into Convex database
+      await createPost({
+        title: form.title,
+        category: form.category,
+        excerpt: form.excerpt || undefined,
+        body: form.body,
+        coverImageId,
+      });
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
       setPostError(true);
-      return;
+    } finally {
+      setLoading(false);
     }
-    setSubmitted(true);
   };
 
   return (
