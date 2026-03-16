@@ -1,7 +1,20 @@
+import Link from "next/link";
+
 export default function FeaturedPost() {
   return (
     <section className="py-20 px-5">
       <div className="max-w-[1200px] mx-auto">
+        {/* Write a Post button */}
+        <div className="fade-up delay-2 flex justify-end mb-3">
+          <Link
+            href="/write-blog"
+            className="group relative inline-flex items-center gap-2 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] uppercase font-bold tracking-[0.25em] text-[1.1rem] [font-family:var(--font-display)] transition-all duration-300 hover:text-[hsla(40,12%,5%,1)] overflow-hidden"
+          >
+            <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
+            <span className="relative z-10">+ Write a Blog</span>
+          </Link>
+        </div>
+
         {/* Section title */}
         <div className="fade-up delay-2 text-center mb-3">
           <span className="text-[hsl(38,61%,73%)] uppercase font-bold tracking-[0.4em] font-[var(--font-forum)] text-[2.2rem]">

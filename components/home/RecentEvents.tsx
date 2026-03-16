@@ -77,7 +77,7 @@ export default function RecentEvents() {
           ))}
         </ul>
 
-        <GoldButton href="/blog" className="mx-auto mt-[40px]">
+        <GoldButton href="/blogs" className="mx-auto mt-[40px]">
           View Our Blog
         </GoldButton>
       </div>
