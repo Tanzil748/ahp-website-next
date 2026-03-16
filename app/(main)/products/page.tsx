@@ -254,12 +254,15 @@ export default function ProductsPage() {
   }, [totalPages, safePage]);
 
   const parseNotes = (p: (typeof allProducts)[0]) =>
-    [p.topNotes, p.middleNotes, p.baseNotes]
-      .join(",")
-      .split(",")
-      .map((n) => n.trim())
-      .filter(Boolean)
-      .slice(0, 4);
+    [
+      ...new Set(
+        [p.topNotes, p.middleNotes, p.baseNotes]
+          .join(",")
+          .split(",")
+          .map((n) => n.trim())
+          .filter(Boolean),
+      ),
+    ].slice(0, 4);
 
   const FilterPanel = () => (
     <aside
