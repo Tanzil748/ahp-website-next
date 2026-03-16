@@ -8,7 +8,7 @@ import {
   quickSilver,
   whiteAlpha10,
   CheckIcon,
-} from "../app/contact-us/components/contactUtils";
+} from "../app/(main)/contact-us/components/contactUtils";
 
 // ─── Input field ──────────────────────────────────────────────────────────────
 function InputField({

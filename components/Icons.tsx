@@ -186,7 +186,6 @@ export function MaterialSymbolsAddBoxOutlineRounded(
 }
 
 // placeholder compare list icon
-
 export function MaterialSymbolsAddCircleOutline(
   props: SVGProps<SVGSVGElement>,
 ) {

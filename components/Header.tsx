@@ -16,7 +16,7 @@ import { Show, UserButton } from "@clerk/nextjs";
 const publicLinks = [
   { label: "About Us", href: "/about" },
   { label: "Products", href: "/products" },
-  { label: "Blog", href: "/blog" },
+  { label: "Blogs", href: "/blogs" },
   { label: "Careers", href: "/careers" },
   { label: "Contact Us", href: "/contact-us" },
 ];

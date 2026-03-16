@@ -1,4 +1,4 @@
-import Distribution from "@/components/home/distribution";
+import Distribution from "@/components/home/Distribution";
 import HeroSlider from "@/components/home/HeroSlider";
 import LatestCollections from "@/components/home/LatestCollections";
 import RecentEvents from "@/components/home/RecentEvents";
