@@ -44,5 +44,6 @@ export default defineSchema({
     packageHeight: v.number(),
     dimensionUnit: v.string(),
     weightUnit: v.string(),
+    imageId: v.optional(v.id("_storage")),
   }),
 });

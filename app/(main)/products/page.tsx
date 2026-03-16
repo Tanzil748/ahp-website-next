@@ -1,147 +1,108 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import BackToTop from "@/components/BackToTop";
-import { useState, useMemo } from "react";
+import Link from "next/link";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  gender: "Men" | "Women" | "Unisex";
-  available: boolean;
-  url?: string;
-  image?: string;
-}
-
-// ─── Product data — swap with real fetch("/sample_products.json") ─────────────
-const PRODUCTS: Product[] = [
-  {
-    id: "1",
-    name: "Liquid Brun",
-    brand: "French Avenue",
-    gender: "Unisex",
-    available: true,
-  },
-  {
-    id: "2",
-    name: "Oud Noir",
-    brand: "Lattafa",
-    gender: "Men",
-    available: true,
-  },
-  {
-    id: "3",
-    name: "Rose Élite",
-    brand: "French Avenue",
-    gender: "Women",
-    available: true,
-  },
-  {
-    id: "4",
-    name: "Santal Royale",
-    brand: "Maison",
-    gender: "Unisex",
-    available: true,
-  },
-  { id: "5", name: "Velvet Oud", brand: "FW", gender: "Men", available: false },
-  {
-    id: "6",
-    name: "Ambre Nocturne",
-    brand: "Maison",
-    gender: "Women",
-    available: true,
-  },
-  {
-    id: "7",
-    name: "Cedar Black",
-    brand: "Lattafa",
-    gender: "Men",
-    available: true,
-  },
-  {
-    id: "8",
-    name: "Magnolia Blanche",
-    brand: "French Avenue",
-    gender: "Women",
-    available: false,
-  },
-  {
-    id: "9",
-    name: "Aqua Intense",
-    brand: "FW",
-    gender: "Unisex",
-    available: true,
-  },
-  {
-    id: "10",
-    name: "Safran Imperial",
-    brand: "Maison",
-    gender: "Men",
-    available: true,
-  },
-  {
-    id: "11",
-    name: "Musk Tahara",
-    brand: "Lattafa",
-    gender: "Unisex",
-    available: true,
-  },
-  {
-    id: "12",
-    name: "Iris Sublime",
-    brand: "FW",
-    gender: "Women",
-    available: false,
-  },
-  {
-    id: "13",
-    name: "Bakhoor Al Oud",
-    brand: "Lattafa",
-    gender: "Men",
-    available: true,
-  },
-  {
-    id: "14",
-    name: "Citrus Évasion",
-    brand: "French Avenue",
-    gender: "Unisex",
-    available: true,
-  },
-  {
-    id: "15",
-    name: "Jasmin Poudré",
-    brand: "Maison",
-    gender: "Women",
-    available: true,
-  },
-  {
-    id: "16",
-    name: "Tobacco & Leather",
-    brand: "FW",
-    gender: "Men",
-    available: true,
-  },
+const PAGE_SIZE = 12;
+const DISPLAY_BRANDS = [
+  "Fragrance World",
+  "French Avenue",
+  "Lattafa",
+  "Maison",
 ];
 
-const BRANDS = ["FW", "French Avenue", "Maison", "Lattafa"];
-const GENDERS = ["Men", "Women", "Unisex"];
-const PAGE_SIZE = 12;
+const normalizeGender = (g: string | undefined) => {
+  if (!g) return "";
+  const t = g.trim();
+  return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+};
 
-// ─── Placeholder SVG ──────────────────────────────────────────────────────────
-const PLACEHOLDER =
-  "data:image/svg+xml;base64," +
-  btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200" fill="none">
-    <rect width="160" height="200" fill="#1a1a1a"/>
-    <rect x="45" y="90" width="70" height="90" rx="14" fill="#2a2822" stroke="#d4af37" stroke-width="1.5"/>
-    <rect x="62" y="60" width="36" height="34" rx="6"  fill="#2a2822" stroke="#d4af37" stroke-width="1.5"/>
-    <rect x="58" y="44" width="44" height="20" rx="6"  fill="#d4af37"/>
-    <rect x="55" y="115" width="50" height="1.5" fill="#d4af3740"/>
-    <rect x="55" y="125" width="50" height="1.5" fill="#d4af3740"/>
-    <rect x="97" y="95"  width="5"  height="70" rx="3" fill="#ffffff08"/>
-  </svg>`);
+const normalizeBrand = (brand: string): string => {
+  const b = brand.toLowerCase().trim();
+  if (b.includes("lattafa") || b.includes("maison alhambra")) return "Lattafa";
+  if (b.includes("french avenue")) return "French Avenue";
+  if (b.includes("fragrance world")) return "Fragrance World";
+  if (b.includes("maison")) return "Maison";
+  return brand;
+};
+
+// ── Collapsible sidebar section ───────────────────────────────────────────────
+function SidebarSection({
+  title,
+  icon,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="border-b border-white/10 pb-6 mb-6 last:border-0 last:mb-0 last:pb-0">
+      <button
+        onClick={() => setOpen((p) => !p)}
+        className="w-full flex items-center justify-between mb-3 group"
+      >
+        <span className="flex items-center gap-2 text-[hsl(38,61%,73%)] font-bold uppercase tracking-[3px] text-[1.1rem]">
+          {icon}
+          {title}
+        </span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          className={`text-white/30 group-hover:text-[hsl(38,61%,73%)] transition-all duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M2 4l4 4 4-4" />
+        </svg>
+      </button>
+      {open && <div className="flex flex-col gap-0.5">{children}</div>}
+    </div>
+  );
+}
+
+// ── Filter checkbox row ───────────────────────────────────────────────────────
+function FilterOption({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <label className="flex items-center gap-3 px-2 py-2 cursor-pointer rounded transition-colors duration-150 hover:bg-[hsl(38,61%,73%)]/10 group">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="w-4 h-4 shrink-0 accent-[hsl(38,61%,73%)] cursor-pointer"
+      />
+      <span
+        className={`text-[1.4rem] font-bold uppercase tracking-[1.5px] transition-colors duration-150 ${
+          checked
+            ? "text-[hsl(38,61%,73%)]"
+            : "text-white/60 group-hover:text-[hsl(38,61%,73%)]"
+        }`}
+      >
+        {label}
+      </span>
+    </label>
+  );
+}
 
 export default function ProductsPage() {
+  const { isSignedIn, user } = useUser();
+  const products = useQuery(api.products.getProducts);
+
   const [search, setSearch] = useState("");
   const [viewAll, setViewAll] = useState(true);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -150,8 +111,47 @@ export default function ProductsPage() {
   const [showUnavailable, setShowUnavailable] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [savedItems, setSavedItems] = useState<string[]>([]);
+  const [notification, setNotification] = useState<{
+    id: string;
+    msg: string;
+  } | null>(null);
 
-  // ── Toggle helpers ────────────────────────────────────────────────────────
+  const allProducts = useMemo(() => products ?? [], [products]);
+
+  const genders = useMemo(
+    () =>
+      [
+        ...new Set(
+          allProducts.map((p) => normalizeGender(p.gender)).filter(Boolean),
+        ),
+      ].sort(),
+    [allProducts],
+  );
+
+  useEffect(() => {
+    if (isSignedIn && user) {
+      const saved = localStorage.getItem(`savedProducts_${user.id}`);
+      if (saved) setSavedItems(JSON.parse(saved));
+    }
+  }, [isSignedIn, user]);
+
+  const toggleSave = (id: string, name: string) => {
+    if (!isSignedIn) return;
+    const isAdded = savedItems.includes(id);
+    const next = isAdded
+      ? savedItems.filter((f) => f !== id)
+      : [...savedItems, id];
+    setSavedItems(next);
+    if (isSignedIn && user)
+      localStorage.setItem(`savedProducts_${user.id}`, JSON.stringify(next));
+    setNotification({
+      id,
+      msg: isAdded ? `Removed "${name}"` : `Added "${name}"`,
+    });
+    setTimeout(() => setNotification(null), 2500);
+  };
+
   const toggleBrand = (b: string) => {
     setViewAll(false);
     setCurrentPage(1);
@@ -159,6 +159,7 @@ export default function ProductsPage() {
       p.includes(b) ? p.filter((x) => x !== b) : [...p, b],
     );
   };
+
   const toggleGender = (g: string) => {
     setViewAll(false);
     setCurrentPage(1);
@@ -166,6 +167,7 @@ export default function ProductsPage() {
       p.includes(g) ? p.filter((x) => x !== g) : [...p, g],
     );
   };
+
   const resetAll = () => {
     setViewAll(true);
     setSelectedBrands([]);
@@ -175,29 +177,49 @@ export default function ProductsPage() {
     setCurrentPage(1);
   };
 
-  // ── Filter logic ──────────────────────────────────────────────────────────
+  const handleSearch = (val: string) => {
+    setSearch(val);
+    setCurrentPage(1);
+  };
+
+  const hasActiveFilters =
+    !viewAll ||
+    selectedBrands.length > 0 ||
+    selectedGenders.length > 0 ||
+    showAvailable ||
+    showUnavailable;
+
   const filtered = useMemo(() => {
-    return PRODUCTS.filter((p) => {
+    return allProducts.filter((p) => {
       const q = search.toLowerCase();
       if (
         q &&
-        !p.name.toLowerCase().includes(q) &&
-        !p.brand.toLowerCase().includes(q)
+        !p.itemName.toLowerCase().includes(q) &&
+        !p.brand.toLowerCase().includes(q) &&
+        !p.sku.toLowerCase().includes(q)
       )
         return false;
       if (viewAll) return true;
-      if (selectedBrands.length > 0 && !selectedBrands.includes(p.brand))
+      if (
+        selectedBrands.length > 0 &&
+        !selectedBrands.includes(normalizeBrand(p.brand))
+      )
         return false;
-      if (selectedGenders.length > 0 && !selectedGenders.includes(p.gender))
+      if (
+        selectedGenders.length > 0 &&
+        !selectedGenders.includes(normalizeGender(p.gender))
+      )
         return false;
       const filteringAvail = showAvailable || showUnavailable;
       if (filteringAvail) {
-        if (showAvailable && !showUnavailable && !p.available) return false;
-        if (showUnavailable && !showAvailable && p.available) return false;
+        const isAvailable = p.stockOnHand > 0;
+        if (showAvailable && !showUnavailable && !isAvailable) return false;
+        if (showUnavailable && !showAvailable && isAvailable) return false;
       }
       return true;
     });
   }, [
+    allProducts,
     search,
     viewAll,
     selectedBrands,
@@ -206,7 +228,6 @@ export default function ProductsPage() {
     showUnavailable,
   ]);
 
-  // ── Pagination ────────────────────────────────────────────────────────────
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(currentPage, totalPages);
   const pageStart = (safePage - 1) * PAGE_SIZE;
@@ -217,13 +238,6 @@ export default function ProductsPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Reset to page 1 whenever search changes
-  const handleSearch = (val: string) => {
-    setSearch(val);
-    setCurrentPage(1);
-  };
-
-  // Build page number array with ellipsis: e.g. [1, '…', 4, 5, 6, '…', 12]
   const pageNumbers = useMemo(() => {
     if (totalPages <= 7)
       return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -239,33 +253,44 @@ export default function ProductsPage() {
     return pages;
   }, [totalPages, safePage]);
 
-  // ── Shared filter panel markup ────────────────────────────────────────────
+  const parseNotes = (p: (typeof allProducts)[0]) =>
+    [p.topNotes, p.middleNotes, p.baseNotes]
+      .join(",")
+      .split(",")
+      .map((n) => n.trim())
+      .filter(Boolean)
+      .slice(0, 4);
+
   const FilterPanel = () => (
     <aside
-      style={{
-        background: "hsla(180,2%,8%,1)",
-        border: "1px solid hsla(0,0%,100%,0.1)",
-        borderRadius: "18px",
-        padding: "22px 20px",
-        height: "fit-content",
-        fontFamily: '"DM Sans", sans-serif',
-      }}
+      className="border border-white/10 p-6 h-fit"
+      style={{ backgroundColor: "hsla(0,0%,6%,1)" }}
     >
-      <h3
-        style={{
-          fontFamily: '"Forum", cursive',
-          fontSize: "2rem",
-          marginBottom: "22px",
-          color: "hsl(38,61%,73%)",
-        }}
-      >
-        FILTER PERFUMES
-      </h3>
+      <div className="flex items-center justify-between mb-6 pb-5 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-px bg-[hsl(38,61%,73%)]" />
+          <h3
+            className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.2rem]"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Filter Perfumes
+          </h3>
+        </div>
+        {hasActiveFilters && (
+          <button
+            onClick={resetAll}
+            className="text-white/30 hover:text-[hsl(38,61%,73%)] text-[1.1rem] font-bold uppercase tracking-[2px] transition-colors duration-200"
+          >
+            Clear
+          </button>
+        )}
+      </div>
 
-      {/* ── All Perfumes ── */}
-      <div style={{ marginBottom: "26px" }}>
-        <p className="filter-header">
-          <svg width="18" height="18" fill="none" viewBox="0 0 512 512">
+      {/* View All */}
+      <SidebarSection
+        title="All Perfumes"
+        icon={
+          <svg width="16" height="16" fill="none" viewBox="0 0 512 512">
             <rect
               x="48"
               y="48"
@@ -303,28 +328,16 @@ export default function ProductsPage() {
               strokeWidth="32"
             />
           </svg>
-          All Perfumes
-        </p>
-        <label className="filter-option">
-          <input
-            type="checkbox"
-            checked={viewAll}
-            onChange={resetAll}
-            style={{
-              width: 16,
-              height: 16,
-              accentColor: "hsl(38,61%,73%)",
-              flexShrink: 0,
-            }}
-          />
-          View All
-        </label>
-      </div>
+        }
+      >
+        <FilterOption label="View All" checked={viewAll} onChange={resetAll} />
+      </SidebarSection>
 
-      {/* ── Gender ── */}
-      <div style={{ marginBottom: "26px" }}>
-        <p className="filter-header">
-          <svg width="18" height="18" fill="none" viewBox="0 0 512 512">
+      {/* Gender */}
+      <SidebarSection
+        title="Gender"
+        icon={
+          <svg width="16" height="16" fill="none" viewBox="0 0 512 512">
             <path
               d="M402 168c-2.93 40.67-33.1 72-66 72s-63.12-31.32-66-72c-3-42.31 26.37-72 66-72s69 30.46 66 72z"
               stroke="currentColor"
@@ -354,30 +367,23 @@ export default function ProductsPage() {
               strokeLinejoin="round"
             />
           </svg>
-          Gender
-        </p>
-        {GENDERS.map((g) => (
-          <label key={g} className="filter-option">
-            <input
-              type="checkbox"
-              checked={selectedGenders.includes(g)}
-              onChange={() => toggleGender(g)}
-              style={{
-                width: 16,
-                height: 16,
-                accentColor: "hsl(38,61%,73%)",
-                flexShrink: 0,
-              }}
-            />
-            {g}
-          </label>
+        }
+      >
+        {genders.map((g) => (
+          <FilterOption
+            key={g}
+            label={g}
+            checked={selectedGenders.includes(g)}
+            onChange={() => toggleGender(g)}
+          />
         ))}
-      </div>
+      </SidebarSection>
 
-      {/* ── Brand ── */}
-      <div style={{ marginBottom: "26px" }}>
-        <p className="filter-header">
-          <svg width="18" height="18" fill="none" viewBox="0 0 512 512">
+      {/* Brand */}
+      <SidebarSection
+        title="Brand"
+        icon={
+          <svg width="16" height="16" fill="none" viewBox="0 0 512 512">
             <path
               d="M243.42 72.59L48 268l196 196 196-196-81.9-191.52A32 32 0 00328.74 56H272a32 32 0 00-28.58 16.59z"
               stroke="currentColor"
@@ -393,30 +399,23 @@ export default function ProductsPage() {
               strokeWidth="32"
             />
           </svg>
-          Brand
-        </p>
-        {BRANDS.map((b) => (
-          <label key={b} className="filter-option">
-            <input
-              type="checkbox"
-              checked={selectedBrands.includes(b)}
-              onChange={() => toggleBrand(b)}
-              style={{
-                width: 16,
-                height: 16,
-                accentColor: "hsl(38,61%,73%)",
-                flexShrink: 0,
-              }}
-            />
-            {b}
-          </label>
+        }
+      >
+        {DISPLAY_BRANDS.map((b) => (
+          <FilterOption
+            key={b}
+            label={b}
+            checked={selectedBrands.includes(b)}
+            onChange={() => toggleBrand(b)}
+          />
         ))}
-      </div>
+      </SidebarSection>
 
-      {/* ── Availability ── */}
-      <div style={{ marginBottom: "26px" }}>
-        <p className="filter-header">
-          <svg width="18" height="18" fill="none" viewBox="0 0 512 512">
+      {/* Availability */}
+      <SidebarSection
+        title="Availability"
+        icon={
+          <svg width="16" height="16" fill="none" viewBox="0 0 512 512">
             <path
               d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"
               stroke="currentColor"
@@ -430,313 +429,180 @@ export default function ProductsPage() {
               strokeLinejoin="round"
             />
           </svg>
-          Availability
-        </p>
-        <label className="filter-option">
-          <input
-            type="checkbox"
-            checked={showAvailable}
-            onChange={() => {
-              setShowAvailable((p) => !p);
-              setViewAll(false);
-              setCurrentPage(1);
-            }}
-            style={{
-              width: 16,
-              height: 16,
-              accentColor: "hsl(38,61%,73%)",
-              flexShrink: 0,
-            }}
-          />
-          Available
-        </label>
-        <label className="filter-option">
-          <input
-            type="checkbox"
-            checked={showUnavailable}
-            onChange={() => {
-              setShowUnavailable((p) => !p);
-              setViewAll(false);
-              setCurrentPage(1);
-            }}
-            style={{
-              width: 16,
-              height: 16,
-              accentColor: "hsl(38,61%,73%)",
-              flexShrink: 0,
-            }}
-          />
-          Unavailable
-        </label>
-      </div>
+        }
+      >
+        <FilterOption
+          label="Available"
+          checked={showAvailable}
+          onChange={() => {
+            setShowAvailable((p) => !p);
+            setViewAll(false);
+            setCurrentPage(1);
+          }}
+        />
+        <FilterOption
+          label="Unavailable"
+          checked={showUnavailable}
+          onChange={() => {
+            setShowUnavailable((p) => !p);
+            setViewAll(false);
+            setCurrentPage(1);
+          }}
+        />
+      </SidebarSection>
     </aside>
   );
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap');
-
-        html { font-size: 10px; }
-        ::-webkit-scrollbar       { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: hsl(38,61%,73%); }
-
-        /* ── layout ── */
-        .perfume-search-page {
-          display: grid;
-          grid-template-columns: 280px 1fr;
-          gap: 30px;
-          padding: 60px 30px;
-        }
-        @media (max-width: 900px) {
-          .perfume-search-page { grid-template-columns: 1fr; }
-          .desktop-sidebar { display: none; }
-          .mobile-filter-btn { display: flex !important; }
-        }
-        @media (min-width: 901px) {
-          .mobile-filter-btn { display: none !important; }
-        }
-
-        /* ── filter panel ── */
-        .filter-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-weight: 700;
-          text-transform: uppercase;
-          font-size: 1.2rem;
-          letter-spacing: 0.4em;
-          color: hsl(38,61%,73%);
-          margin-bottom: 12px;
-          font-family: "DM Sans", sans-serif;
-        }
-        .filter-option {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-size: 1.4rem;
-          padding: 8px 6px;
-          margin-bottom: 8px;
-          cursor: pointer;
-          border-radius: 8px;
-          color: white;
-          transition: background 0.15s ease;
-          font-family: "DM Sans", sans-serif;
-          user-select: none;
-        }
-        .filter-option:hover {
-          background: rgba(212,175,55,0.12);
-          color: hsl(38,61%,73%);
-        }
-
-        /* ── search ── */
-        .search-box {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: hsla(210,4%,11%,1);
-          border: 1px solid hsla(0,0%,100%,0.1);
-          padding: 14px 18px;
-          border-radius: 14px;
-        }
-        .search-box input {
-          background: none;
-          border: none;
-          outline: none;
-          color: white;
-          font-size: 1.5rem;
-          font-family: "DM Sans", sans-serif;
-          width: 100%;
-        }
-        .search-box input::placeholder { color: hsla(0,0%,65%,1); }
-
-        /* ── grid ── */
-        .results-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 20px;
-        }
-
-        /* ── card ── */
-        .perfume-card {
-          background: hsla(180,2%,8%,1);
-          border: 1px solid hsla(0,0%,100%,0.1);
-          border-radius: 18px;
-          overflow: hidden;
-          transition: border-color 0.2s ease, transform 0.2s ease;
-          position: relative;
-        }
-        .perfume-card:hover {
-          border-color: hsl(38,61%,73%);
-          transform: translateY(-4px);
-        }
-
-        .card-img-wrap {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 1 / 1.1;
-          background: #111110;
-          overflow: hidden;
-        }
-        .card-img-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.35s ease;
-        }
-        .perfume-card:hover .card-img-wrap img {
-          transform: scale(1.05);
-        }
-
-        .avail-badge {
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          z-index: 2;
-          padding: 3px 10px;
-          border-radius: 20px;
-          font-size: 1rem;
-          font-weight: 700;
-          font-family: "DM Sans", sans-serif;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
-        }
-        .avail-badge.in-stock {
-          background: hsla(38,61%,73%,0.18);
-          color: hsl(38,61%,73%);
-          border: 1px solid hsla(38,61%,73%,0.4);
-        }
-        .avail-badge.out-of-stock {
-          background: hsla(0,0%,25%,0.45);
-          color: hsla(0,0%,55%,1);
-          border: 1px solid hsla(0,0%,40%,0.3);
-        }
-
-        .card-body {
-          padding: 14px 15px 16px;
-        }
-        .card-brand {
-          font-size: 1.05rem;
-          font-family: "DM Sans", sans-serif;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: hsl(38,61%,73%);
-          margin-bottom: 6px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .card-title {
-          font-family: "Forum", cursive;
-          font-size: 1.65rem;
-          color: white;
-          line-height: 1.3;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .card-title a {
-          color: inherit;
-          text-decoration: none;
-        }
-        .card-title a:hover { color: hsl(38,61%,73%); }
-
-        /* ── pagination ── */
-        .pagination {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-          padding: 10px 0 40px;
-          font-family: "DM Sans", sans-serif;
-          flex-wrap: wrap;
-        }
-        .page-btn {
-          min-width: 38px;
-          height: 38px;
-          padding: 0 10px;
-          border-radius: 10px;
-          border: 1px solid hsla(0,0%,100%,0.1);
-          background: hsla(180,2%,8%,1);
-          color: hsla(0,0%,70%,1);
-          font-size: 1.3rem;
-          font-family: "DM Sans", sans-serif;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.15s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .page-btn:hover:not(:disabled) {
-          border-color: hsl(38,61%,73%);
-          color: hsl(38,61%,73%);
-          background: hsla(38,61%,73%,0.08);
-        }
-        .page-btn.active {
-          border-color: hsl(38,61%,73%);
-          background: hsla(38,61%,73%,0.15);
-          color: hsl(38,61%,73%);
-        }
-        .page-btn:disabled {
-          opacity: 0.3;
-          cursor: not-allowed;
-        }
-        .page-ellipsis {
-          min-width: 38px;
-          height: 38px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: hsla(0,0%,45%,1);
-          font-size: 1.3rem;
-          font-family: "DM Sans", sans-serif;
-          user-select: none;
-        }
-        .page-info {
-          font-size: 1.2rem;
-          color: hsla(0,0%,50%,1);
-          font-family: "DM Sans", sans-serif;
-          text-align: center;
-          padding-bottom: 30px;
-        }
-      `}</style>
-
+    <main
+      className="min-h-screen pt-[120px] pb-20"
+      style={{ backgroundColor: "hsla(210,4%,9%,1)" }}
+    >
+      {/* ── Toast ── */}
       <div
-        style={{
-          backgroundColor: "hsla(210,4%,9%,1)",
-          minHeight: "100vh",
-          paddingTop: "120px",
-        }}
+        className={[
+          "fixed bottom-6 left-1/2 -translate-x-1/2 z-[200]",
+          "px-6 py-3 border border-[hsl(38,61%,73%)]/40",
+          "bg-[hsla(0,0%,8%,0.97)] backdrop-blur-md",
+          "text-[hsl(38,61%,73%)] font-bold text-[1.2rem] uppercase tracking-widest",
+          "transition-all duration-500 whitespace-nowrap",
+          notification
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none",
+        ].join(" ")}
       >
+        {notification?.msg}
+      </div>
+
+      {/* ── Mobile drawer ── */}
+      {drawerOpen && (
+        <div
+          className="fixed inset-0 z-[100] lg:hidden"
+          onClick={() => setDrawerOpen(false)}
+          style={{
+            background: "hsla(0,0%,0%,0.75)",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <div
+            className="absolute left-0 top-0 h-full w-[300px] overflow-y-auto p-6 border-r border-white/10"
+            style={{ backgroundColor: "hsla(210,4%,9%,1)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setDrawerOpen(false)}
+              className="absolute top-4 right-4 text-[hsl(38,61%,73%)] hover:text-white transition-colors duration-200"
+            >
+              <svg width="24" height="24" fill="none" viewBox="0 0 512 512">
+                <path
+                  d="M368 368L144 144M368 144L144 368"
+                  stroke="currentColor"
+                  strokeWidth="48"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+            <FilterPanel />
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+        {/* ── Page Header ── */}
+        <div className="mb-14 mt-[50px]">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-px bg-[hsl(38,61%,73%)]" />
+            <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
+              Collection
+            </span>
+          </div>
+          <svg viewBox="0 0 100 12" width="80" height="10" className="mb-5">
+            <line
+              x1="0"
+              y1="6"
+              x2="38"
+              y2="6"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+            <rect
+              x="44"
+              y="2"
+              width="8"
+              height="8"
+              transform="rotate(45 48 6)"
+              fill="none"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+            <line
+              x1="58"
+              y1="6"
+              x2="100"
+              y2="6"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+          </svg>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div>
+              <h1
+                className="text-[4rem] sm:text-[5.5rem] font-normal text-white leading-none tracking-tight mb-3"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Fragrances
+              </h1>
+              <p className="text-white/50 text-[1.4rem] max-w-xl">
+                Rare essences and timeless accords, curated from the finest
+                Arabian perfumery traditions.
+              </p>
+            </div>
+
+            {isSignedIn ? (
+              <Link
+                href="/fragrances"
+                className="group relative inline-flex items-center gap-3 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)] whitespace-nowrap shrink-0"
+              >
+                <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+                <span className="relative z-10">My Fragrances</span>
+                {savedItems.length > 0 && (
+                  <span className="relative z-10 w-6 h-6 flex items-center justify-center text-[1rem] font-black border border-[hsl(38,61%,73%)] group-hover:border-[hsl(40,12%,5%)]">
+                    {savedItems.length}
+                  </span>
+                )}
+              </Link>
+            ) : (
+              <Link
+                href="/sign-in"
+                className="flex items-center gap-2 text-white/40 hover:text-[hsl(38,61%,73%)] transition-colors duration-200 text-[1.2rem] font-bold uppercase tracking-widest shrink-0"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+                Sign in to save
+              </Link>
+            )}
+          </div>
+        </div>
+
         {/* ── Mobile filter button ── */}
-        <div style={{ padding: "20px 30px 0", display: "flex" }}>
+        <div className="flex items-center justify-between mb-8 lg:hidden">
           <button
-            className="mobile-filter-btn"
             onClick={() => setDrawerOpen(true)}
-            style={{
-              display: "none",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 20px",
-              border: "1px solid hsl(38,61%,73%)",
-              borderRadius: "10px",
-              background: "transparent",
-              color: "hsl(38,61%,73%)",
-              fontSize: "1.3rem",
-              fontFamily: '"DM Sans", sans-serif',
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.15em",
-              cursor: "pointer",
-            }}
+            className="flex items-center gap-2 px-4 py-2.5 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] hover:bg-[hsl(38,61%,73%)]/10 transition-all duration-200"
           >
             <svg width="16" height="16" fill="none" viewBox="0 0 512 512">
               <rect
@@ -777,77 +643,34 @@ export default function ProductsPage() {
               />
             </svg>
             Filters
+            {hasActiveFilters && (
+              <span className="w-2 h-2 bg-[hsl(38,61%,73%)] rotate-45" />
+            )}
           </button>
+          <p className="text-white/30 text-[1.1rem] font-bold uppercase tracking-widest">
+            {products === undefined ? "Loading…" : `${filtered.length} results`}
+          </p>
         </div>
 
-        {/* ── Mobile drawer ── */}
-        {drawerOpen && (
-          <div
-            onClick={() => setDrawerOpen(false)}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 100,
-              background: "hsla(0,0%,0%,0.75)",
-              backdropFilter: "blur(4px)",
-              display: "flex",
-            }}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: "300px",
-                height: "100%",
-                overflowY: "auto",
-                background: "hsla(210,4%,9%,1)",
-                padding: "20px",
-                position: "relative",
-              }}
-            >
-              <button
-                onClick={() => setDrawerOpen(false)}
-                style={{
-                  position: "absolute",
-                  top: "16px",
-                  right: "16px",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "hsl(38,61%,73%)",
-                }}
-              >
-                <svg width="24" height="24" fill="none" viewBox="0 0 512 512">
-                  <path
-                    d="M368 368L144 144M368 144L144 368"
-                    stroke="currentColor"
-                    strokeWidth="48"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
+        {/* ── Main layout ── */}
+        <div className="flex gap-8">
+          {/* Desktop sidebar */}
+          <div className="hidden lg:block w-[280px] shrink-0">
+            <div className="sticky top-32">
               <FilterPanel />
             </div>
           </div>
-        )}
 
-        <div className="perfume-search-page">
-          {/* LEFT: sidebar */}
-          <div className="desktop-sidebar">
-            <FilterPanel />
-          </div>
-
-          {/* RIGHT: search + grid */}
-          <main
-            style={{ display: "flex", flexDirection: "column", gap: "25px" }}
-          >
+          {/* Content */}
+          <div className="flex-1 min-w-0 flex flex-col gap-6">
             {/* Search bar */}
-            <div className="search-box">
+            <div className="flex items-center gap-3 bg-[hsla(210,4%,11%,1)] border border-white/10 px-5 py-4 focus-within:border-[hsl(38,61%,73%)] transition-colors duration-300">
               <svg
                 width="18"
                 height="18"
                 fill="none"
                 viewBox="0 0 512 512"
-                style={{ color: "hsl(38,61%,73%)", flexShrink: 0 }}
+                className="text-[hsl(38,61%,73%)] shrink-0"
               >
                 <path
                   d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
@@ -865,99 +688,308 @@ export default function ProductsPage() {
                 type="text"
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search by name, brand, or barcode..."
+                placeholder="Search by name, brand, or SKU..."
+                className="bg-transparent border-none outline-none text-white text-[1.5rem] w-full placeholder:text-white/30"
+                style={{ fontFamily: "var(--font-dm-sans)" }}
               />
+              {search && (
+                <button
+                  onClick={() => handleSearch("")}
+                  className="text-white/30 hover:text-[hsl(38,61%,73%)] transition-colors duration-200 shrink-0"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 12 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M1 1l10 10M11 1L1 11" />
+                  </svg>
+                </button>
+              )}
             </div>
 
-            {/* Results count */}
-            <p
-              style={{
-                fontSize: "1.3rem",
-                color: "hsla(0,0%,65%,1)",
-                fontFamily: '"DM Sans", sans-serif',
-              }}
-            >
-              {filtered.length} {filtered.length === 1 ? "product" : "products"}{" "}
-              found
-            </p>
+            {/* Results bar */}
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <p className="text-white/30 text-[1.2rem] font-bold uppercase tracking-widest">
+                {products === undefined
+                  ? "Loading…"
+                  : `${filtered.length} ${filtered.length === 1 ? "product" : "products"} found`}
+              </p>
+              {totalPages > 1 && (
+                <p className="text-white/30 text-[1.1rem]">
+                  Page {safePage} of {totalPages}
+                </p>
+              )}
+            </div>
 
-            {/* Results grid */}
-            {paginated.length > 0 ? (
-              <div className="results-grid">
-                {paginated.map((p) => (
-                  <div key={p.id} className="perfume-card">
-                    {/* ── Image + badge ── */}
-                    <div className="card-img-wrap">
-                      <span
-                        className={`avail-badge ${p.available ? "in-stock" : "out-of-stock"}`}
-                      >
-                        {p.available ? "In Stock" : "Out of Stock"}
-                      </span>
-                      <img
-                        src={p.image ?? PLACEHOLDER}
-                        alt={p.name}
-                        loading="lazy"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src =
-                            PLACEHOLDER;
-                        }}
-                      />
-                    </div>
-
-                    {/* ── Text ── */}
-                    <div className="card-body">
-                      <p className="card-brand">{p.brand}</p>
-                      <h4 className="card-title">
-                        {p.url ? (
-                          <a
-                            href={p.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {p.name}
-                          </a>
-                        ) : (
-                          p.name
-                        )}
-                      </h4>
+            {/* Loading skeleton */}
+            {products === undefined && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="border border-white/10 animate-pulse"
+                    style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
+                  >
+                    <div className="w-full aspect-[4/3] bg-white/5" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-3 w-1/3 bg-white/10 rounded" />
+                      <div className="h-5 w-3/4 bg-white/10 rounded" />
+                      <div className="h-3 w-1/2 bg-white/10 rounded" />
+                      <div className="h-10 w-full bg-white/5 rounded mt-4" />
                     </div>
                   </div>
                 ))}
               </div>
-            ) : (
-              <div style={{ textAlign: "center", padding: "80px 20px" }}>
+            )}
+
+            {/* Empty state */}
+            {products !== undefined && filtered.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-32 gap-5">
+                <svg viewBox="0 0 100 12" width="80" height="10">
+                  <line
+                    x1="0"
+                    y1="6"
+                    x2="38"
+                    y2="6"
+                    stroke="hsl(38,61%,73%)"
+                    strokeWidth="1"
+                    opacity="0.3"
+                  />
+                  <rect
+                    x="44"
+                    y="2"
+                    width="8"
+                    height="8"
+                    transform="rotate(45 48 6)"
+                    fill="none"
+                    stroke="hsl(38,61%,73%)"
+                    strokeWidth="1"
+                    opacity="0.3"
+                  />
+                  <line
+                    x1="58"
+                    y1="6"
+                    x2="100"
+                    y2="6"
+                    stroke="hsl(38,61%,73%)"
+                    strokeWidth="1"
+                    opacity="0.3"
+                  />
+                </svg>
                 <p
-                  style={{
-                    fontFamily: '"Forum", cursive',
-                    fontSize: "2.2rem",
-                    color: "hsl(38,61%,73%)",
-                    marginBottom: "12px",
-                  }}
+                  className="text-white/30 text-[2rem] font-normal"
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   No products found
                 </p>
-                <p
-                  style={{
-                    fontSize: "1.4rem",
-                    color: "hsla(0,0%,65%,1)",
-                    fontFamily: '"DM Sans", sans-serif',
-                  }}
-                >
+                <p className="text-white/20 text-[1.4rem]">
                   Try adjusting your search or filters
                 </p>
+                <button
+                  onClick={() => {
+                    resetAll();
+                    handleSearch("");
+                  }}
+                  className="group relative inline-flex items-center gap-2 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)]"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
+                  <span className="relative z-10">Clear filters →</span>
+                </button>
               </div>
             )}
 
-            {/* ── Pagination ── */}
+            {/* Grid */}
+            {products !== undefined && paginated.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {paginated.map((product) => {
+                  const isSaved = savedItems.includes(product._id);
+                  const notes = parseNotes(product);
+                  const isAvailable = product.stockOnHand > 0;
+
+                  return (
+                    <div
+                      key={product._id}
+                      className="group relative flex flex-col border border-white/10 hover:border-[hsl(38,61%,73%)] hover:-translate-y-1 transition-all duration-300"
+                      style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
+                    >
+                      {/* Image area */}
+                      <div
+                        className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
+                        style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
+                      >
+                        {product.imageUrl ? (
+                          <img
+                            src={product.imageUrl}
+                            alt={product.itemName}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/10">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1"
+                            >
+                              <rect x="3" y="3" width="18" height="18" rx="1" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <path d="M21 15l-5-5L5 21" />
+                            </svg>
+                            <span className="text-[1rem] font-bold uppercase tracking-[3px]">
+                              No Image
+                            </span>
+                          </div>
+                        )}
+
+                        {product.imageUrl && (
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                        )}
+
+                        <span
+                          className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${
+                            isAvailable
+                              ? "bg-[hsl(38,61%,73%)]/18 text-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)]/40"
+                              : "bg-white/10 text-white/50 border border-white/20"
+                          }`}
+                        >
+                          {isAvailable ? "In Stock" : "Out of Stock"}
+                        </span>
+
+                        {isAvailable && product.stockOnHand <= 5 && (
+                          <span className="absolute top-3 right-3 px-2 py-1 text-[0.9rem] font-black uppercase tracking-widest bg-red-500/20 text-red-400 border border-red-500/40">
+                            Low Stock
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Card body */}
+                      <div className="p-6 flex flex-col gap-4 flex-1">
+                        <div className="w-8 h-px bg-[hsl(38,61%,73%)] group-hover:w-16 transition-all duration-500" />
+
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div>
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <p className="text-[hsl(38,61%,73%)]/60 text-[1rem] font-bold uppercase tracking-[3px]">
+                                {normalizeBrand(product.brand)}
+                              </p>
+                              <span className="text-white/25 text-[0.95rem] font-bold uppercase tracking-[2px]">
+                                {normalizeGender(product.gender)}
+                              </span>
+                            </div>
+                            <h2
+                              className="text-white text-[1.9rem] font-normal leading-tight"
+                              style={{ fontFamily: "var(--font-display)" }}
+                            >
+                              {product.itemName}
+                            </h2>
+                            <p className="text-white/20 text-[1rem] font-bold uppercase tracking-[2px] mt-0.5">
+                              SKU: {product.sku}
+                            </p>
+                          </div>
+                          <p className="text-white/45 text-[1.2rem] leading-relaxed line-clamp-2">
+                            {product.salesDescription}
+                          </p>
+                        </div>
+
+                        {notes.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {notes.map((note) => (
+                              <span
+                                key={note}
+                                className="px-2 py-1 border border-white/10 text-white/35 text-[0.95rem] uppercase tracking-wider font-bold"
+                              >
+                                {note}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`w-1.5 h-1.5 rotate-45 shrink-0 ${isAvailable ? "bg-emerald-400" : "bg-red-400"}`}
+                            />
+                            <span
+                              className={`text-[1rem] font-bold uppercase tracking-[2px] ${isAvailable ? "text-emerald-400" : "text-red-400"}`}
+                            >
+                              {isAvailable
+                                ? `In Stock · ${product.stockOnHand} units`
+                                : "Out of Stock"}
+                            </span>
+                          </div>
+
+                          {isSignedIn ? (
+                            <button
+                              onClick={() =>
+                                toggleSave(product._id, product.itemName)
+                              }
+                              className={[
+                                "w-full flex items-center justify-center gap-2 py-2.5 border font-bold uppercase tracking-[2px] text-[1.1rem] transition-all duration-300",
+                                isSaved
+                                  ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)] hover:bg-transparent hover:text-[hsl(38,61%,73%)]"
+                                  : "bg-transparent border-white/15 text-white/40 hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                              ].join(" ")}
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill={isSaved ? "currentColor" : "none"}
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                              </svg>
+                              {isSaved ? "Saved" : "Save"}
+                            </button>
+                          ) : (
+                            <Link
+                              href="/sign-in"
+                              className="w-full flex items-center justify-center gap-2 py-2.5 border border-white/10 text-white/25 font-bold uppercase tracking-[2px] text-[1.1rem] hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)] transition-all duration-300"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                              </svg>
+                              Sign in to save
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Pagination */}
             {totalPages > 1 && (
               <>
-                <nav className="pagination" aria-label="Product pages">
-                  {/* Prev */}
+                <nav
+                  className="flex items-center justify-center gap-1.5 pt-6 flex-wrap"
+                  aria-label="Product pages"
+                >
                   <button
-                    className="page-btn"
                     onClick={() => goToPage(safePage - 1)}
                     disabled={safePage === 1}
-                    aria-label="Previous page"
+                    className={[
+                      "w-10 h-10 flex items-center justify-center border font-bold transition-all duration-200",
+                      safePage === 1
+                        ? "border-white/10 text-white/20 cursor-not-allowed"
+                        : "border-white/20 text-white hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                    ].join(" ")}
                   >
                     <svg
                       width="14"
@@ -975,31 +1007,39 @@ export default function ProductsPage() {
                     </svg>
                   </button>
 
-                  {/* Page numbers */}
                   {pageNumbers.map((n, i) =>
                     n === "…" ? (
-                      <span key={`ellipsis-${i}`} className="page-ellipsis">
+                      <span
+                        key={`ellipsis-${i}`}
+                        className="w-10 h-10 flex items-center justify-center text-white/20 font-bold text-[1.3rem]"
+                      >
                         …
                       </span>
                     ) : (
                       <button
                         key={n}
-                        className={`page-btn${safePage === n ? " active" : ""}`}
                         onClick={() => goToPage(n as number)}
-                        aria-label={`Page ${n}`}
-                        aria-current={safePage === n ? "page" : undefined}
+                        className={[
+                          "w-10 h-10 flex items-center justify-center border font-bold text-[1.2rem] transition-all duration-200",
+                          safePage === n
+                            ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]"
+                            : "border-white/20 text-white/50 hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                        ].join(" ")}
                       >
                         {n}
                       </button>
                     ),
                   )}
 
-                  {/* Next */}
                   <button
-                    className="page-btn"
                     onClick={() => goToPage(safePage + 1)}
                     disabled={safePage === totalPages}
-                    aria-label="Next page"
+                    className={[
+                      "w-10 h-10 flex items-center justify-center border font-bold transition-all duration-200",
+                      safePage === totalPages
+                        ? "border-white/10 text-white/20 cursor-not-allowed"
+                        : "border-white/20 text-white hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                    ].join(" ")}
                   >
                     <svg
                       width="14"
@@ -1018,17 +1058,17 @@ export default function ProductsPage() {
                   </button>
                 </nav>
 
-                <p className="page-info">
+                <p className="text-center text-[1.2rem] text-white/30 pb-4">
                   Showing {pageStart + 1}–
                   {Math.min(pageStart + PAGE_SIZE, filtered.length)} of{" "}
                   {filtered.length} products
                 </p>
               </>
             )}
-          </main>
-          <BackToTop />
+          </div>
         </div>
       </div>
-    </>
+      <BackToTop />
+    </main>
   );
 }
