@@ -20,6 +20,7 @@ export default defineSchema({
     coverImageId: v.optional(v.id("_storage")),
     authorId: v.string(),
     createdAt: v.number(),
+    isFeatured: v.optional(v.boolean()),
   }),
 
   products: defineTable({

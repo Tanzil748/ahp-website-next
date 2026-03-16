@@ -422,7 +422,7 @@ export default function NewBlogPost() {
                 Your post is now live on the blog.
               </p>
               <Link
-                href="/blog"
+                href="/blogs"
                 className="group relative inline-flex items-center gap-3 px-10 py-4 border overflow-hidden text-[1.2rem] font-bold uppercase tracking-[0.3em] border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] [font-family:var(--font-display)] transition-colors duration-300 hover:text-[hsla(40,12%,5%,1)]"
               >
                 <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
