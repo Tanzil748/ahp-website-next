@@ -9,12 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@clerk/backend": "^3.2.0",
     "@clerk/nextjs": "^7.0.1",
     "convex": "^1.32.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "resend": "^6.9.3"
+    "resend": "^6.9.3",
+    "svix": "^1.88.0"
   },
   "devDependencies": {
     "@iconify-json/basil": "^1.2.4",
