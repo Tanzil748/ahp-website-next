@@ -1,27 +1,88 @@
 export default function CareersHero() {
-  const bottlePattern = `url("data:image/svg+xml,%3Csvg width='60' height='80' viewBox='0 0 60 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.07'%3E%3Crect x='22' y='4' width='16' height='10' rx='2'/%3E%3Crect x='26' y='13' width='8' height='8'/%3E%3Cpath d='M18 21 Q18 28 14 32 L14 62 Q14 66 18 66 L42 66 Q46 66 46 62 L46 32 Q42 28 42 21 Z'/%3E%3Crect x='18' y='38' width='24' height='1'/%3E%3Crect x='18' y='54' width='24' height='1'/%3E%3C/g%3E%3C/svg%3E")`;
-
   return (
-    <section className="relative h-[450px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[var(--bg-careers-1)]">
-      {/* Repeating perfume bottle pattern */}
+    <section className="relative pt-40 pb-24 px-5 text-center overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,hsla(38,61%,50%,0.1)_0%,transparent_70%)]" />
       <div
-        className="absolute inset-0 opacity-30"
-        style={{ backgroundImage: bottlePattern }}
+        className="absolute inset-0 opacity-40
+          [background-image:linear-gradient(hsla(0,0%,100%,0.04)_1px,transparent_1px),linear-gradient(90deg,hsla(0,0%,100%,0.04)_1px,transparent_1px)]
+          [background-size:60px_60px]
+          [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)]"
       />
 
-      {/* Radial fade */}
-      <div className="absolute inset-0 [background:radial-gradient(ellipse_70%_70%_at_50%_50%,var(--bg-careers-1)_20%,transparent_80%)]" />
+      <div className="max-w-[900px] mx-auto relative z-10">
+        <div className="fade-up delay-1 flex justify-center items-center gap-3 mb-4">
+          <span className="gold-diamond" />
+          <span
+            className="text-[hsl(38,61%,73%)] uppercase font-bold tracking-[0.4em] text-[1.3rem]"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Join Our Team
+          </span>
+          <span className="gold-diamond" />
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-3xl px-5">
-        <p className="fade-up delay-1 careers-eyebrow mb-4">Join Our Team</p>
-        <h1 className="fade-up delay-2 text-5xl md:text-7xl font-normal text-white mb-5 [font-family:var(--font-display)]">
+        <h1
+          className="fade-up delay-2 font-normal text-white mb-5 leading-[1.1] text-[clamp(3.8rem,7vw,7rem)]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
           Build Your Career With Us
         </h1>
-        <p className="fade-up delay-3 careers-body text-base md:text-lg max-w-xl mx-auto">
-          Be part of a team that&apos;s passionate about creating exceptional
-          fragrances and delivering excellence
+
+        <div className="fade-up delay-2 flex justify-center my-5">
+          <svg viewBox="0 0 100 12" width="100" height="12">
+            <line
+              x1="0"
+              y1="6"
+              x2="38"
+              y2="6"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+            <rect
+              x="44"
+              y="2"
+              width="8"
+              height="8"
+              transform="rotate(45 48 6)"
+              fill="none"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+            <line
+              x1="58"
+              y1="6"
+              x2="100"
+              y2="6"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+
+        <p className="fade-up delay-3 mx-auto text-[hsla(0,0%,65%,1)] text-[1.7rem] leading-[1.6] max-w-[560px]">
+          Be part of a team passionate about creating exceptional fragrances and
+          delivering excellence across the globe.
         </p>
+
+        <div className="fade-up delay-4 grid grid-cols-3 gap-4 max-w-[560px] mx-auto mt-12 pt-10 border-t border-white/10">
+          {[
+            { value: "50+", label: "Team Members" },
+            { value: "12+", label: "Years in Business" },
+            { value: "30+", label: "Countries Reached" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p
+                className="text-[hsl(38,61%,73%)] text-[3rem] font-normal leading-none mb-1"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {stat.value}
+              </p>
+              <p className="text-white/40 text-[1.1rem] font-bold uppercase tracking-[2px]">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

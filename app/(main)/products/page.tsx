@@ -191,7 +191,14 @@ export default function ProductsPage() {
   return (
     <main
       className="min-h-screen pt-[120px] pb-20"
-      style={{ backgroundColor: "hsla(210,4%,9%,1)" }}
+      style={{
+        backgroundColor: "hsla(210,4%,9%,1)",
+        backgroundImage: "url('/images/potential-pink-bg.png')",
+        backgroundSize: "600px 600px",
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+        backgroundBlendMode: "overlay",
+      }}
     >
       {/* ── Toast ── */}
       <div

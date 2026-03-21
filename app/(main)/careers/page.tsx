@@ -7,13 +7,23 @@ import BackToTop from "@/components/BackToTop";
 
 export default function CareersPage() {
   return (
-    <div className="bg-[#0c0c0c] text-white font-sans min-h-screen">
+    <main
+      className="min-h-screen text-white"
+      style={{
+        backgroundColor: "hsla(210,4%,9%,1)",
+        backgroundImage: "url('/images/potential-bg.jpeg')",
+        backgroundSize: "600px 600px",
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+        backgroundBlendMode: "overlay",
+      }}
+    >
       <CareersHero />
       <WhyWorkWithUs />
       <OpenPositions />
       <ApplicationProcess />
       <CareersCTA />
       <BackToTop />
-    </div>
+    </main>
   );
 }
