@@ -10,6 +10,14 @@ export default defineSchema({
     blogs: v.optional(v.array(v.id("blogs"))),
     comments: v.optional(v.array(v.id("comments"))),
     savedPerfumes: v.optional(v.array(v.id("savedPerfumes"))),
+    role: v.optional(
+      v.union(
+        v.literal("super-admin"),
+        v.literal("admin"),
+        v.literal("blogger"),
+        v.literal("none"),
+      ),
+    ),
   }).index("byClerkUserId", ["clerkUserId"]),
 
   posts: defineTable({
