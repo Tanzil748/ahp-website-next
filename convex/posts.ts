@@ -22,10 +22,23 @@ export const getPostById = query({
     const post = await ctx.db.get(args.postId);
     if (!post) return null;
 
+    // Look up the author from the users table using authorId (Clerk user ID)
+    const author = await ctx.db
+      .query("users")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", post.authorId))
+      .unique();
+
     return {
       ...post,
       coverImageUrl: post.coverImageId
         ? await ctx.storage.getUrl(post.coverImageId)
+        : null,
+      author: author
+        ? {
+            firstName: author.firstName,
+            lastName: author.lastName,
+            email: author.email,
+          }
         : null,
     };
   },

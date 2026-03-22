@@ -5,6 +5,8 @@ export default defineSchema({
   users: defineTable({
     email: v.string(),
     clerkUserId: v.string(), //foreign key connecting convex & clerk
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
     password: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     blogs: v.optional(v.array(v.id("blogs"))),

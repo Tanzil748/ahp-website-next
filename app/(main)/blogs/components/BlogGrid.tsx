@@ -177,14 +177,14 @@ export default function BlogGrid() {
                 </h3>
 
                 {post.excerpt && (
-                  <p className="text-[var(--text-muted)] mb-6 text-[1.5rem] leading-[1.7]">
+                  <p className="text-[var(--text-muted)] mb-6 text-[1.5rem] leading-[1.7] line-clamp-3">
                     {post.excerpt}
                   </p>
                 )}
 
                 <div className="blog-card-rule" />
 
-                <Link href={`/blog/${post._id}`} className="blog-read-link">
+                <Link href={`/blogs/${post._id}`} className="blog-read-link">
                   <span>Read Article</span>
                   <span>→</span>
                 </Link>

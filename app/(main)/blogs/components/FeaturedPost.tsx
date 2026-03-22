@@ -124,7 +124,7 @@ export default function FeaturedPost() {
               <div className="w-14 h-px bg-[hsl(38,61%,73%)] opacity-60 mb-7" />
 
               <Link
-                href={`/blog/${post._id}`}
+                href={`/blogs/${post._id}`}
                 className="self-start inline-flex items-center gap-2 text-[hsl(38,61%,73%)] font-bold uppercase tracking-[3px] no-underline transition-[gap] duration-300 hover:gap-4 text-[1.2rem]"
               >
                 <span>Read More</span>
