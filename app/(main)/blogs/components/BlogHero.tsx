@@ -1,37 +1,26 @@
 export default function BlogHero() {
   return (
-    <section className="relative pt-40 pb-24 px-5 text-center overflow-hidden z-[1] bg-[var(--bg-section)]">
-      {/* Radial gold glow */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,hsla(38,61%,50%,0.1)_0%,transparent_70%)]" />
-
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 -z-10 opacity-40
-          [background-image:linear-gradient(hsla(0,0%,100%,0.04)_1px,transparent_1px),linear-gradient(90deg,hsla(0,0%,100%,0.04)_1px,transparent_1px)]
-          [background-size:60px_60px]
-          [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)]
-          [-webkit-mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)]"
-      />
-
-      <div className="max-w-[1200px] mx-auto">
-        {/* Eyebrow */}
-        <div className="fade-up delay-1 flex justify-center items-center gap-3 mb-4">
-          <span className="gold-diamond" />
-          <span className="text-[var(--gold)] uppercase font-bold tracking-[0.4em] [font-family:var(--font-display)] text-[1.4rem]">
-            Insights &amp; Stories
-          </span>
-          <span className="gold-diamond" />
-        </div>
-
-        <h1 className="fade-up delay-2 font-normal text-white mb-5 [font-family:var(--font-display)] text-[clamp(4rem,8vw,8rem)] leading-[1.1]">
-          Our Blog
-        </h1>
-
-        <p className="fade-up delay-3 mx-auto text-[var(--text-muted)] text-[1.7rem] leading-[1.5] max-w-[520px]">
-          Discover the art of perfumery, fragrance trends, and behind-the-scenes
-          stories
-        </p>
+    <div className="pt-[150px] px-5 sm:px-8 max-w-[1400px] mx-auto">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="gold-diamond" />
+        <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
+          Insights & Stories
+        </span>
+        <span className="gold-diamond" />
       </div>
-    </section>
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+        <div>
+          <h1
+            className="text-[4rem] sm:text-[5.5rem] font-normal text-white leading-none tracking-tight mb-3"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Our Blog
+          </h1>
+          <p className="text-white/50 text-[1.4rem] max-w-xl">
+            Discover the art of perfumery, fragrance trends, and our events.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -61,8 +61,8 @@ export default function BlogGrid() {
   return (
     <div id="blog-grid">
       {/* ── Category filter ── */}
-      <section className="px-5 py-5 bg-[var(--bg-dark)] border-y border-[var(--white-10)]">
-        <div className="fade-up delay-3 max-w-[1200px] mx-auto py-3">
+      <section className="fade-up delay-2 px-5 py-5 bg-[var(--bg-dark)] border-y border-[var(--white-10)] max-w-[1400px] mx-auto">
+        <div className="mx-auto py-3">
           {/* Mobile layout */}
           <div className="flex flex-col items-center gap-2 sm:hidden">
             <div className="flex justify-center gap-2 w-full">
@@ -123,8 +123,8 @@ export default function BlogGrid() {
       </section>
 
       {/* ── Blog grid ── */}
-      <section className="py-20 px-5">
-        <div className="fade-up delay-3 max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="fade-up delay-3 py-20 px-5">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Loading state */}
           {posts === undefined &&
             Array.from({ length: 3 }).map((_, i) => (

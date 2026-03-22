@@ -11,7 +11,7 @@ export default function CareersPage() {
       className="min-h-screen text-white"
       style={{
         backgroundColor: "hsla(210,4%,9%,1)",
-        backgroundImage: "url('/images/potential-bg.jpeg')",
+        backgroundImage: "url('/images/potential-pink-bg.png')",
         backgroundSize: "600px 600px",
         backgroundRepeat: "repeat",
         backgroundAttachment: "fixed",

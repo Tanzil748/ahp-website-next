@@ -52,41 +52,17 @@ export default function FragrancesPage() {
       .filter(Boolean)
       .slice(0, 4);
 
-  // Not signed in
-  if (!isSignedIn) {
-    return (
-      <div
-        className="min-h-screen flex flex-col items-center justify-center gap-6 px-5"
-        style={{ backgroundColor: "hsla(210,4%,9%,1)" }}
-      >
-        <span className="uppercase font-bold tracking-[0.4em] text-[1.2rem] text-[hsl(38,61%,73%)] [font-family:var(--font-display)]">
-          My Collection
-        </span>
-        <h1
-          className="font-normal text-white leading-[1.1] text-[clamp(3rem,6vw,6rem)]"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Sign In to View
-        </h1>
-        <p className="text-[hsla(0,0%,65%,1)] text-[1.6rem]">
-          Save fragrances to build your personal collection.
-        </p>
-        <Link
-          href="/sign-in"
-          className="group relative inline-flex items-center gap-3 px-10 py-4 border overflow-hidden text-[1.2rem] font-bold uppercase tracking-[0.3em] border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] [font-family:var(--font-display)] transition-colors duration-300 hover:text-[hsla(40,12%,5%,1)]"
-        >
-          <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
-          <span className="relative z-10">Sign In</span>
-          <span className="relative z-10">→</span>
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <main
-      className="min-h-screen pt-32 pb-20"
-      style={{ backgroundColor: "hsla(210,4%,9%,1)" }}
+      className="min-h-screen pt-[120px] pb-20"
+      style={{
+        backgroundColor: "hsla(210,4%,9%,1)",
+        backgroundImage: "url('/images/potential-pink-bg.png')",
+        backgroundSize: "600px 600px",
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+        backgroundBlendMode: "overlay",
+      }}
     >
       {/* ── Toast ── */}
       <div
@@ -108,40 +84,12 @@ export default function FragrancesPage() {
         {/* ── Header ── */}
         <div className="mb-14 mt-[50px]">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-[hsl(38,61%,73%)]" />
+            <span className="gold-diamond" />
             <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
               My Collection
             </span>
+            <span className="gold-diamond" />
           </div>
-
-          <svg viewBox="0 0 100 12" width="80" height="10" className="mb-5">
-            <line
-              x1="0"
-              y1="6"
-              x2="38"
-              y2="6"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-            <rect
-              x="44"
-              y="2"
-              width="8"
-              height="8"
-              transform="rotate(45 48 6)"
-              fill="none"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-            <line
-              x1="58"
-              y1="6"
-              x2="100"
-              y2="6"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-          </svg>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div>
@@ -149,7 +97,7 @@ export default function FragrancesPage() {
                 className="text-[4rem] sm:text-[5.5rem] font-normal text-white leading-none tracking-tight mb-3"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                My Fragrances
+                Saved Fragrances
               </h1>
               <p className="text-white/50 text-[1.4rem] max-w-xl">
                 {savedProducts.length > 0

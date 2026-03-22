@@ -253,39 +253,12 @@ export default function ProductsPage() {
         {/* ── Page Header ── */}
         <div className="mb-14 mt-[50px]">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px bg-[hsl(38,61%,73%)]" />
+            <span className="gold-diamond" />
             <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
               Collection
             </span>
+            <span className="gold-diamond" />
           </div>
-          <svg viewBox="0 0 100 12" width="80" height="10" className="mb-5">
-            <line
-              x1="0"
-              y1="6"
-              x2="38"
-              y2="6"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-            <rect
-              x="44"
-              y="2"
-              width="8"
-              height="8"
-              transform="rotate(45 48 6)"
-              fill="none"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-            <line
-              x1="58"
-              y1="6"
-              x2="100"
-              y2="6"
-              stroke="hsl(38,61%,73%)"
-              strokeWidth="1"
-            />
-          </svg>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div>
               <h1
@@ -303,7 +276,7 @@ export default function ProductsPage() {
             {isSignedIn ? (
               <Link
                 href="/fragrances"
-                className="group relative inline-flex items-center gap-3 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)] whitespace-nowrap shrink-0"
+                className="group relative inline-flex items-center gap-3 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)] hover:bg-[var(--gold)] whitespace-nowrap shrink-0"
               >
                 <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
                 <svg

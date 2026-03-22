@@ -87,7 +87,7 @@ export default function OurStory() {
           <div className="group flex-1 min-w-0 w-full relative overflow-hidden">
             <div className="absolute inset-[10px] sm:inset-[14px] border border-[var(--gold)] pointer-events-none z-10 opacity-[0.35] transition-opacity duration-500 group-hover:opacity-60" />
             <img
-              src="/images/about-page/booth_pic.jpg"
+              src="/images/about-page/hq.png"
               alt="Fragrance Crafting"
               className="w-full h-[260px] sm:h-[360px] md:h-[540px] object-cover block transition-transform duration-[600ms] group-hover:scale-[1.04]"
             />

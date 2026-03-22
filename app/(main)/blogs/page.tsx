@@ -7,12 +7,28 @@ import SubscribeSection from "@/components/SubscribeSection";
 export default function BlogPage() {
   return (
     <div
-      className="min-h-screen text-white"
+      className="min-h-screen text-white relative"
       style={{
         backgroundColor: "hsla(210,4%,9%,1)",
-        fontFamily: "var(--font-dm-sans)",
+        backgroundImage: "url('/images/potential-pink-bg.png')",
+        backgroundSize: "600px 600px",
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+        backgroundBlendMode: "overlay",
       }}
     >
+      {/* Fixed background image — replace YOUR_IMAGE_URL below */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: "url('YOUR_IMAGE_URL')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.18,
+        }}
+      />
+
       <BlogHero />
       <FeaturedPost />
       <BlogGrid />

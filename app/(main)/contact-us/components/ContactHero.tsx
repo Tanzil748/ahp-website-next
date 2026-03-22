@@ -7,7 +7,6 @@ export default function ContactHero() {
       style={{
         paddingTop: "clamp(100px, 14vw, 160px)",
         paddingBottom: "clamp(60px, 8vw, 100px)",
-        background: `radial-gradient(ellipse 80% 60% at 50% 0%, hsla(38,61%,50%,0.12) 0%, transparent 70%), var(--bg-section)`,
       }}
     >
       {/* Grid overlay */}

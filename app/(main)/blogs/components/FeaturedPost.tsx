@@ -1,18 +1,16 @@
 "use client";
 
-import { useQuery, useMutation } from "convex/react";
-import { useAuth } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import NewBlogButton from "./NewBlogButton";
 
 export default function FeaturedPost() {
-  const { isSignedIn } = useAuth();
   const post = useQuery(api.posts.getFeaturedPost);
 
   return (
-    <section className="py-20 px-5">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="pb-20 px-5 sm:px-8">
+      <div className="max-w-[1400px] mx-auto">
         <NewBlogButton />
 
         {/* Section title */}
