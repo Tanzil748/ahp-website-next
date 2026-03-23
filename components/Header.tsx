@@ -11,6 +11,8 @@ import {
 } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import { Show, UserButton } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 // ── Always-visible links ──────────────────────────────────────────────────────
 const publicLinks = [
@@ -145,6 +147,9 @@ export default function Header() {
   const [isActive, setIsActive] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const lastScrollY = useRef(0);
+
+  const currentUser = useQuery(api.users.current);
+  const isAdmin = ["admin", "super-admin"].includes(currentUser?.role ?? "");
 
   useEffect(() => {
     const onScroll = () => {
@@ -286,6 +291,11 @@ export default function Header() {
                       {link.label}
                     </Link>
                   ))}
+                  {isAdmin && (
+                    <Link href="/admin" className={navLinkClass}>
+                      Admin
+                    </Link>
+                  )}
                 </>
               </Show>
             </nav>
@@ -448,6 +458,27 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className={[
+                    "text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.2em] text-2xl",
+                    "hover:text-white focus-visible:text-white",
+                    "transition-all duration-300 outline-none",
+                    menuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-3",
+                  ].join(" ")}
+                  style={{
+                    transitionDelay: menuOpen
+                      ? `${(publicLinks.length + authLinks.length) * 55 + 120}ms`
+                      : "0ms",
+                  }}
+                >
+                  Admin
+                </Link>
+              )}
             </>
           </Show>
         </nav>
