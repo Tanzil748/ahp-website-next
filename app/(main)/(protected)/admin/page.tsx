@@ -474,57 +474,79 @@ function UsersPanel({
             No users found.
           </div>
         ) : (
-          users.map((user, i) => (
-            <div
-              key={user._id}
-              className="grid gap-4 px-6 py-5"
-              style={{
-                gridTemplateColumns: "2rem 1fr 1fr 140px 110px",
-                borderBottom: "1px solid hsla(38,61%,73%,0.07)",
-                borderLeft: "2px solid transparent",
-                transition: "border-left-color 0.2s, background-color 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderLeftColor =
-                  "hsl(38,61%,73%)";
-                (e.currentTarget as HTMLDivElement).style.backgroundColor =
-                  "hsla(38,61%,73%,0.03)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderLeftColor =
-                  "transparent";
-                (e.currentTarget as HTMLDivElement).style.backgroundColor =
-                  "transparent";
-              }}
-            >
-              <span className="text-[hsla(0,0%,30%,1)] text-[1.2rem] font-bold self-center">
-                {i + 1}
-              </span>
-              <span className="text-white text-[1.3rem] self-center truncate">
-                {getDisplayName(user)}
-              </span>
-              <span className="text-[hsla(0,0%,55%,1)] text-[1.2rem] self-center truncate">
-                {user.email}
-              </span>
-              <span className="self-center">
-                {/* Own row, or non-super-admin viewing super-admin/admin → static badge */}
-                {user._id === currentUserId ||
-                user.role === "super-admin" ||
-                (!isSuperAdmin && user.role === "admin") ? (
-                  <RoleBadge role={user.role} />
-                ) : (
-                  <RoleSelector
-                    userId={user._id}
-                    currentRole={user.role}
-                    isSuperAdmin={isSuperAdmin}
-                  />
-                )}
-              </span>
-              <span className="text-[hsla(0,0%,45%,1)] text-[1.2rem] self-center whitespace-nowrap">
-                {formatDate(user._creationTime)}
-              </span>
-            </div>
-          ))
+          users.map((user, i) => {
+            const roleNode =
+              user._id === currentUserId ||
+              user.role === "super-admin" ||
+              (!isSuperAdmin && user.role === "admin") ? (
+                <RoleBadge role={user.role} />
+              ) : (
+                <RoleSelector
+                  userId={user._id}
+                  currentRole={user.role}
+                  isSuperAdmin={isSuperAdmin}
+                />
+              );
+
+            return (
+              <div
+                key={user._id}
+                style={{
+                  borderBottom: "1px solid hsla(38,61%,73%,0.07)",
+                  borderLeft: "2px solid transparent",
+                  transition: "border-left-color 0.2s, background-color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderLeftColor =
+                    "hsl(38,61%,73%)";
+                  (e.currentTarget as HTMLDivElement).style.backgroundColor =
+                    "hsla(38,61%,73%,0.03)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderLeftColor =
+                    "transparent";
+                  (e.currentTarget as HTMLDivElement).style.backgroundColor =
+                    "transparent";
+                }}
+              >
+                {/* Desktop: aligned grid */}
+                <div
+                  className="hidden sm:grid gap-4 px-6 py-5"
+                  style={{ gridTemplateColumns: "2rem 1fr 1fr 140px 110px" }}
+                >
+                  <span className="text-[hsla(0,0%,30%,1)] text-[1.2rem] font-bold self-center">
+                    {i + 1}
+                  </span>
+                  <span className="text-white text-[1.3rem] self-center truncate">
+                    {getDisplayName(user)}
+                  </span>
+                  <span className="text-[hsla(0,0%,55%,1)] text-[1.2rem] self-center truncate">
+                    {user.email}
+                  </span>
+                  <span className="self-center">{roleNode}</span>
+                  <span className="text-[hsla(0,0%,45%,1)] text-[1.2rem] self-center whitespace-nowrap">
+                    {formatDate(user._creationTime)}
+                  </span>
+                </div>
+
+                {/* Mobile: stacked */}
+                <div className="flex sm:hidden flex-col gap-2 px-4 py-4">
+                  <div className="flex items-center justify-between gap-3 flex-wrap">
+                    <span className="text-white text-[1.3rem] font-medium">
+                      {getDisplayName(user)}
+                    </span>
+                    {roleNode}
+                  </div>
+                  <span className="text-[hsla(0,0%,50%,1)] text-[1.15rem] break-all">
+                    {user.email}
+                  </span>
+                  <span className="text-[hsla(0,0%,40%,1)] text-[1.05rem]">
+                    {formatDate(user._creationTime)}
+                  </span>
+                </div>
+              </div>
+            );
+          })
         )}
       </div>
 
