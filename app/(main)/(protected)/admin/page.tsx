@@ -5,6 +5,7 @@ import { useQuery, useMutation, usePaginatedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
 type Tab = "posts" | "users" | "careers";
 type PostFilter = "all" | "pending" | "approved" | "rejected";
@@ -1650,6 +1651,7 @@ export default function AdminPage() {
         )}
         {activeTab === "careers" && <CareersPanel />}
       </main>
+      <BackToTop />
     </div>
   );
 }
