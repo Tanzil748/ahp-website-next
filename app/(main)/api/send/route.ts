@@ -180,6 +180,89 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: data?.id });
   }
 
+  // ── Fragrance request ────────────────────────────────────────────────────────
+  if (type === "fragrance") {
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      country,
+      gender,
+      ageRange,
+      fragranceName,
+      fragranceBrand,
+      fragranceLink,
+      message,
+    } = body;
+
+    const { data, error } = await resend.emails.send({
+      from: "Al Hussein Perfumes <onboarding@resend.dev>",
+      to: "tanzilhassan333@gmail.com",
+      replyTo: email,
+      subject: `Fragrance Request — ${fragranceName} · ${firstName} ${lastName}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:0;background:#0e0e0e;color:#fff;">
+          <div style="background:#1a1a1a;padding:32px 40px;border-bottom:2px solid hsl(38,61%,73%);">
+            <div style="width:40px;height:2px;background:hsl(38,61%,73%);margin-bottom:16px;"></div>
+            <h2 style="margin:0;font-size:22px;font-weight:400;color:#fff;letter-spacing:1px;font-family:Georgia,serif;">
+              Fragrance Request
+            </h2>
+            <p style="margin:6px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#888;">
+              Al Hussein Perfumes
+            </p>
+          </div>
+          <div style="background:#1a1a1a;padding:32px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;width:160px;vertical-align:top;">Name</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${firstName} ${lastName}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Email</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;">
+                  <a href="mailto:${email}" style="color:hsl(38,61%,73%);text-decoration:none;">${email}</a>
+                </td>
+              </tr>
+              ${phone ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Phone</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${phone}</td></tr>` : ""}
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Country</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${country}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Gender</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${gender}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Age Range</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${ageRange}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Fragrance Name</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:hsl(38,61%,73%);font-size:15px;font-weight:700;">${fragranceName}</td>
+              </tr>
+              ${fragranceBrand ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Fragrance Brand</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${fragranceBrand}</td></tr>` : ""}
+              ${fragranceLink ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">External Link</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;"><a href="${fragranceLink}" style="color:hsl(38,61%,73%);text-decoration:none;">${fragranceLink}</a></td></tr>` : ""}
+              ${message ? `<tr><td style="padding:12px 0;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Additional Info</td><td style="padding:12px 0;color:#fff;font-size:15px;white-space:pre-wrap;line-height:1.6;">${message}</td></tr>` : ""}
+            </table>
+          </div>
+          <div style="background:#111;padding:20px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#444;">
+              Sent from the fragrance request form at alhusseinperfumes.com
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ id: data?.id });
+  }
+
   // ── Contact form ─────────────────────────────────────────────────────────────
   const {
     firstName,
