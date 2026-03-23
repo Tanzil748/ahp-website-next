@@ -134,6 +134,21 @@ export const createPost = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    // Only super-admin, admin, and blogger can create posts
+    const user = await ctx.db
+      .query("users")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (
+      !user ||
+      !["super-admin", "admin", "blogger"].includes(user.role ?? "")
+    ) {
+      throw new Error(
+        "Unauthorized: you do not have permission to write posts",
+      );
+    }
+
     return await ctx.db.insert("posts", {
       ...args,
       authorId: identity.subject,

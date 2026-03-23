@@ -1,11 +1,20 @@
 "use client";
 
-import { useAuth } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 
+const ALLOWED_ROLES = ["super-admin", "admin", "blogger"];
+
 const NewBlogButton = () => {
-  const { isSignedIn } = useAuth();
-  if (!isSignedIn) return null;
+  const currentUser = useQuery(api.users.current);
+
+  // Don't render until we know who the user is
+  if (!currentUser) return null;
+
+  // Only allowed roles can write blogs
+  if (!ALLOWED_ROLES.includes(currentUser.role ?? "")) return null;
+
   return (
     <div className="fade-up delay-2 flex justify-end mb-3">
       <Link
