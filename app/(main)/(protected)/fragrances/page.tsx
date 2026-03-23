@@ -1,48 +1,68 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useMemo, useState } from "react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import BackToTop from "@/components/BackToTop";
 
+const PAGE_SIZE = 12;
+
 export default function FragrancesPage() {
-  const { isSignedIn, user } = useUser();
   const products = useQuery(api.products.getProducts);
-  const [savedItems, setSavedItems] = useState<string[]>([]);
-  const [notification, setNotification] = useState<{
-    id: string;
-    msg: string;
-  } | null>(null);
+  const savedIds = useQuery(api.users.getSavedPerfumeIds) ?? [];
+  const toggleSaved = useMutation(api.users.toggleSavedPerfume);
+  const [notification, setNotification] = useState<{ msg: string } | null>(
+    null,
+  );
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    if (isSignedIn && user) {
-      const saved = localStorage.getItem(`savedProducts_${user.id}`);
-      if (saved) setSavedItems(JSON.parse(saved));
+  const handleRemove = async (id: string, name: string) => {
+    try {
+      await toggleSaved({ productId: id as Id<"products"> });
+      setNotification({ msg: `Removed "${name}"` });
+      setTimeout(() => setNotification(null), 2500);
+    } catch (err) {
+      console.error(err);
     }
-  }, [isSignedIn, user]);
-
-  const toggleSave = (id: string, name: string) => {
-    if (!isSignedIn) return;
-    const isAdded = savedItems.includes(id);
-    const next = isAdded
-      ? savedItems.filter((f) => f !== id)
-      : [...savedItems, id];
-    setSavedItems(next);
-    if (isSignedIn && user)
-      localStorage.setItem(`savedProducts_${user.id}`, JSON.stringify(next));
-    setNotification({
-      id,
-      msg: isAdded ? `Removed "${name}"` : `Added "${name}"`,
-    });
-    setTimeout(() => setNotification(null), 2500);
   };
 
   const savedProducts = useMemo(
-    () => (products ?? []).filter((p) => savedItems.includes(p._id)),
-    [products, savedItems],
+    () =>
+      (products ?? []).filter((p) =>
+        savedIds.includes(p._id as Id<"products">),
+      ),
+    [products, savedIds],
   );
+
+  const totalPages = Math.max(1, Math.ceil(savedProducts.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const pageStart = (safePage - 1) * PAGE_SIZE;
+  const paginated = savedProducts.slice(pageStart, pageStart + PAGE_SIZE);
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const pageNumbers = useMemo(() => {
+    if (totalPages <= 7)
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    const pages: (number | "…")[] = [];
+    pages.push(1);
+    if (safePage > 4) pages.push("…");
+    for (
+      let i = Math.max(2, safePage - 2);
+      i <= Math.min(totalPages - 1, safePage + 2);
+      i++
+    )
+      pages.push(i);
+    if (safePage < totalPages - 3) pages.push("…");
+    pages.push(totalPages);
+    return pages;
+  }, [totalPages, safePage]);
 
   const parseNotes = (p: (typeof savedProducts)[0]) =>
     [p.topNotes, p.middleNotes, p.baseNotes]
@@ -117,7 +137,7 @@ export default function FragrancesPage() {
         </div>
 
         {/* Loading */}
-        {products === undefined && (
+        {(products === undefined || savedIds === undefined) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div
@@ -191,143 +211,235 @@ export default function FragrancesPage() {
 
         {/* Grid */}
         {products !== undefined && savedProducts.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {savedProducts.map((product) => {
-              const notes = parseNotes(product);
-              const isAvailable = product.stockOnHand > 0;
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {paginated.map((product) => {
+                const notes = parseNotes(product);
+                const isAvailable = product.stockOnHand > 0;
 
-              return (
-                <div
-                  key={product._id}
-                  className="group relative flex flex-col border border-white/10 hover:border-[hsl(38,61%,73%)] hover:-translate-y-1 transition-all duration-300"
-                  style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
-                >
-                  {/* Image */}
+                return (
                   <div
-                    className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
-                    style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
+                    key={product._id}
+                    className="group relative flex flex-col border border-white/10 hover:border-[hsl(38,61%,73%)] hover:-translate-y-1 transition-all duration-300"
+                    style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
                   >
-                    {product.imageUrl ? (
-                      <img
-                        src={product.imageUrl}
-                        alt={product.itemName}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/10">
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1"
-                        >
-                          <rect x="3" y="3" width="18" height="18" rx="1" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <path d="M21 15l-5-5L5 21" />
-                        </svg>
-                        <span className="text-[1rem] font-bold uppercase tracking-[3px]">
-                          No Image
-                        </span>
-                      </div>
-                    )}
-
-                    {product.imageUrl && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                    )}
-
-                    <span
-                      className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${
-                        isAvailable
-                          ? "bg-[hsl(38,61%,73%)]/18 text-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)]/40"
-                          : "bg-white/10 text-white/50 border border-white/20"
-                      }`}
+                    {/* Image */}
+                    <div
+                      className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
+                      style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
                     >
-                      {isAvailable ? "In Stock" : "Out of Stock"}
-                    </span>
-                  </div>
-
-                  {/* Body */}
-                  <div className="p-6 flex flex-col gap-4 flex-1">
-                    <div className="w-8 h-px bg-[hsl(38,61%,73%)] group-hover:w-16 transition-all duration-500" />
-
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <p className="text-[hsl(38,61%,73%)]/60 text-[1rem] font-bold uppercase tracking-[3px]">
-                            {product.brand}
-                          </p>
-                          <span className="text-white/25 text-[0.95rem] font-bold uppercase tracking-[2px]">
-                            {product.gender}
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.itemName}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/10">
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1"
+                          >
+                            <rect x="3" y="3" width="18" height="18" rx="1" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <path d="M21 15l-5-5L5 21" />
+                          </svg>
+                          <span className="text-[1rem] font-bold uppercase tracking-[3px]">
+                            No Image
                           </span>
                         </div>
-                        <h2
-                          className="text-white text-[1.9rem] font-normal leading-tight"
-                          style={{ fontFamily: "var(--font-display)" }}
-                        >
-                          {product.itemName}
-                        </h2>
-                        <p className="text-white/20 text-[1rem] font-bold uppercase tracking-[2px] mt-0.5">
-                          SKU: {product.sku}
+                      )}
+                      {product.imageUrl && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      )}
+                      <span
+                        className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${
+                          isAvailable
+                            ? "bg-[hsl(38,61%,73%)]/18 text-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)]/40"
+                            : "bg-white/10 text-white/50 border border-white/20"
+                        }`}
+                      >
+                        {isAvailable ? "In Stock" : "Out of Stock"}
+                      </span>
+                    </div>
+
+                    {/* Body */}
+                    <div className="p-6 flex flex-col gap-4 flex-1">
+                      <div className="w-8 h-px bg-[hsl(38,61%,73%)] group-hover:w-16 transition-all duration-500" />
+
+                      <div className="flex-1 flex flex-col gap-2">
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <p className="text-[hsl(38,61%,73%)]/60 text-[1rem] font-bold uppercase tracking-[3px]">
+                              {product.brand}
+                            </p>
+                            <span className="text-white/25 text-[0.95rem] font-bold uppercase tracking-[2px]">
+                              {product.gender}
+                            </span>
+                          </div>
+                          <h2
+                            className="text-white text-[1.9rem] font-normal leading-tight"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            {product.itemName}
+                          </h2>
+                          <p className="text-white/20 text-[1rem] font-bold uppercase tracking-[2px] mt-0.5">
+                            SKU: {product.sku}
+                          </p>
+                        </div>
+                        <p className="text-white/45 text-[1.2rem] leading-relaxed line-clamp-2">
+                          {product.salesDescription}
                         </p>
                       </div>
-                      <p className="text-white/45 text-[1.2rem] leading-relaxed line-clamp-2">
-                        {product.salesDescription}
-                      </p>
-                    </div>
 
-                    {notes.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {notes.map((note) => (
+                      {notes.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          {notes.map((note) => (
+                            <span
+                              key={note}
+                              className="px-2 py-1 border border-white/10 text-white/35 text-[0.95rem] uppercase tracking-wider font-bold"
+                            >
+                              {note}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
                           <span
-                            key={note}
-                            className="px-2 py-1 border border-white/10 text-white/35 text-[0.95rem] uppercase tracking-wider font-bold"
+                            className={`w-1.5 h-1.5 rotate-45 shrink-0 ${isAvailable ? "bg-emerald-400" : "bg-red-400"}`}
+                          />
+                          <span
+                            className={`text-[1rem] font-bold uppercase tracking-[2px] ${isAvailable ? "text-emerald-400" : "text-red-400"}`}
                           >
-                            {note}
+                            {isAvailable
+                              ? `In Stock · ${product.stockOnHand} units`
+                              : "Out of Stock"}
                           </span>
-                        ))}
-                      </div>
-                    )}
+                        </div>
 
-                    <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`w-1.5 h-1.5 rotate-45 shrink-0 ${isAvailable ? "bg-emerald-400" : "bg-red-400"}`}
-                        />
-                        <span
-                          className={`text-[1rem] font-bold uppercase tracking-[2px] ${isAvailable ? "text-emerald-400" : "text-red-400"}`}
+                        <button
+                          onClick={() =>
+                            handleRemove(product._id, product.itemName)
+                          }
+                          className="w-full flex items-center justify-center gap-2 py-2.5 border bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)] font-bold uppercase tracking-[2px] text-[1.1rem] transition-all duration-300 hover:bg-transparent hover:text-[hsl(38,61%,73%)]"
                         >
-                          {isAvailable
-                            ? `In Stock · ${product.stockOnHand} units`
-                            : "Out of Stock"}
-                        </span>
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                          </svg>
+                          Remove
+                        </button>
                       </div>
-
-                      <button
-                        onClick={() =>
-                          toggleSave(product._id, product.itemName)
-                        }
-                        className="w-full flex items-center justify-center gap-2 py-2.5 border bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)] font-bold uppercase tracking-[2px] text-[1.1rem] transition-all duration-300 hover:bg-transparent hover:text-[hsl(38,61%,73%)]"
-                      >
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                        Remove
-                      </button>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-12">
+                <nav
+                  className="flex items-center justify-center gap-1.5 flex-wrap"
+                  aria-label="Fragrance pages"
+                >
+                  <button
+                    onClick={() => goToPage(safePage - 1)}
+                    disabled={safePage === 1}
+                    className={[
+                      "w-10 h-10 flex items-center justify-center border font-bold transition-all duration-200",
+                      safePage === 1
+                        ? "border-white/10 text-white/20 cursor-not-allowed"
+                        : "border-white/20 text-white hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                    ].join(" ")}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      fill="none"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        d="M328 112L184 256l144 144"
+                        stroke="currentColor"
+                        strokeWidth="48"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  {pageNumbers.map((n, i) =>
+                    n === "…" ? (
+                      <span
+                        key={`e-${i}`}
+                        className="w-10 h-10 flex items-center justify-center text-white/20 font-bold text-[1.3rem]"
+                      >
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={n}
+                        onClick={() => goToPage(n as number)}
+                        className={[
+                          "w-10 h-10 flex items-center justify-center border font-bold text-[1.2rem] transition-all duration-200",
+                          safePage === n
+                            ? "bg-[hsl(38,61%,73%)] border-[hsl(38,61%,73%)] text-[hsl(40,12%,5%)]"
+                            : "border-white/20 text-white/50 hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                        ].join(" ")}
+                      >
+                        {n}
+                      </button>
+                    ),
+                  )}
+
+                  <button
+                    onClick={() => goToPage(safePage + 1)}
+                    disabled={safePage === totalPages}
+                    className={[
+                      "w-10 h-10 flex items-center justify-center border font-bold transition-all duration-200",
+                      safePage === totalPages
+                        ? "border-white/10 text-white/20 cursor-not-allowed"
+                        : "border-white/20 text-white hover:border-[hsl(38,61%,73%)] hover:text-[hsl(38,61%,73%)]",
+                    ].join(" ")}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      fill="none"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        d="M184 112l144 144-144 144"
+                        stroke="currentColor"
+                        strokeWidth="48"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </nav>
+
+                <p className="text-center text-[1.2rem] text-white/30 mt-4">
+                  Showing {pageStart + 1}–
+                  {Math.min(pageStart + PAGE_SIZE, savedProducts.length)} of{" "}
+                  {savedProducts.length} fragrances
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
       <BackToTop />

@@ -89,6 +89,43 @@ export const setUserRole = mutation({
   },
 });
 
+// Returns the list of saved product IDs for the current user
+export const getSavedPerfumeIds = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return [];
+    return user.savedPerfumes ?? [];
+  },
+});
+
+// Adds or removes a product from the user's saved list
+export const toggleSavedPerfume = mutation({
+  args: { productId: v.id("products") },
+  async handler(ctx, { productId }) {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (!user) throw new Error("User not found");
+
+    const current = user.savedPerfumes ?? [];
+    const alreadySaved = current.includes(productId);
+
+    const updated = alreadySaved
+      ? current.filter((id) => id !== productId)
+      : [...current, productId];
+
+    await ctx.db.patch(user._id, { savedPerfumes: updated });
+
+    return { saved: !alreadySaved };
+  },
+});
+
 // upsertFromClerk will be called when a user signs up or updates their account
 export const upsertFromClerk = internalMutation({
   args: { data: v.any() as Validator<UserJSON> },

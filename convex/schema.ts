@@ -8,9 +8,7 @@ export default defineSchema({
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
-    blogs: v.optional(v.array(v.id("blogs"))),
-    comments: v.optional(v.array(v.id("comments"))),
-    savedPerfumes: v.optional(v.array(v.id("savedPerfumes"))),
+    savedPerfumes: v.optional(v.array(v.id("products"))),
     role: v.optional(
       v.union(
         v.literal("super-admin"),

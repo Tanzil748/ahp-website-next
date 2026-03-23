@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useState, useMemo } from "react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import BackToTop from "@/components/BackToTop";
 import ProductFilters from "./components/ProductFilters";
@@ -12,8 +12,12 @@ import ProductSearch from "./components/ProductSearch";
 import { PAGE_SIZE, normalizeGender, normalizeBrand } from "./utils";
 
 export default function ProductsPage() {
-  const { isSignedIn, user } = useUser();
+  const currentUser = useQuery(api.users.current);
   const products = useQuery(api.products.getProducts);
+  const savedIds = useQuery(api.users.getSavedPerfumeIds) ?? [];
+  const toggleSaved = useMutation(api.users.toggleSavedPerfume);
+
+  const isSignedIn = !!currentUser;
 
   const [search, setSearch] = useState("");
   const [viewAll, setViewAll] = useState(true);
@@ -23,11 +27,9 @@ export default function ProductsPage() {
   const [showUnavailable, setShowUnavailable] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [savedItems, setSavedItems] = useState<string[]>([]);
-  const [notification, setNotification] = useState<{
-    id: string;
-    msg: string;
-  } | null>(null);
+  const [notification, setNotification] = useState<{ msg: string } | null>(
+    null,
+  );
 
   const allProducts = useMemo(() => products ?? [], [products]);
 
@@ -41,27 +43,19 @@ export default function ProductsPage() {
     [allProducts],
   );
 
-  useEffect(() => {
-    if (isSignedIn && user) {
-      const saved = localStorage.getItem(`savedProducts_${user.id}`);
-      if (saved) setSavedItems(JSON.parse(saved));
-    }
-  }, [isSignedIn, user]);
-
-  const toggleSave = (id: string, name: string) => {
+  const handleToggleSave = async (id: string, name: string) => {
     if (!isSignedIn) return;
-    const isAdded = savedItems.includes(id);
-    const next = isAdded
-      ? savedItems.filter((f) => f !== id)
-      : [...savedItems, id];
-    setSavedItems(next);
-    if (isSignedIn && user)
-      localStorage.setItem(`savedProducts_${user.id}`, JSON.stringify(next));
-    setNotification({
-      id,
-      msg: isAdded ? `Removed "${name}"` : `Added "${name}"`,
-    });
-    setTimeout(() => setNotification(null), 2500);
+    const productId = id as Id<"products">;
+    const wasSaved = savedIds.includes(productId);
+    try {
+      await toggleSaved({ productId });
+      setNotification({
+        msg: wasSaved ? `Removed "${name}"` : `Added "${name}"`,
+      });
+      setTimeout(() => setNotification(null), 2500);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const toggleBrand = (b: string) => {
@@ -188,6 +182,9 @@ export default function ProductsPage() {
     onResetAll: resetAll,
   };
 
+  // savedIds from Convex are Id<"products"> — cast to string[] for ProductCard comparison
+  const savedStrings = savedIds.map(String);
+
   return (
     <main
       className="min-h-screen pt-[120px] pb-20"
@@ -288,9 +285,9 @@ export default function ProductsPage() {
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
                 <span className="relative z-10">My Fragrances</span>
-                {savedItems.length > 0 && (
+                {savedIds.length > 0 && (
                   <span className="relative z-10 w-6 h-6 flex items-center justify-center text-[1rem] font-black border border-[hsl(38,61%,73%)] group-hover:border-[hsl(40,12%,5%)]">
-                    {savedItems.length}
+                    {savedIds.length}
                   </span>
                 )}
               </Link>
@@ -380,7 +377,6 @@ export default function ProductsPage() {
           <div className="flex-1 min-w-0 flex flex-col gap-6">
             <ProductSearch search={search} onSearch={handleSearch} />
 
-            {/* Results bar */}
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
               <p className="text-white/30 text-[1.2rem] font-bold uppercase tracking-widest">
                 {products === undefined
@@ -399,14 +395,14 @@ export default function ProductsPage() {
               products={allProducts}
               paginated={paginated}
               filteredCount={filtered.length}
-              savedItems={savedItems}
-              isSignedIn={!!isSignedIn}
+              savedItems={savedStrings}
+              isSignedIn={isSignedIn}
               currentPage={currentPage}
               totalPages={totalPages}
               safePage={safePage}
               pageStart={pageStart}
               pageNumbers={pageNumbers}
-              onToggleSave={toggleSave}
+              onToggleSave={handleToggleSave}
               onGoToPage={goToPage}
               onClearFilters={() => {
                 resetAll();
