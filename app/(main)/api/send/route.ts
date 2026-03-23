@@ -69,6 +69,109 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: data?.id });
   }
 
+  // ── Wholesale inquiry ────────────────────────────────────────────────────────
+  if (type === "wholesale") {
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      company,
+      website,
+      businessType,
+      businessAddress,
+      salesChannels,
+      sellsFragrances,
+      monthlyVolume,
+      interestedBrands,
+      internationalShipping,
+      freightForwarder,
+      message,
+    } = body;
+
+    const { data, error } = await resend.emails.send({
+      from: "Al Hussein Perfumes <onboarding@resend.dev>",
+      to: "tanzilhassan333@gmail.com",
+      replyTo: email,
+      subject: `Wholesale Inquiry — ${company} · ${firstName} ${lastName}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:0;background:#0e0e0e;color:#fff;">
+          <div style="background:#1a1a1a;padding:32px 40px;border-bottom:2px solid hsl(38,61%,73%);">
+            <div style="width:40px;height:2px;background:hsl(38,61%,73%);margin-bottom:16px;"></div>
+            <h2 style="margin:0;font-size:22px;font-weight:400;color:#fff;letter-spacing:1px;font-family:Georgia,serif;">
+              Wholesale &amp; Retail Inquiry
+            </h2>
+            <p style="margin:6px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#888;">
+              Al Hussein Perfumes
+            </p>
+          </div>
+          <div style="background:#1a1a1a;padding:32px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;width:180px;vertical-align:top;">Name</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${firstName} ${lastName}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Email</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;">
+                  <a href="mailto:${email}" style="color:hsl(38,61%,73%);text-decoration:none;">${email}</a>
+                </td>
+              </tr>
+              ${phone ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Phone</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${phone}</td></tr>` : ""}
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Company</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:hsl(38,61%,73%);font-size:15px;font-weight:700;">${company}</td>
+              </tr>
+              ${website ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Website</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;"><a href="${website}" style="color:hsl(38,61%,73%);text-decoration:none;">${website}</a></td></tr>` : ""}
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Business Type</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${businessType}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Business Address</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${businessAddress}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Sales Channels</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${Array.isArray(salesChannels) ? salesChannels.join(", ") : salesChannels}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Sells Fragrances</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${sellsFragrances === "yes" ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Monthly Volume</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:hsl(38,61%,73%);font-size:15px;font-weight:700;">${monthlyVolume}</td>
+              </tr>
+              ${interestedBrands && interestedBrands.length > 0 ? `<tr><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Interested Brands</td><td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${Array.isArray(interestedBrands) ? interestedBrands.join(", ") : interestedBrands}</td></tr>` : ""}
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Intl. Shipping</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${internationalShipping === "yes" ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;${message ? "border-bottom:1px solid #2a2a2a;" : ""}color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Freight Forwarder</td>
+                <td style="padding:12px 0;${message ? "border-bottom:1px solid #2a2a2a;" : ""}color:#fff;font-size:15px;">${freightForwarder === "yes" ? "Yes" : "No"}</td>
+              </tr>
+              ${message ? `<tr><td style="padding:12px 0;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Message</td><td style="padding:12px 0;color:#fff;font-size:15px;white-space:pre-wrap;line-height:1.6;">${message}</td></tr>` : ""}
+            </table>
+          </div>
+          <div style="background:#111;padding:20px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#444;">
+              Sent from the wholesale inquiry form at alhusseinperfumes.com
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ id: data?.id });
+  }
+
   // ── Blogger inquiry ──────────────────────────────────────────────────────────
   if (type === "blogger") {
     const {
