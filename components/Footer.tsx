@@ -36,6 +36,10 @@ const columns: FooterColumnData[] = [
         label: "Wholesaler/Retail Inquiry",
         href: "/wholesaler-retail-inquiry",
       },
+      {
+        label: "Blogger Inquiry",
+        href: "blogger-inquiry",
+      },
     ],
   },
   {

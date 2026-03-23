@@ -69,6 +69,117 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: data?.id });
   }
 
+  // ── Blogger inquiry ──────────────────────────────────────────────────────────
+  if (type === "blogger") {
+    const {
+      fullName,
+      email,
+      country,
+      phone,
+      hasBlog,
+      monthlySubscribers,
+      socialLinks,
+      message,
+    } = body;
+
+    const { data, error } = await resend.emails.send({
+      from: "Al Hussein Perfumes <onboarding@resend.dev>",
+      to: "tanzilhassan333@gmail.com",
+      replyTo: email,
+      subject: `Blogger Inquiry — ${fullName}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:0;background:#0e0e0e;color:#fff;">
+
+          <!-- Header bar -->
+          <div style="background:#1a1a1a;padding:32px 40px;border-bottom:2px solid hsl(38,61%,73%);">
+            <div style="width:40px;height:2px;background:hsl(38,61%,73%);margin-bottom:16px;"></div>
+            <h2 style="margin:0;font-size:22px;font-weight:400;color:#fff;letter-spacing:1px;font-family:Georgia,serif;">
+              Blogger / Creator Inquiry
+            </h2>
+            <p style="margin:6px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#888;">
+              Al Hussein Perfumes
+            </p>
+          </div>
+
+          <!-- Body -->
+          <div style="background:#1a1a1a;padding:32px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <table style="width:100%;border-collapse:collapse;">
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;width:160px;vertical-align:top;">Full Name</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${fullName}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Email</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:15px;">
+                  <a href="mailto:${email}" style="color:hsl(38,61%,73%);text-decoration:none;">${email}</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Country</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${country}</td>
+              </tr>
+              ${
+                phone
+                  ? `
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Phone</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${phone}</td>
+              </tr>`
+                  : ""
+              }
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Has a Blog</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${hasBlog === "yes" ? "Yes" : "No"}</td>
+              </tr>
+              ${
+                hasBlog === "yes" && monthlySubscribers
+                  ? `
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Monthly Subscribers</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${monthlySubscribers}</td>
+              </tr>`
+                  : ""
+              }
+              ${
+                socialLinks
+                  ? `
+              <tr>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Social Links</td>
+                <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;white-space:pre-wrap;line-height:1.6;">${socialLinks}</td>
+              </tr>`
+                  : ""
+              }
+              ${
+                message
+                  ? `
+              <tr>
+                <td style="padding:12px 0;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Additional Info</td>
+                <td style="padding:12px 0;color:#fff;font-size:15px;white-space:pre-wrap;line-height:1.6;">${message}</td>
+              </tr>`
+                  : ""
+              }
+            </table>
+          </div>
+
+          <!-- Footer -->
+          <div style="background:#111;padding:20px 40px;border:1px solid #2a2a2a;border-top:none;">
+            <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#444;">
+              Sent from the blogger inquiry form at alhusseinperfumes.com
+            </p>
+          </div>
+
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ id: data?.id });
+  }
+
   // ── Contact form ─────────────────────────────────────────────────────────────
   const { firstName, lastName, email, phone, company, message, to } = body;
 
