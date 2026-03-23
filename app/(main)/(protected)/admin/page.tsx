@@ -575,13 +575,20 @@ function UsersPanel({
 
 // ── Posts Panel ────────────────────────────────────────────────────────────
 
-function PostsPanel() {
+function PostsPanel({
+  currentUserRole,
+  currentUserClerkId,
+}: {
+  currentUserRole?: string;
+  currentUserClerkId: string;
+}) {
   const allPosts = useQuery(api.posts.getAllPostsAdmin);
   const approvePost = useMutation(api.posts.approvePost);
   const rejectPost = useMutation(api.posts.rejectPost);
   const deletePost = useMutation(api.posts.deletePost);
   const setFeatured = useMutation(api.posts.setFeaturedPost);
   const unfeature = useMutation(api.posts.unfeaturePost);
+  const updatePost = useMutation(api.posts.updatePost);
 
   const [filter, setFilter] = useState<PostFilter>("all");
   const [confirm, setConfirm] = useState<{
@@ -589,6 +596,14 @@ function PostsPanel() {
     onConfirm: () => void;
   } | null>(null);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<{
+    postId: Id<"posts">;
+    title: string;
+    category: string;
+    excerpt: string;
+    body: string;
+  } | null>(null);
+  const [editSaving, setEditSaving] = useState(false);
 
   const filtered = (allPosts ?? []).filter((p) => {
     if (filter === "all") return true;
@@ -618,6 +633,30 @@ function PostsPanel() {
       setLoadingId(null);
     }
   }
+
+  async function handleSaveEdit() {
+    if (!editing) return;
+    setEditSaving(true);
+    try {
+      await updatePost({
+        postId: editing.postId,
+        title: editing.title,
+        category: editing.category,
+        excerpt: editing.excerpt || undefined,
+        body: editing.body,
+      });
+      setEditing(null);
+    } finally {
+      setEditSaving(false);
+    }
+  }
+
+  const canEdit = (post: any) => {
+    if (["admin", "super-admin"].includes(currentUserRole ?? "")) return true;
+    if (currentUserRole === "blogger")
+      return post.authorId === currentUserClerkId;
+    return false;
+  };
 
   const FILTERS: { key: PostFilter; label: string }[] = [
     { key: "all", label: "All" },
@@ -864,6 +903,37 @@ function PostsPanel() {
                     </IconBtn>
                   )}
 
+                  {/* Edit */}
+                  {canEdit(post) && (
+                    <IconBtn
+                      onClick={() =>
+                        setEditing({
+                          postId: post._id,
+                          title: post.title,
+                          category: post.category,
+                          excerpt: post.excerpt ?? "",
+                          body: post.body,
+                        })
+                      }
+                      title="Edit"
+                      color="hsl(200,70%,65%)"
+                      bg="hsla(200,70%,65%,0.1)"
+                      border="hsla(200,70%,65%,0.3)"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="14"
+                        height="14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                    </IconBtn>
+                  )}
+
                   {/* Preview */}
                   <Link
                     href={`/blogs/${post._id}`}
@@ -932,6 +1002,177 @@ function PostsPanel() {
           })
         )}
       </div>
+
+      {editing && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{
+            backgroundColor: "hsla(210,4%,5%,0.88)",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <div
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            style={{
+              backgroundColor: "hsla(210,4%,11%,1)",
+              border: "1px solid hsla(38,61%,73%,0.2)",
+            }}
+          >
+            <div
+              className="flex items-center justify-between px-6 py-5"
+              style={{ borderBottom: "1px solid hsla(38,61%,73%,0.15)" }}
+            >
+              <h3
+                className="text-white text-[1.8rem] font-normal"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Edit Post
+              </h3>
+              <button
+                onClick={() => setEditing(null)}
+                className="text-[hsla(0,0%,50%,1)] hover:text-white transition-colors duration-200"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 flex flex-col gap-5">
+              <div>
+                <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
+                  Title
+                </label>
+                <input
+                  value={editing.title}
+                  onChange={(e) =>
+                    setEditing((p) =>
+                      p ? { ...p, title: e.target.value } : null,
+                    )
+                  }
+                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200"
+                  style={{
+                    backgroundColor: "hsla(210,4%,7%,1)",
+                    borderColor: "hsla(38,61%,73%,0.15)",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "hsl(38,61%,73%)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "hsla(38,61%,73%,0.15)")
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
+                  Category
+                </label>
+                <input
+                  value={editing.category}
+                  onChange={(e) =>
+                    setEditing((p) =>
+                      p ? { ...p, category: e.target.value } : null,
+                    )
+                  }
+                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200"
+                  style={{
+                    backgroundColor: "hsla(210,4%,7%,1)",
+                    borderColor: "hsla(38,61%,73%,0.15)",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "hsl(38,61%,73%)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "hsla(38,61%,73%,0.15)")
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
+                  Excerpt{" "}
+                  <span className="normal-case tracking-normal font-normal opacity-60 text-[0.9rem]">
+                    optional
+                  </span>
+                </label>
+                <input
+                  value={editing.excerpt}
+                  onChange={(e) =>
+                    setEditing((p) =>
+                      p ? { ...p, excerpt: e.target.value } : null,
+                    )
+                  }
+                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200"
+                  style={{
+                    backgroundColor: "hsla(210,4%,7%,1)",
+                    borderColor: "hsla(38,61%,73%,0.15)",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "hsl(38,61%,73%)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "hsla(38,61%,73%,0.15)")
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
+                  Body
+                </label>
+                <textarea
+                  value={editing.body}
+                  rows={12}
+                  onChange={(e) =>
+                    setEditing((p) =>
+                      p ? { ...p, body: e.target.value } : null,
+                    )
+                  }
+                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200 resize-y leading-relaxed"
+                  style={{
+                    backgroundColor: "hsla(210,4%,7%,1)",
+                    borderColor: "hsla(38,61%,73%,0.15)",
+                    fontFamily: "var(--font-dm-sans)",
+                  }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "hsl(38,61%,73%)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "hsla(38,61%,73%,0.15)")
+                  }
+                />
+              </div>
+              <div className="flex gap-4 pt-2">
+                <button
+                  onClick={() => setEditing(null)}
+                  className="flex-1 py-3 border border-white/20 text-white/60 text-[1.1rem] font-bold uppercase tracking-[2px] transition-colors hover:border-white/40 hover:text-white/80"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveEdit}
+                  disabled={editSaving || !editing.title || !editing.body}
+                  className="flex-1 py-3 text-[1.1rem] font-bold uppercase tracking-[2px] transition-all disabled:opacity-40"
+                  style={{
+                    backgroundColor: "hsla(38,61%,73%,0.15)",
+                    border: "1px solid hsla(38,61%,73%,0.4)",
+                    color: "hsl(38,61%,73%)",
+                  }}
+                >
+                  {editSaving ? "Saving…" : "Save Changes"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {confirm && (
         <ConfirmModal
@@ -1642,7 +1883,12 @@ export default function AdminPage() {
         </div>
 
         {/* Panel */}
-        {activeTab === "posts" && <PostsPanel />}
+        {activeTab === "posts" && (
+          <PostsPanel
+            currentUserRole={currentUser.role}
+            currentUserClerkId={currentUser.clerkUserId}
+          />
+        )}
         {activeTab === "users" && (
           <UsersPanel
             isSuperAdmin={currentUser.role === "super-admin"}

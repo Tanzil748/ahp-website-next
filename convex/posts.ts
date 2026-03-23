@@ -158,7 +158,44 @@ export const createPost = mutation({
   },
 });
 
-// ── Admin mutations ────────────────────────────────────────────────────────
+// Admins/super-admins can edit any post.
+// Bloggers can only edit posts they authored.
+export const updatePost = mutation({
+  args: {
+    postId: v.id("posts"),
+    title: v.string(),
+    category: v.string(),
+    excerpt: v.optional(v.string()),
+    body: v.string(),
+  },
+  handler: async (ctx, { postId, ...fields }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    if (
+      !user ||
+      !["super-admin", "admin", "blogger"].includes(user.role ?? "")
+    ) {
+      throw new Error("Unauthorized: you do not have permission to edit posts");
+    }
+
+    // Bloggers can only edit their own posts
+    if (user.role === "blogger") {
+      const post = await ctx.db.get(postId);
+      if (!post) throw new Error("Post not found");
+      if (post.authorId !== identity.subject) {
+        throw new Error("Unauthorized: you can only edit your own posts");
+      }
+    }
+
+    await ctx.db.patch(postId, fields);
+  },
+});
 
 export const approvePost = mutation({
   args: { postId: v.id("posts") },
