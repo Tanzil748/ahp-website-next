@@ -181,7 +181,17 @@ export async function POST(req: Request) {
   }
 
   // ── Contact form ─────────────────────────────────────────────────────────────
-  const { firstName, lastName, email, phone, company, message, to } = body;
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    company,
+    inquiryType,
+    orderId,
+    message,
+    to,
+  } = body;
 
   const { data, error } = await resend.emails.send({
     from: "Al Hussein Perfumes <onboarding@resend.dev>",
@@ -230,6 +240,24 @@ export async function POST(req: Request) {
             <tr>
               <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Company</td>
               <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${company}</td>
+            </tr>`
+                : ""
+            }
+            ${
+              inquiryType
+                ? `
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Inquiry Type</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:hsl(38,61%,73%);font-size:15px;font-weight:700;">${inquiryType}</td>
+            </tr>`
+                : ""
+            }
+            ${
+              orderId
+                ? `
+            <tr>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:3px;font-weight:700;vertical-align:top;">Order ID</td>
+              <td style="padding:12px 0;border-bottom:1px solid #2a2a2a;color:#fff;font-size:15px;">${orderId}</td>
             </tr>`
                 : ""
             }
