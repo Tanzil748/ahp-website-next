@@ -1,12 +1,31 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
+async function assertAdmin(ctx: any) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) throw new Error("Not authenticated");
+
+  const user = await ctx.db
+    .query("users")
+    .withIndex("byClerkUserId", (q: any) =>
+      q.eq("clerkUserId", identity.subject),
+    )
+    .unique();
+
+  if (!user || !["super-admin", "admin"].includes(user.role ?? "")) {
+    throw new Error("Unauthorized: admin access required");
+  }
+
+  return user;
+}
+
+// Public — only approved (or legacy) posts
 export const getPosts = query({
   handler: async (ctx) => {
     const posts = await ctx.db.query("posts").order("desc").collect();
-
+    const visible = posts.filter((p) => !p.status || p.status === "approved");
     return await Promise.all(
-      posts.map(async (post) => ({
+      visible.map(async (post) => ({
         ...post,
         coverImageUrl: post.coverImageId
           ? await ctx.storage.getUrl(post.coverImageId)
@@ -22,7 +41,6 @@ export const getPostById = query({
     const post = await ctx.db.get(args.postId);
     if (!post) return null;
 
-    // Look up the author from the users table using authorId (Clerk user ID)
     const author = await ctx.db
       .query("users")
       .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", post.authorId))
@@ -39,6 +57,57 @@ export const getPostById = query({
             lastName: author.lastName,
             email: author.email,
           }
+        : null,
+    };
+  },
+});
+
+// Admin — all posts with author info
+export const getAllPostsAdmin = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const posts = await ctx.db.query("posts").order("desc").collect();
+
+    return await Promise.all(
+      posts.map(async (post) => {
+        const author = await ctx.db
+          .query("users")
+          .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", post.authorId))
+          .unique();
+
+        return {
+          ...post,
+          coverImageUrl: post.coverImageId
+            ? await ctx.storage.getUrl(post.coverImageId)
+            : null,
+          author: author
+            ? {
+                firstName: author.firstName,
+                lastName: author.lastName,
+                email: author.email,
+              }
+            : null,
+        };
+      }),
+    );
+  },
+});
+
+export const getFeaturedPost = query({
+  handler: async (ctx) => {
+    const post = await ctx.db
+      .query("posts")
+      .filter((q) => q.eq(q.field("isFeatured"), true))
+      .first();
+
+    if (!post) return null;
+
+    return {
+      ...post,
+      coverImageUrl: post.coverImageId
+        ? await ctx.storage.getUrl(post.coverImageId)
         : null,
     };
   },
@@ -65,56 +134,75 @@ export const createPost = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const postId = await ctx.db.insert("posts", {
-      title: args.title,
-      category: args.category,
-      excerpt: args.excerpt,
-      body: args.body,
-      coverImageId: args.coverImageId,
+    return await ctx.db.insert("posts", {
+      ...args,
       authorId: identity.subject,
       createdAt: Date.now(),
+      status: "pending",
     });
-
-    return postId;
   },
 });
 
-// featured post
-export const getFeaturedPost = query({
-  handler: async (ctx) => {
-    const post = await ctx.db
-      .query("posts")
-      .filter((q) => q.eq(q.field("isFeatured"), true))
-      .first();
+// ── Admin mutations ────────────────────────────────────────────────────────
 
-    if (!post) return null;
-
-    return {
-      ...post,
-      coverImageUrl: post.coverImageId
-        ? await ctx.storage.getUrl(post.coverImageId)
-        : null,
-    };
+export const approvePost = mutation({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, args) => {
+    await assertAdmin(ctx);
+    await ctx.db.patch(args.postId, { status: "approved" });
   },
 });
 
+export const rejectPost = mutation({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, args) => {
+    await assertAdmin(ctx);
+    await ctx.db.patch(args.postId, { status: "rejected" });
+  },
+});
+
+export const deletePost = mutation({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, args) => {
+    await assertAdmin(ctx);
+    const post = await ctx.db.get(args.postId);
+    if (post?.coverImageId) {
+      await ctx.storage.delete(post.coverImageId);
+    }
+    await ctx.db.delete(args.postId);
+  },
+});
+
+// Only one post can be featured at a time — this unfeatures the current one first
 export const setFeaturedPost = mutation({
   args: { postId: v.id("posts") },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    await assertAdmin(ctx);
 
-    // Unfeature any currently featured post
-    const currentFeatured = await ctx.db
+    const post = await ctx.db.get(args.postId);
+    if (!post) throw new Error("Post not found");
+    if (post.status !== "approved")
+      throw new Error("Only approved posts can be featured");
+
+    // Unfeature existing featured post
+    const current = await ctx.db
       .query("posts")
       .filter((q) => q.eq(q.field("isFeatured"), true))
       .first();
 
-    if (currentFeatured) {
-      await ctx.db.patch(currentFeatured._id, { isFeatured: false });
+    if (current) {
+      await ctx.db.patch(current._id, { isFeatured: undefined });
     }
 
-    // Feature the new post
     await ctx.db.patch(args.postId, { isFeatured: true });
+  },
+});
+
+// Remove featured status from a post (unfeature without setting a new one)
+export const unfeaturePost = mutation({
+  args: { postId: v.id("posts") },
+  handler: async (ctx, args) => {
+    await assertAdmin(ctx);
+    await ctx.db.patch(args.postId, { isFeatured: undefined });
   },
 });

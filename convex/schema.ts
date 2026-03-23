@@ -4,10 +4,9 @@ import { v } from "convex/values";
 export default defineSchema({
   users: defineTable({
     email: v.string(),
-    clerkUserId: v.string(), //foreign key connecting convex & clerk
+    clerkUserId: v.string(),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
-    password: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     blogs: v.optional(v.array(v.id("blogs"))),
     comments: v.optional(v.array(v.id("comments"))),
@@ -31,6 +30,37 @@ export default defineSchema({
     authorId: v.string(),
     createdAt: v.number(),
     isFeatured: v.optional(v.boolean()),
+    status: v.optional(
+      v.union(
+        v.literal("pending"),
+        v.literal("approved"),
+        v.literal("rejected"),
+      ),
+    ),
+  }),
+
+  careers: defineTable({
+    title: v.string(),
+    department: v.union(
+      v.literal("Marketing"),
+      v.literal("Sales"),
+      v.literal("Operations"),
+      v.literal("Technology"),
+      v.literal("Corporate"),
+    ),
+    location: v.string(),
+    type: v.union(
+      v.literal("full-time"),
+      v.literal("part-time"),
+      v.literal("contract"),
+      v.literal("internship"),
+    ),
+    description: v.string(),
+    requirements: v.array(v.string()),
+    salaryMin: v.optional(v.number()),
+    salaryMax: v.optional(v.number()),
+    isActive: v.boolean(),
+    createdAt: v.number(),
   }),
 
   products: defineTable({
