@@ -1,6 +1,6 @@
 import InfluencerHero from "./components/InfluencerHero";
 import InfluencerInfo from "./components/InfluencerInfo";
-import ContactForm from "@/components/ContactForm";
+import InfluencerForm from "./components/InfluencerForm";
 import BackToTop from "@/components/BackToTop";
 
 export default function InfluencerCollabPage() {
@@ -18,7 +18,7 @@ export default function InfluencerCollabPage() {
         <div className="max-w-[1200px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-[60px] max-lg:gap-[50px] items-start">
           <InfluencerInfo />
           {/* TODO: swap to → social@alhusseinperfumes.com once domain is verified */}
-          <ContactForm to="tanzilhassan333@gmail.com" />
+          <InfluencerForm to="tanzilhassan333@gmail.com" />
         </div>
       </section>
       <BackToTop />
