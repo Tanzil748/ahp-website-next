@@ -131,9 +131,7 @@ export default function ProductCard({
             <span
               className={`text-[1rem] font-bold uppercase tracking-[2px] ${isAvailable ? "text-emerald-400" : "text-red-400"}`}
             >
-              {isAvailable
-                ? `In Stock · ${product.stockOnHand} units`
-                : "Out of Stock"}
+              {isAvailable ? `In Stock` : "Out of Stock"}
             </span>
           </div>
 

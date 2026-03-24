@@ -71,7 +71,7 @@ const SOCIALS: SocialLink[] = [
   },
   {
     label: "Twitter / X",
-    href: "https://x.com/al_hussein_perf",
+    href: "https://x.com/husseinperfume",
     icon: (
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -160,15 +160,6 @@ export default function SubscribeSection() {
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
       {/* Bottom border line */}
       <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
-
-      {/* Ghost background word */}
-      <span
-        aria-hidden="true"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none select-none leading-none text-[var(--gold)] opacity-[0.03] tracking-[0.1em]"
-        style={{ fontSize: "clamp(8rem, 18vw, 18rem)" }}
-      >
-        Subscribe
-      </span>
 
       {/* Content */}
       <div className="relative z-10 max-w-[760px] mx-auto">
