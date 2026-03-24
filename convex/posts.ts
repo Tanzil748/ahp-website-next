@@ -197,6 +197,29 @@ export const updatePost = mutation({
   },
 });
 
+// Returns all posts authored by the currently signed-in user
+export const getMyPosts = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const posts = await ctx.db.query("posts").order("desc").collect();
+
+    const mine = posts.filter((p) => p.authorId === identity.subject);
+
+    return await Promise.all(
+      mine.map(async (post) => ({
+        ...post,
+        coverImageUrl: post.coverImageId
+          ? await ctx.storage.getUrl(post.coverImageId)
+          : null,
+      })),
+    );
+  },
+});
+
+// ── Admin mutations ────────────────────────────────────────────────────────
+
 export const approvePost = mutation({
   args: { postId: v.id("posts") },
   handler: async (ctx, args) => {

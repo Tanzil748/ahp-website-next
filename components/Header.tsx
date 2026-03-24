@@ -24,10 +24,7 @@ const publicLinks = [
 ];
 
 // ── Only shown when signed in ─────────────────────────────────────────────────
-const authLinks = [
-  { label: "Compare List", href: "/compare-list" },
-  { label: "My Fragrances", href: "/fragrances" },
-];
+const authLinks = [{ label: "Compare List", href: "/compare-list" }];
 
 const userButtonAppearance = {
   variables: {
@@ -131,7 +128,7 @@ const userProfileAppearance = {
 
 // ── Reusable nav link style ───────────────────────────────────────────────────
 const navLinkClass = [
-  "relative text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
+  "relative flex items-center text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200",
   "after:content-[''] after:absolute after:left-0 after:-bottom-4",
   "after:w-full after:h-[5px]",
   "after:border-t after:border-b after:border-[hsl(38,61%,73%)]",
@@ -150,6 +147,11 @@ export default function Header() {
 
   const currentUser = useQuery(api.users.current);
   const isAdmin = ["admin", "super-admin"].includes(currentUser?.role ?? "");
+  const isBlogger = ["blogger", "admin", "super-admin"].includes(
+    currentUser?.role ?? "",
+  );
+  const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -171,10 +173,26 @@ export default function Header() {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setAccountOpen(false);
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const onClickOutside = (e: MouseEvent) => {
+      if (
+        accountRef.current &&
+        !accountRef.current.contains(e.target as Node)
+      ) {
+        setAccountOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
   return (
@@ -184,12 +202,11 @@ export default function Header() {
       ════════════════════════════════════ */}
       <div
         className={[
-          "hidden sm:block fixed top-0 left-0 w-full z-50 overflow-hidden",
-          "border-b bg-transparent",
+          "hidden sm:block fixed top-0 left-0 w-full z-50 overflow-hidden border-b",
           "transition-all duration-300 ease-in-out",
-          isActive
-            ? "max-h-0 py-0 opacity-0 border-transparent"
-            : "max-h-14 py-3 opacity-100 border-white/20",
+          isActive || accountOpen
+            ? "max-h-0 py-0 opacity-0 border-transparent bg-transparent"
+            : "max-h-14 py-3 opacity-100 border-white/20 bg-transparent",
         ].join(" ")}
       >
         <div className="flex items-center justify-between gap-6 px-7">
@@ -243,9 +260,12 @@ export default function Header() {
         className={[
           "fixed left-0 w-full z-40 border-b",
           "transition-all duration-300 ease-in-out",
+          isActive || accountOpen ? "top-0" : "top-0 sm:top-14",
           isActive
-            ? "top-0 bg-black/60 backdrop-blur-md border-black/15"
-            : "top-0 sm:top-14 bg-transparent border-transparent",
+            ? "bg-black/60 backdrop-blur-md border-black/15"
+            : accountOpen
+              ? "bg-black/60 backdrop-blur-md border-black/15"
+              : "bg-transparent border-transparent",
           isHidden ? "-translate-y-full delay-[200ms]" : "translate-y-0",
         ].join(" ")}
       >
@@ -255,7 +275,7 @@ export default function Header() {
               href="/"
               className={[
                 "shrink-0 mr-8 transition-transform duration-300",
-                isActive ? "scale-90" : "scale-100",
+                isActive || accountOpen ? "scale-90" : "scale-100",
               ].join(" ")}
             >
               <Image
@@ -269,7 +289,7 @@ export default function Header() {
 
             {/* ── Desktop nav ── */}
             <nav
-              className="hidden lg:flex items-center gap-8"
+              className="hidden lg:flex items-stretch gap-8"
               aria-label="Main navigation"
             >
               {/* Public links — always visible */}
@@ -291,11 +311,72 @@ export default function Header() {
                       {link.label}
                     </Link>
                   ))}
-                  {isAdmin && (
-                    <Link href="/admin" className={navLinkClass}>
-                      Admin
-                    </Link>
-                  )}
+
+                  {/* Profile dropdown */}
+                  <div
+                    ref={accountRef}
+                    className="relative self-stretch flex items-center"
+                  >
+                    <button
+                      onClick={() => setAccountOpen((p) => !p)}
+                      className={[
+                        "relative text-white font-bold uppercase tracking-widest text-[1.2rem] transition-colors duration-200 outline-none flex items-center gap-1.5 cursor-pointer",
+                        accountOpen
+                          ? "text-[hsl(38,61%,73%)]"
+                          : "hover:text-[hsl(38,61%,73%)]",
+                      ].join(" ")}
+                    >
+                      Profile
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className={`transition-transform duration-200 ${accountOpen ? "rotate-180" : ""}`}
+                      >
+                        <path d="M2 3.5l3 3 3-3" />
+                      </svg>
+                    </button>
+
+                    <div
+                      className="absolute top-full left-0 min-w-[180px] z-50 bg-black/60 backdrop-blur-md transition-all duration-200"
+                      style={{
+                        opacity: accountOpen ? 1 : 0,
+                        pointerEvents: accountOpen ? "auto" : "none",
+                        transform: `translateY(${accountOpen ? "0px" : "-4px"})`,
+                        transitionDelay: accountOpen ? "150ms" : "0ms",
+                      }}
+                    >
+                      <Link
+                        href="/fragrances"
+                        onClick={() => setAccountOpen(false)}
+                        className="block px-5 py-3.5 text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.1rem] transition-colors duration-200 border-b border-white/10"
+                      >
+                        My Fragrances
+                      </Link>
+                      <Link
+                        href="/my-posts"
+                        onClick={() => setAccountOpen(false)}
+                        className="block px-5 py-3.5 text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.1rem] transition-colors duration-200"
+                      >
+                        My Posts
+                      </Link>
+                      {isAdmin && (
+                        <>
+                          <div className="h-px bg-white/10" />
+                          <Link
+                            href="/admin"
+                            onClick={() => setAccountOpen(false)}
+                            className="block px-5 py-3.5 text-white hover:text-[hsl(38,61%,73%)] font-bold uppercase tracking-widest text-[1.1rem] transition-colors duration-200"
+                          >
+                            Admin
+                          </Link>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </>
               </Show>
             </nav>
@@ -458,6 +539,46 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              {/* My Fragrances */}
+              <Link
+                href="/fragrances"
+                onClick={() => setMenuOpen(false)}
+                className={[
+                  "text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.2em] text-2xl",
+                  "hover:text-white focus-visible:text-white",
+                  "transition-all duration-300 outline-none",
+                  menuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-3",
+                ].join(" ")}
+                style={{
+                  transitionDelay: menuOpen
+                    ? `${(publicLinks.length + authLinks.length) * 55 + 120}ms`
+                    : "0ms",
+                }}
+              >
+                My Fragrances
+              </Link>
+              {/* My Posts */}
+              <Link
+                href="/my-posts"
+                onClick={() => setMenuOpen(false)}
+                className={[
+                  "text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.2em] text-2xl",
+                  "hover:text-white focus-visible:text-white",
+                  "transition-all duration-300 outline-none",
+                  menuOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-3",
+                ].join(" ")}
+                style={{
+                  transitionDelay: menuOpen
+                    ? `${(publicLinks.length + authLinks.length + 1) * 55 + 120}ms`
+                    : "0ms",
+                }}
+              >
+                My Posts
+              </Link>
               {isAdmin && (
                 <Link
                   href="/admin"
@@ -472,7 +593,7 @@ export default function Header() {
                   ].join(" ")}
                   style={{
                     transitionDelay: menuOpen
-                      ? `${(publicLinks.length + authLinks.length) * 55 + 120}ms`
+                      ? `${(publicLinks.length + authLinks.length + 2) * 55 + 120}ms`
                       : "0ms",
                   }}
                 >
