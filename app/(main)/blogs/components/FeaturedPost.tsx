@@ -116,7 +116,7 @@ export default function FeaturedPost() {
               </h2>
 
               {post.excerpt && (
-                <p className="text-[hsla(0,0%,65%,1)] mb-8 text-[1.6rem] leading-[1.85]">
+                <p className="text-[hsla(0,0%,65%,1)] mb-8 text-[1.6rem] leading-[1.85] line-clamp-5">
                   {post.excerpt}
                 </p>
               )}

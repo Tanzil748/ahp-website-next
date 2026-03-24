@@ -43,6 +43,13 @@ function formatSalary(min?: number, max?: number) {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
+const POST_CATEGORIES = [
+  "Fragrance Trends",
+  "Guides & Tips",
+  "Behind the Scenes",
+  "Events",
+];
+
 const ROLE_STYLES: Record<
   string,
   { label: string; color: string; bg: string; border: string }
@@ -1074,14 +1081,14 @@ function PostsPanel({
                 <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
                   Category
                 </label>
-                <input
+                <select
                   value={editing.category}
                   onChange={(e) =>
                     setEditing((p) =>
                       p ? { ...p, category: e.target.value } : null,
                     )
                   }
-                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200"
+                  className="w-full px-4 py-3 text-white text-[1.3rem] outline-none border transition-colors duration-200 appearance-none cursor-pointer"
                   style={{
                     backgroundColor: "hsla(210,4%,7%,1)",
                     borderColor: "hsla(38,61%,73%,0.15)",
@@ -1093,7 +1100,17 @@ function PostsPanel({
                   onBlur={(e) =>
                     (e.target.style.borderColor = "hsla(38,61%,73%,0.15)")
                   }
-                />
+                >
+                  {POST_CATEGORIES.map((cat) => (
+                    <option
+                      key={cat}
+                      value={cat}
+                      style={{ backgroundColor: "hsla(210,4%,11%,1)" }}
+                    >
+                      {cat}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <label className="block text-[hsla(0,0%,45%,1)] text-[1rem] uppercase tracking-[0.2em] font-bold mb-2">
