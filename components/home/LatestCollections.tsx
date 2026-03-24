@@ -28,6 +28,10 @@ const products = [
     image: "/images/index-page/collections/10.png",
   },
   { name: "Notes Collection", image: "/images/index-page/collections/11.png" },
+  {
+    name: "Moonstone Collection",
+    image: "/images/index-page/collections/12.png",
+  },
   { name: "Just Collection", image: "/images/index-page/collections/13.png" },
   { name: "Expose Collection", image: "/images/index-page/collections/14.png" },
   {
@@ -47,6 +51,130 @@ const products = [
   {
     name: "Artisan Collection",
     image: "/images/index-page/collections/20.png",
+  },
+  {
+    name: "Riche & Royale Collection",
+    image: "/images/index-page/collections/21.png",
+  },
+  {
+    name: "After Hours Collection",
+    image: "/images/index-page/collections/22.png",
+  },
+  {
+    name: "Super Nova Collection",
+    image: "/images/index-page/collections/23.png",
+  },
+  {
+    name: "Elixir Collection",
+    image: "/images/index-page/collections/24.png",
+  },
+  {
+    name: "Zenith Collection",
+    image: "/images/index-page/collections/25.png",
+  },
+  {
+    name: "Aura Collection",
+    image: "/images/index-page/collections/26.png",
+  },
+  {
+    name: "Jade Collection",
+    image: "/images/index-page/collections/27.png",
+  },
+  {
+    name: "Zenith Collection",
+    image: "/images/index-page/collections/28.png",
+  },
+  {
+    name: "FA Paris Collection",
+    image: "/images/index-page/collections/29.png",
+  },
+  {
+    name: "Mochi Collection",
+    image: "/images/index-page/collections/30.png",
+  },
+  {
+    name: "Gourmand Trio Collection",
+    image: "/images/index-page/collections/31.jpeg",
+  },
+  {
+    name: "Day & Night Collection",
+    image: "/images/index-page/collections/32.png",
+  },
+  {
+    name: "Luxury Trio Collection",
+    image: "/images/index-page/collections/33.png",
+  },
+  {
+    name: "Power Collection",
+    image: "/images/index-page/collections/34.png",
+  },
+  {
+    name: "The Card Collection",
+    image: "/images/index-page/collections/35.png",
+  },
+  {
+    name: "Lumiere Collection",
+    image: "/images/index-page/collections/36.png",
+  },
+  {
+    name: "Minister of Oud Collection",
+    image: "/images/index-page/collections/37.png",
+  },
+  {
+    name: "Haya Collection",
+    image: "/images/index-page/collections/39.png",
+  },
+  {
+    name: "Hayaati Collection",
+    image: "/images/index-page/collections/40.png",
+  },
+  {
+    name: "Divin Collection",
+    image: "/images/index-page/collections/41.png",
+  },
+  {
+    name: "Aromatix Collection",
+    image: "/images/index-page/collections/42.png",
+  },
+  {
+    name: "Fame Collection",
+    image: "/images/index-page/collections/43.png",
+  },
+  {
+    name: "Asdaaf Collection",
+    image: "/images/index-page/collections/44.png",
+  },
+  {
+    name: "Unique Collection",
+    image: "/images/index-page/collections/45.png",
+  },
+  {
+    name: "Teriaq Collection",
+    image: "/images/index-page/collections/46.png",
+  },
+  {
+    name: "Gracious Collection",
+    image: "/images/index-page/collections/47.png",
+  },
+  {
+    name: "Hunters Collection",
+    image: "/images/index-page/collections/48.png",
+  },
+  {
+    name: "Barakkat Collection",
+    image: "/images/index-page/collections/49.png",
+  },
+  {
+    name: "Spooky Series",
+    image: "/images/index-page/collections/50.png",
+  },
+  {
+    name: "Genesis Collection",
+    image: "/images/index-page/collections/51.png",
+  },
+  {
+    name: "External Love Collection",
+    image: "/images/index-page/collections/53.png",
   },
 ];
 
