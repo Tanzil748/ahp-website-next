@@ -1,3 +1,5 @@
+"use client";
+
 import BackToTop from "@/components/BackToTop";
 import Link from "next/link";
 
@@ -279,17 +281,26 @@ export default function CounterfeitAwarenessPage() {
             Report suspicious products or sellers directly to our team. We take
             every report seriously and act swiftly to protect our customers.
           </p>
-          <a
-            href="mailto:sales@alhusseinperfumes.com"
+          <button
+            onClick={() =>
+              (window.location.href = "mailto:sales@alhusseinperfumes.com")
+            }
             className="group relative inline-flex items-center gap-3 px-8 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[0.25em] text-[1.2rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)]"
             style={{ fontFamily: "var(--font-forum)" }}
           >
             <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
-            <Link className="relative z-10" href={`/write-counterfeit-report`}>
-              Report Now
-            </Link>
+
+            <span className="relative z-10">
+              {" "}
+              <Link
+                className="relative z-10"
+                href={`/write-counterfeit-report`}
+              >
+                Report Now
+              </Link>
+            </span>
             <span className="relative z-10">→</span>
-          </a>
+          </button>
         </div>
       </section>
 
