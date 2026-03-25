@@ -284,8 +284,8 @@ export default function LatestCollections() {
 
         <div ref={viewportRef} className="overflow-hidden w-full">
           <ul ref={trackRef} className="carousel-track">
-            {products.map((product) => (
-              <li key={product.name} className="carousel-item">
+            {products.map((product, index) => (
+              <li key={`${product.name}-${index}`} className="carousel-item">
                 <div className="text-center rounded-[12px] p-[20px] bg-[#111]">
                   <Image
                     src={product.image}
