@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -12,6 +13,10 @@ import ProductSearch from "./components/ProductSearch";
 import { PAGE_SIZE, normalizeGender, normalizeBrand } from "./utils";
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
+  const brandParam = searchParams.get("brand");
+  const availableParam = searchParams.get("available") === "true";
+
   const currentUser = useQuery(api.users.current);
   const products = useQuery(api.products.getProducts);
   const savedIds = useQuery(api.users.getSavedPerfumeIds) ?? [];
@@ -19,17 +24,31 @@ export default function ProductsPage() {
 
   const isSignedIn = !!currentUser;
 
+  const hasInitialFilters = !!brandParam || availableParam;
+
   const [search, setSearch] = useState("");
-  const [viewAll, setViewAll] = useState(true);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [viewAll, setViewAll] = useState(!hasInitialFilters);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(
+    brandParam ? [brandParam] : [],
+  );
   const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
-  const [showAvailable, setShowAvailable] = useState(false);
+  const [showAvailable, setShowAvailable] = useState(availableParam);
   const [showUnavailable, setShowUnavailable] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [notification, setNotification] = useState<{ msg: string } | null>(
     null,
   );
+
+  // Sync when URL params change
+  useEffect(() => {
+    const hasBrand = !!brandParam;
+    const hasAvailable = availableParam;
+    setSelectedBrands(hasBrand ? [brandParam!] : []);
+    setShowAvailable(hasAvailable);
+    setViewAll(!hasBrand && !hasAvailable);
+    setCurrentPage(1);
+  }, [brandParam, availableParam]);
 
   const allProducts = useMemo(() => products ?? [], [products]);
 
@@ -182,7 +201,6 @@ export default function ProductsPage() {
     onResetAll: resetAll,
   };
 
-  // savedIds from Convex are Id<"products"> — cast to string[] for ProductCard comparison
   const savedStrings = savedIds.map(String);
 
   return (
@@ -263,6 +281,11 @@ export default function ProductsPage() {
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Fragrances
+                {brandParam && (
+                  <span className="block text-[2.5rem] sm:text-[3rem] text-[hsl(38,61%,73%)]">
+                    {brandParam}
+                  </span>
+                )}
               </h1>
               <p className="text-white/50 text-[1.4rem] max-w-xl">
                 Rare essences and timeless accords, curated from the finest

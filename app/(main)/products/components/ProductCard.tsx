@@ -23,106 +23,113 @@ export default function ProductCard({
 }: Props) {
   const notes = parseNotes(product);
   const isAvailable = product.stockOnHand > 0;
+  const slug = `/products/${product._id}`;
 
   return (
     <div
       className="group relative flex flex-col border border-white/10 hover:border-[hsl(38,61%,73%)] hover:-translate-y-1 transition-all duration-300"
       style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
     >
-      {/* Image area */}
-      <div
-        className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
-        style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
-      >
-        {product.imageUrl ? (
-          <img
-            src={product.imageUrl}
-            alt={product.itemName}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/10">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="1" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <path d="M21 15l-5-5L5 21" />
-            </svg>
-            <span className="text-[1rem] font-bold uppercase tracking-[3px]">
-              No Image
-            </span>
-          </div>
-        )}
-
-        {product.imageUrl && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        )}
-
-        <span
-          className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${
-            isAvailable
-              ? "bg-[hsl(38,61%,73%)]/18 text-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)]/40"
-              : "bg-white/10 text-white/50 border border-white/20"
-          }`}
+      {/* Clickable image + name area */}
+      <Link href={slug} className="flex flex-col flex-1 no-underline">
+        {/* Image area */}
+        <div
+          className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
+          style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
         >
-          {isAvailable ? "In Stock" : "Out of Stock"}
-        </span>
-
-        {isAvailable && product.stockOnHand <= 5 && (
-          <span className="absolute top-3 right-3 px-2 py-1 text-[0.9rem] font-black uppercase tracking-widest bg-red-500/20 text-red-400 border border-red-500/40">
-            Low Stock
-          </span>
-        )}
-      </div>
-
-      {/* Card body */}
-      <div className="p-6 flex flex-col gap-4 flex-1">
-        <div className="w-8 h-px bg-[hsl(38,61%,73%)] group-hover:w-16 transition-all duration-500" />
-
-        <div className="flex-1 flex flex-col gap-2">
-          <div>
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <p className="text-[hsl(38,61%,73%)]/60 text-[1rem] font-bold uppercase tracking-[3px]">
-                {normalizeBrand(product.brand)}
-              </p>
-              <span className="text-white/25 text-[0.95rem] font-bold uppercase tracking-[2px]">
-                {normalizeGender(product.gender)}
+          {product.imageUrl ? (
+            <img
+              src={product.imageUrl}
+              alt={product.itemName}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white/10">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="1" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span className="text-[1rem] font-bold uppercase tracking-[3px]">
+                No Image
               </span>
             </div>
-            <h2
-              className="text-white text-[1.9rem] font-normal leading-tight"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {product.itemName}
-            </h2>
-            <p className="text-white/20 text-[1rem] font-bold uppercase tracking-[2px] mt-0.5">
-              SKU: {product.sku}
-            </p>
-          </div>
-          <p className="text-white/45 text-[1.2rem] leading-relaxed line-clamp-2">
-            {product.salesDescription}
-          </p>
+          )}
+
+          {product.imageUrl && (
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          )}
+
+          <span
+            className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${
+              isAvailable
+                ? "bg-[hsl(38,61%,73%)]/18 text-[hsl(38,61%,73%)] border border-[hsl(38,61%,73%)]/40"
+                : "bg-white/10 text-white/50 border border-white/20"
+            }`}
+          >
+            {isAvailable ? "In Stock" : "Out of Stock"}
+          </span>
+
+          {isAvailable && product.stockOnHand <= 5 && (
+            <span className="absolute top-3 right-3 px-2 py-1 text-[0.9rem] font-black uppercase tracking-widest bg-red-500/20 text-red-400 border border-red-500/40">
+              Low Stock
+            </span>
+          )}
         </div>
 
-        {notes.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {notes.map((note) => (
-              <span
-                key={note}
-                className="px-2 py-1 border border-white/10 text-white/35 text-[0.95rem] uppercase tracking-wider font-bold"
-              >
-                {note}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Card body */}
+        <div className="p-6 flex flex-col gap-4 flex-1">
+          <div className="w-8 h-px bg-[hsl(38,61%,73%)] group-hover:w-16 transition-all duration-500" />
 
+          <div className="flex-1 flex flex-col gap-2">
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <p className="text-[hsl(38,61%,73%)]/60 text-[1rem] font-bold uppercase tracking-[3px]">
+                  {normalizeBrand(product.brand)}
+                </p>
+                <span className="text-white/25 text-[0.95rem] font-bold uppercase tracking-[2px]">
+                  {normalizeGender(product.gender)}
+                </span>
+              </div>
+              <h2
+                className="text-white text-[1.9rem] font-normal leading-tight group-hover:text-[hsl(38,61%,73%)] transition-colors duration-300"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {product.itemName}
+              </h2>
+              <p className="text-white/20 text-[1rem] font-bold uppercase tracking-[2px] mt-0.5">
+                SKU: {product.sku}
+              </p>
+            </div>
+            <p className="text-white/45 text-[1.2rem] leading-relaxed line-clamp-2">
+              {product.salesDescription}
+            </p>
+          </div>
+
+          {notes.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {notes.map((note) => (
+                <span
+                  key={note}
+                  className="px-2 py-1 border border-white/10 text-white/35 text-[0.95rem] uppercase tracking-wider font-bold"
+                >
+                  {note}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </Link>
+
+      {/* Save button — outside the Link so it doesn't trigger navigation */}
+      <div className="px-6 pb-6 flex flex-col gap-2">
         <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <span
@@ -131,7 +138,7 @@ export default function ProductCard({
             <span
               className={`text-[1rem] font-bold uppercase tracking-[2px] ${isAvailable ? "text-emerald-400" : "text-red-400"}`}
             >
-              {isAvailable ? `In Stock` : "Out of Stock"}
+              {isAvailable ? "In Stock" : "Out of Stock"}
             </span>
           </div>
 

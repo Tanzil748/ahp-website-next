@@ -7,18 +7,22 @@ const brands = [
   {
     name: "Fragrance World",
     image: "/images/index-page/brands/FW.png",
-    href: "#",
+    href: "/products?brand=Fragrance+World&available=true",
   },
   {
     name: "French Avenue",
     image: "/images/index-page/brands/FA.png",
-    href: "#",
+    href: "/products?brand=French+Avenue&available=true",
   },
-  { name: "Maison", image: "/images/index-page/brands/Maison.png", href: "#" },
+  {
+    name: "Maison",
+    image: "/images/index-page/brands/Maison.png",
+    href: "/products?brand=Maison&available=true",
+  },
   {
     name: "Lattafa",
     image: "/images/index-page/brands/Lattafa.jpeg",
-    href: "#",
+    href: "/products?brand=Lattafa&available=true",
   },
 ];
 
