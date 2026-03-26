@@ -25,7 +25,7 @@ export default function CareersHero() {
           className="fade-up delay-2 font-normal text-white mb-5 leading-[1.1] text-[clamp(3.8rem,7vw,7rem)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Build Your Career With Us
+          Build Your Future With Us
         </h1>
 
         <div className="fade-up delay-2 flex justify-center my-5">

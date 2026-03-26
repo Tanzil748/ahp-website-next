@@ -85,7 +85,7 @@ export default function FaqSection() {
   return (
     <section className="py-10 sm:py-14 md:py-[70px] bg-[var(--bg-section)]">
       {/* Section title */}
-      <div className="page-section-header">
+      <div className="page-section-header mt-20">
         <span className="page-section-title text-[1.6rem] sm:text-[1.9rem] md:text-[2.2rem]">
           FAQs
         </span>

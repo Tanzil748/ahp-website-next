@@ -59,7 +59,7 @@ export default function WholesaleHero() {
             }}
           >
             Wholesale &<br />
-            Retail Inquiry
+            Bulk Inquiry
           </h1>
 
           {/* Sub-copy */}

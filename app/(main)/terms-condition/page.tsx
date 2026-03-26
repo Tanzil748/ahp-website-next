@@ -36,7 +36,7 @@ const sections = [
     number: "4",
     title: "About the Site",
     content:
-      "The Website is an online store which carries out sale of the following: perfume, deo, cream, hair oil. We reserve the right to refuse service or refuse to sell the products on the Website at our sole discretion to anyone for any reason at any time. The Website does not screen or censor the users who register on and access the Website. You assume all risks associated with dealing with other users with whom you come in contact through the Website.",
+      "The Website is an online store which carries out sale of the following: perfume of varying concentrations, deodorant spray, air fresheners. We reserve the right to refuse service or refuse to sell the products on the Website at our sole discretion to anyone for any reason at any time. The Website does not screen or censor the users who register on and access the Website. You assume all risks associated with dealing with other users with whom you come in contact through the Website.",
   },
   {
     number: "5",
@@ -128,7 +128,7 @@ const sections = [
     number: "14",
     title: "Shipping / Delivery / Return Policy",
     content:
-      "You agree to ensure payment for any items You may purchase from Us. We reserve the right to reject or cancel an order for any reason. We will make reimbursements for returns without undue delay, and not later than 30 days after we received the goods back, or 30 days after you provide evidence of return. Reimbursements will use the same payment method as the initial transaction. Contact us at sales@alhusseinperfumes.com for any disputes.",
+      "You agree to provide payment for all items purchased from us. We reserve the right to refuse or cancel any order at our discretion. Once goods have been shipped, all sales are final and no returns or refunds will be accepted. If any issues arise during the delivery process, you must notify us promptly. Shipping arrangements are typically handled by the customer. Upon request, we may assist in arranging shipping on the customer’s behalf; however, all shipping costs and any associated fees remain the sole responsibility of the customer. For disputes or inquiries, please contact us at sales@alhusseinperfumes.com.",
   },
   {
     number: "15",

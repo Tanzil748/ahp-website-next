@@ -24,6 +24,7 @@ const columns: FooterColumnData[] = [
     heading: "Account",
     links: [
       { label: "My Fragrances", href: "/fragrances" },
+      { label: "My Posts", href: "/my-posts" },
       { label: "My Compare List", href: "/compare-list" },
     ],
   },
@@ -33,8 +34,8 @@ const columns: FooterColumnData[] = [
       { label: "Request Fragrance", href: "/request-fragrance" },
       { label: "Influencer Collaboration", href: "/influencer-collaboration" },
       {
-        label: "Wholesaler/Retail Inquiry",
-        href: "/wholesaler-retail-inquiry",
+        label: "Bulk/Wholesaler Inquiry",
+        href: "/bulk-wholesale-inquiry",
       },
       {
         label: "Blogger Inquiry",
@@ -46,10 +47,9 @@ const columns: FooterColumnData[] = [
     heading: "Customer Care",
     links: [
       { label: "Terms and Conditions", href: "/terms-condition" },
-      { label: "Return and Refund Policy", href: "/returns" },
-      { label: "Shipping Policy", href: "/shipping" },
       { label: "Contact Us", href: "/contact-us" },
       { label: "Counterfeit Awareness", href: "/counterfeit-awareness" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
 ];

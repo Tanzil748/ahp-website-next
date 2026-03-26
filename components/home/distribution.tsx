@@ -15,7 +15,7 @@ const brands = [
     href: "/products?brand=French+Avenue&available=true",
   },
   {
-    name: "Maison",
+    name: "Maison de l'Avenir",
     image: "/images/index-page/brands/Maison.png",
     href: "/products?brand=Maison&available=true",
   },
@@ -54,7 +54,7 @@ export default function Distribution() {
       <div className="relative section-container">
         <SectionHeader
           label="Distribution"
-          title="Authorized Largest Distributor"
+          title="Our Brands"
           titleClassName="mb-4"
         />
 

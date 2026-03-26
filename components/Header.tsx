@@ -16,11 +16,11 @@ import { api } from "@/convex/_generated/api";
 
 // ── Always-visible links ──────────────────────────────────────────────────────
 const publicLinks = [
-  { label: "About Us", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Blogs", href: "/blogs" },
-  { label: "Careers", href: "/careers" },
   { label: "Contact Us", href: "/contact-us" },
+  { label: "About Us", href: "/about" },
+  { label: "Careers", href: "/careers" },
 ];
 
 // ── Only shown when signed in ─────────────────────────────────────────────────
@@ -214,7 +214,7 @@ export default function Header() {
             <address className="hidden sm:flex items-center gap-1.5 not-italic">
               <MaterialSymbolsLocationOnOutline className="text-[15px]" />
               <span className="text-white text-[1.1rem] font-bold">
-                201 Christopher St, Ronkonkoma, NY, 11779
+                201 Christopher Street, Ronkonkoma, New York, 11779, USA
               </span>
             </address>
             <div
