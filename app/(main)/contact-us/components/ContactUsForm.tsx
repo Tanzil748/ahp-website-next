@@ -221,6 +221,11 @@ export default function ContactForm() {
     setErrors((prev) => ({ ...prev, [e.target.name]: false }));
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrors((prev) => ({ ...prev, [e.target.name]: false }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSendError(false);
@@ -359,12 +364,11 @@ export default function ContactForm() {
                 name="inquiryType"
                 required
                 value={form.inquiryType}
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 error={errors.inquiryType}
                 options={[
                   "Delivery",
                   "Order",
-                  "Return / Cancel Order",
                   "Products & Stock Information",
                   "Website & Account",
                 ]}
