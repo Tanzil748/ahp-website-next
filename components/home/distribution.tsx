@@ -8,21 +8,25 @@ const brands = [
     name: "Fragrance World",
     image: "/images/index-page/brands/FW.png",
     href: "/products?brand=Fragrance+World&available=true",
+    badge: "Exclusive Distributor",
   },
   {
     name: "French Avenue",
     image: "/images/index-page/brands/FA.png",
     href: "/products?brand=French+Avenue&available=true",
+    badge: "Exclusive Distributor",
   },
   {
     name: "Maison de l'Avenir",
     image: "/images/index-page/brands/Maison.png",
     href: "/products?brand=Maison&available=true",
+    badge: "Exclusive Distributor",
   },
   {
     name: "Lattafa",
     image: "/images/index-page/brands/Lattafa.jpeg",
     href: "/products?brand=Lattafa&available=true",
+    badge: "Largest Authorized Distributor",
   },
 ];
 
@@ -106,6 +110,13 @@ export default function Distribution() {
                       loading="lazy"
                       className="w-full h-full object-cover"
                     />
+
+                    {/* Hover badge */}
+                    <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent to-black flex items-center justify-center px-3 opacity-0 group-hover:opacity-90 transition-opacity duration-500">
+                      <p className="text-center text-[1.1rem] tracking-[1.5px] uppercase font-semibold text-[var(--gold)] line-clamp-2">
+                        {brand.badge}
+                      </p>
+                    </div>
                   </figure>
                 </Link>
 
