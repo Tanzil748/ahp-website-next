@@ -22,7 +22,7 @@ function InfoCard({
 
   return (
     <div
-      className="flex items-start gap-[18px] max-sm:gap-[14px] mb-9"
+      className="flex items-start gap-[18px] max-sm:gap-[14px] mb-9 min-h-[80px] max-sm:min-h-[68px]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -39,7 +39,7 @@ function InfoCard({
         </div>
       </div>
 
-      <div>
+      <div className="min-h-[52px] max-sm:min-h-[44px] flex flex-col justify-center">
         <p className="uppercase font-bold mb-1 text-[1.4rem] tracking-[0.15em] text-[var(--gold)]">
           {label}
         </p>
@@ -78,13 +78,12 @@ export default function ContactInfo() {
       </p>
 
       <InfoCard icon={LocationIcon} label="Our Location">
-        <p>201 Christopher St</p>
-        <p>Ronkonkoma, NY 11779</p>
+        <p>201 Christopher Street</p>
+        <p>Ronkonkoma, NY, 11779, USA</p>
       </InfoCard>
 
       <InfoCard icon={PhoneIcon} label="Phone">
         <p>+1 (516) 907-2340</p>
-        <p>+1 (516) 907-7010</p>
       </InfoCard>
 
       <InfoCard icon={EmailIcon} label="Email">
