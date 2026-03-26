@@ -38,6 +38,328 @@ const STATUS_STYLES: Record<
   },
 };
 
+const BLOGGER_ROLES = ["blogger", "admin", "super-admin"];
+
+function OrnamentalSep() {
+  return (
+    <svg viewBox="0 0 100 12" width="80" height="10">
+      <line
+        x1="0"
+        y1="6"
+        x2="38"
+        y2="6"
+        stroke="hsl(38,61%,73%)"
+        strokeWidth="1"
+        opacity="0.3"
+      />
+      <rect
+        x="44"
+        y="2"
+        width="8"
+        height="8"
+        transform="rotate(45 48 6)"
+        fill="none"
+        stroke="hsl(38,61%,73%)"
+        strokeWidth="1"
+        opacity="0.3"
+      />
+      <line
+        x1="58"
+        y1="6"
+        x2="100"
+        y2="6"
+        stroke="hsl(38,61%,73%)"
+        strokeWidth="1"
+        opacity="0.3"
+      />
+    </svg>
+  );
+}
+
+function GoldLinkButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group relative inline-flex items-center gap-2 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)]"
+    >
+      <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
+    </Link>
+  );
+}
+
+const fullScreenBg: React.CSSProperties = {
+  backgroundImage: "url('/images/potential-pink-bg.png')",
+  backgroundSize: "600px 600px",
+  backgroundRepeat: "repeat",
+  backgroundAttachment: "fixed",
+  backgroundBlendMode: "overlay",
+  backgroundColor: "hsla(210,4%,9%,1)",
+};
+
+// ── Fallback: user has no blogger role ────────────────────────────────────────
+function NotABloggerState() {
+  return (
+    <main
+      className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 py-24 text-center"
+      style={{ ...fullScreenBg, fontFamily: "var(--font-dm-sans)" }}
+    >
+      <div className="w-full max-w-[520px] mx-auto flex flex-col items-center">
+        {/* Diamond icon */}
+        <div
+          className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] grid place-items-center mb-8"
+          style={{
+            border: "1px solid hsla(38,61%,73%,0.35)",
+            transform: "rotate(45deg)",
+          }}
+        >
+          <div style={{ transform: "rotate(-45deg)" }}>
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1.5"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+          </div>
+        </div>
+
+        <OrnamentalSep />
+
+        {/* Label */}
+        <span className="mt-7 mb-3 text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
+          Blogger Access
+        </span>
+
+        <h1
+          className="text-white font-normal mb-4 leading-tight"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(3rem, 6vw, 5rem)",
+          }}
+        >
+          Become a Blogger
+        </h1>
+
+        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-8 max-w-[420px]">
+          You don't currently have permission to write posts. Submit an inquiry
+          and our team will review your request.
+        </p>
+
+        {/* Decorative rule */}
+        <div className="flex items-center gap-4 mb-8 w-full max-w-[300px]">
+          <div
+            className="flex-1 h-px"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, hsla(38,61%,73%,0.25))",
+            }}
+          />
+          <span className="text-[hsl(38,61%,73%)] text-[1rem] uppercase tracking-[3px] font-bold shrink-0">
+            what you get
+          </span>
+          <div
+            className="flex-1 h-px"
+            style={{
+              background:
+                "linear-gradient(to left, transparent, hsla(38,61%,73%,0.25))",
+            }}
+          />
+        </div>
+
+        {/* Perks */}
+        <ul className="flex flex-col gap-4 mb-10 text-left w-full">
+          {[
+            {
+              title: "Share Your Expertise",
+              desc: "Publish fragrance guides, trends, and reviews",
+            },
+            {
+              title: "Grow Your Audience",
+              desc: "Reach our wholesale and enthusiast community",
+            },
+            {
+              title: "Get Featured",
+              desc: "Top posts are highlighted on our main blog",
+            },
+          ].map(({ title, desc }) => (
+            <li
+              key={title}
+              className="flex items-start gap-4 px-5 py-4"
+              style={{
+                backgroundColor: "hsla(38,61%,73%,0.05)",
+                border: "1px solid hsla(38,61%,73%,0.12)",
+              }}
+            >
+              <span
+                className="shrink-0 w-6 h-6 grid place-items-center mt-0.5"
+                style={{ border: "1px solid hsla(38,61%,73%,0.5)" }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="11"
+                  height="11"
+                  fill="none"
+                  stroke="hsl(38,61%,73%)"
+                  strokeWidth="3"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <div className="text-left">
+                <p className="text-white font-bold text-[1.35rem] leading-snug">
+                  {title}
+                </p>
+                <p className="text-white/40 text-[1.25rem]">{desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <GoldLinkButton href="/blogger-inquiry">
+          Apply to Write →
+        </GoldLinkButton>
+      </div>
+    </main>
+  );
+}
+
+// ── Fallback: blogger with no posts yet ───────────────────────────────────────
+function EmptyBloggerState() {
+  return (
+    <main
+      className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 py-24 text-center"
+      style={{ ...fullScreenBg, fontFamily: "var(--font-dm-sans)" }}
+    >
+      <div className="w-full max-w-[520px] mx-auto flex flex-col items-center">
+        {/* Diamond icon */}
+        <div
+          className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] grid place-items-center mb-8"
+          style={{
+            border: "1px solid hsla(38,61%,73%,0.35)",
+            transform: "rotate(45deg)",
+          }}
+        >
+          <div style={{ transform: "rotate(-45deg)" }}>
+            <svg
+              viewBox="0 0 24 24"
+              width="26"
+              height="26"
+              fill="none"
+              stroke="hsl(38,61%,73%)"
+              strokeWidth="1.5"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="12" y1="18" x2="12" y2="12" />
+              <line x1="9" y1="15" x2="15" y2="15" />
+            </svg>
+          </div>
+        </div>
+
+        <OrnamentalSep />
+
+        {/* Label */}
+        <span className="mt-7 mb-3 text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
+          My Writing
+        </span>
+
+        <h1
+          className="text-white font-normal mb-4 leading-tight"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(3rem, 6vw, 5rem)",
+          }}
+        >
+          Your Story Starts Here
+        </h1>
+
+        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-10 max-w-[420px]">
+          You haven't written any posts yet. Share your fragrance expertise with
+          our community — your first post is just a click away.
+        </p>
+
+        {/* Decorative separator */}
+        <div className="flex items-center gap-4 mb-10 w-full max-w-[300px]">
+          <div
+            className="flex-1 h-px"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, hsla(38,61%,73%,0.25))",
+            }}
+          />
+          <span
+            className="shrink-0 w-2 h-2 rotate-45"
+            style={{ backgroundColor: "hsl(38,61%,73%)", opacity: 0.5 }}
+          />
+          <div
+            className="flex-1 h-px"
+            style={{
+              background:
+                "linear-gradient(to left, transparent, hsla(38,61%,73%,0.25))",
+            }}
+          />
+        </div>
+
+        {/* Steps */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mb-12">
+          {[
+            { num: "01", label: "Pick a topic" },
+            { num: "02", label: "Write your post" },
+            { num: "03", label: "Submit for review" },
+          ].map(({ num, label }) => (
+            <div
+              key={num}
+              className="flex flex-col items-center py-5 px-4"
+              style={{
+                border: "1px solid hsla(38,61%,73%,0.12)",
+                backgroundColor: "hsla(38,61%,73%,0.04)",
+              }}
+            >
+              <span
+                className="text-[2.2rem] font-bold leading-none mb-2"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: "hsla(38,61%,73%,0.3)",
+                }}
+              >
+                {num}
+              </span>
+              <span className="text-white/60 text-[1.3rem] font-bold uppercase tracking-[1px]">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <GoldLinkButton href="/write-blog">
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Write Your First Post
+        </GoldLinkButton>
+      </div>
+    </main>
+  );
+}
+
 function StatusBadge({ status }: { status?: string }) {
   const s = STATUS_STYLES[status ?? "pending"] ?? STATUS_STYLES.pending;
   return (
@@ -92,6 +414,7 @@ function IconBtn({
 
 export default function MyPostsPage() {
   const posts = useQuery(api.posts.getMyPosts);
+  const myRole = useQuery(api.posts.getMyRole);
   const updatePost = useMutation(api.posts.updatePost);
 
   const [editing, setEditing] = useState<{
@@ -103,9 +426,16 @@ export default function MyPostsPage() {
   } | null>(null);
   const [editSaving, setEditSaving] = useState(false);
 
-  const isLoading = posts === undefined;
-  const isEmpty = posts !== undefined && posts !== null && posts.length === 0;
+  const isLoading = posts === undefined || myRole === undefined;
   const isUnauthorized = posts === null;
+  const isBlogger =
+    myRole !== null && myRole !== undefined && BLOGGER_ROLES.includes(myRole);
+  const isEmpty =
+    !isLoading && !isUnauthorized && isBlogger && posts!.length === 0;
+
+  // Full-screen fallbacks — returned before the page shell renders
+  if (!isLoading && !isUnauthorized && !isBlogger) return <NotABloggerState />;
+  if (isEmpty) return <EmptyBloggerState />;
 
   async function handleSaveEdit() {
     if (!editing) return;
@@ -132,7 +462,7 @@ export default function MyPostsPage() {
         fontFamily: "var(--font-dm-sans)",
       }}
     >
-      {/* ── Hero band — keeps the texture ── */}
+      {/* ── Hero band ── */}
       <div
         className="pt-48 pb-14 px-5 sm:px-8"
         style={{
@@ -166,28 +496,32 @@ export default function MyPostsPage() {
                   : "All blog posts you have written."}
               </p>
             </div>
-            <Link
-              href="/write-blog"
-              className="group relative inline-flex items-center gap-3 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)] whitespace-nowrap shrink-0"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+
+            {/* Write button — only for bloggers and up */}
+            {!isLoading && isBlogger && (
+              <Link
+                href="/write-blog"
+                className="group relative inline-flex items-center gap-3 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)] whitespace-nowrap shrink-0"
               >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              <span className="relative z-10">Write New Post</span>
-            </Link>
+                <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                <span className="relative z-10">Write New Post</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
-      {/* ── Solid content area ── */}
+      {/* ── Content area ── */}
       <div
         className="px-5 sm:px-8 py-12 min-h-[50vh]"
         style={{ backgroundColor: "hsla(210,4%,6%,1)" }}
@@ -202,13 +536,7 @@ export default function MyPostsPage() {
               >
                 Sign in to view your posts
               </p>
-              <Link
-                href="/sign-in"
-                className="group relative inline-flex items-center gap-2 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)]"
-              >
-                <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
-                <span className="relative z-10">Sign In →</span>
-              </Link>
+              <GoldLinkButton href="/sign-in">Sign In →</GoldLinkButton>
             </div>
           )}
 
@@ -228,61 +556,8 @@ export default function MyPostsPage() {
             </div>
           )}
 
-          {/* Empty state */}
-          {isEmpty && (
-            <div className="flex flex-col items-center justify-center py-32 gap-5">
-              <svg viewBox="0 0 100 12" width="80" height="10">
-                <line
-                  x1="0"
-                  y1="6"
-                  x2="38"
-                  y2="6"
-                  stroke="hsl(38,61%,73%)"
-                  strokeWidth="1"
-                  opacity="0.3"
-                />
-                <rect
-                  x="44"
-                  y="2"
-                  width="8"
-                  height="8"
-                  transform="rotate(45 48 6)"
-                  fill="none"
-                  stroke="hsl(38,61%,73%)"
-                  strokeWidth="1"
-                  opacity="0.3"
-                />
-                <line
-                  x1="58"
-                  y1="6"
-                  x2="100"
-                  y2="6"
-                  stroke="hsl(38,61%,73%)"
-                  strokeWidth="1"
-                  opacity="0.3"
-                />
-              </svg>
-              <p
-                className="text-white/30 text-[2rem] font-normal"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                No posts yet
-              </p>
-              <p className="text-white/20 text-[1.4rem]">
-                Write your first post to see it here.
-              </p>
-              <Link
-                href="/write-blog"
-                className="group relative inline-flex items-center gap-2 px-6 py-3 border border-[hsl(38,61%,73%)] text-[hsl(38,61%,73%)] font-bold uppercase tracking-[2px] text-[1.1rem] overflow-hidden transition-colors duration-300 hover:text-[hsl(40,12%,5%)]"
-              >
-                <span className="absolute inset-0 -translate-x-full bg-[hsl(38,61%,73%)] transition-transform duration-300 group-hover:translate-x-0 -z-10" />
-                <span className="relative z-10">Write a Post →</span>
-              </Link>
-            </div>
-          )}
-
           {/* Posts list */}
-          {!isLoading && !isUnauthorized && posts!.length > 0 && (
+          {!isLoading && !isUnauthorized && isBlogger && posts!.length > 0 && (
             <div style={{ border: "1px solid hsla(38,61%,73%,0.12)" }}>
               {posts!.map((post, i) => {
                 const isLast = i === posts!.length - 1;

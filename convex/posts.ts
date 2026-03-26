@@ -19,6 +19,21 @@ async function assertAdmin(ctx: any) {
   return user;
 }
 
+// Returns the current user's role (null if not signed in)
+export const getMyRole = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("byClerkUserId", (q) => q.eq("clerkUserId", identity.subject))
+      .unique();
+
+    return user?.role ?? "none";
+  },
+});
+
 // Public — only approved (or legacy) posts
 export const getPosts = query({
   handler: async (ctx) => {
