@@ -293,6 +293,9 @@ export default function LatestCollections() {
                     width={285}
                     height={285}
                     loading="lazy"
+                    // Tells Next.js the image occupies ~285px on most screens,
+                    // so it serves the right optimised size instead of full-res.
+                    sizes="285px"
                     className="w-full h-auto"
                   />
                   <h3 className="mt-[15px] text-white text-[1.6rem] [font-family:var(--font-primary)]">
