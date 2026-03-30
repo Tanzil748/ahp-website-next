@@ -52,6 +52,9 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
             <Image
               src={event.image}
               alt={event.title}
+              // Tells Next.js the image occupies ~285px on most screens,
+              // so it serves the right optimised size instead of full-res.
+              sizes="285px"
               fill
               loading="lazy"
               className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"

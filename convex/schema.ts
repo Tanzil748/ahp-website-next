@@ -37,6 +37,14 @@ export default defineSchema({
     ),
   }),
 
+  // Comments on blog posts — any authenticated user can comment
+  comments: defineTable({
+    postId: v.id("posts"),
+    authorId: v.string(), // Clerk user ID
+    body: v.string(),
+    createdAt: v.number(),
+  }).index("byPostId", ["postId"]),
+
   careers: defineTable({
     title: v.string(),
     department: v.union(
