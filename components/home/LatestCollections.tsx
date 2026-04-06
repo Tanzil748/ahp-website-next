@@ -264,7 +264,7 @@ export default function LatestCollections() {
   }, []);
 
   return (
-    <div className="section-base bg-[var(--bg-section)]">
+    <div className="section-base bg-(--bg-section)">
       <div className="section-container">
         <SectionHeader
           label="Collections"
@@ -286,7 +286,7 @@ export default function LatestCollections() {
           <ul ref={trackRef} className="carousel-track">
             {products.map((product, index) => (
               <li key={`${product.name}-${index}`} className="carousel-item">
-                <div className="text-center rounded-[12px] p-[20px] bg-[#111]">
+                <div className="text-center rounded-xl p-5 bg-[#111]">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -298,7 +298,7 @@ export default function LatestCollections() {
                     sizes="285px"
                     className="w-full h-auto"
                   />
-                  <h3 className="mt-[15px] text-white text-[1.6rem] [font-family:var(--font-primary)]">
+                  <h3 className="mt-3.75 text-white text-[1.6rem] [font-family:var(--font-primary)]">
                     {product.name}
                   </h3>
                 </div>

@@ -24,7 +24,7 @@ const brands = [
   },
   {
     name: "Lattafa",
-    image: "/images/index-page/brands/Lattafa.jpeg",
+    image: "/images/index-page/brands/Lattafa.png",
     href: "/products?brand=Lattafa&available=true",
     badge: "Largest Authorized Distributor",
   },
