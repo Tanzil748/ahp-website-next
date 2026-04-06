@@ -1709,7 +1709,7 @@ function CareersPanel() {
                       })
                     }
                     title={career.isActive ? "Set Inactive" : "Set Active"}
-                    className="flex items-center px-4 py-2 transition-all duration-200 text-[1.1rem] font-bold uppercase tracking-[0.1em]"
+                    className="flex items-center px-4 py-2 transition-all duration-200 text-[1.1rem] font-bold uppercase tracking-widest"
                     style={{
                       color: career.isActive
                         ? "hsl(0,65%,65%)"
@@ -1849,7 +1849,7 @@ export default function AdminPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-dm-sans)" }}>
-      <main className="max-w-[1100px] mx-auto px-5 sm:px-8 pt-48 pb-16">
+      <main className="max-w-[1100] mx-auto px-5 sm:px-8 pt-48 pb-16">
         {/* Heading */}
         <div className="mb-10">
           <p className="text-[hsl(38,61%,73%)] text-[1.1rem] uppercase tracking-[0.3em] font-bold mb-2">
@@ -1887,7 +1887,7 @@ export default function AdminPage() {
               >
                 {label}
                 <span
-                  className="absolute bottom-0 left-0 right-0 h-[2px] transition-transform duration-300"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 transition-transform duration-300"
                   style={{
                     backgroundColor: "hsl(38,61%,73%)",
                     transform: active ? "scaleX(1)" : "scaleX(0)",
