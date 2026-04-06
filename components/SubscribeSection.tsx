@@ -14,7 +14,7 @@ function OrnamentalSep() {
       viewBox="0 0 100 12"
       width="100"
       height="12"
-      className="block mx-auto mt-[5px]"
+      className="block mx-auto mt-1.25"
     >
       <line x1="0" y1="6" x2="38" y2="6" stroke="var(--gold)" strokeWidth="1" />
       <rect
@@ -155,17 +155,17 @@ export default function SubscribeSection() {
   };
 
   return (
-    <section className="relative overflow-hidden text-center py-[100px] px-10 bg-[var(--bg-dark)]">
+    <section className="relative overflow-hidden text-center py-25 px-10 bg-(--bg-dark)">
       {/* Top border line */}
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
       {/* Bottom border line */}
       <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-[linear-gradient(to_right,transparent,var(--gold-border),transparent)]" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[760px] mx-auto">
+      <div className="relative z-10 max-w-[760] mx-auto">
         {/* Eyebrow */}
         <div className="mb-1">
-          <span className="font-bold uppercase tracking-[0.4em] text-[2.2rem] text-[var(--gold)] [font-family:var(--font-display)]">
+          <span className="font-bold uppercase tracking-[0.4em] text-[2.2rem] text-(--gold) [font-family:var(--font-display)]">
             Stay Updated
           </span>
           <OrnamentalSep />
@@ -173,15 +173,15 @@ export default function SubscribeSection() {
 
         {/* Headline */}
         <h2
-          className="text-white leading-[1.15] mt-[18px] mb-4 tracking-[0.01em] font-normal [font-family:var(--font-display)]"
+          className="text-white leading-[1.15] mt-4.5 mb-4 tracking-[0.01em] font-normal [font-family:var(--font-display)]"
           style={{ fontSize: "clamp(3.2rem, 5vw, 5rem)" }}
         >
           Be the First to{" "}
-          <em className="not-italic text-[var(--gold)]">Know &amp; Discover</em>
+          <em className="not-italic text-(--gold)">Know &amp; Discover</em>
         </h2>
 
         {/* Copy */}
-        <p className="text-[1.6rem] leading-[1.8] mb-10 max-w-[520px] mx-auto text-[hsla(0,0%,60%,1)]">
+        <p className="text-[1.6rem] leading-[1.8] mb-10 max-w-[520] mx-auto text-[hsla(0,0%,60%,1)]">
           Join our mailing list for exclusive wholesale offers, new brand
           arrivals, and fragrance industry news — delivered straight to your
           inbox.
@@ -190,7 +190,7 @@ export default function SubscribeSection() {
         {/* Form / success state */}
         {submitted ? (
           <div className="mb-10 py-5 px-8 border border-[hsla(38,61%,73%,0.3)] inline-block">
-            <p className="text-[1.5rem] text-[var(--gold)] font-bold uppercase tracking-[3px]">
+            <p className="text-[1.5rem] text-(--gold) font-bold uppercase tracking-[3px]">
               You&apos;re on the list!
             </p>
             <p className="text-[1.3rem] text-[hsla(0,0%,60%,1)] mt-1">
@@ -236,7 +236,7 @@ export default function SubscribeSection() {
         )}
 
         {/* Follow Us divider */}
-        <div className="flex items-center gap-4 max-w-[400px] mx-auto mb-7 mt-2">
+        <div className="flex items-center gap-4 max-w-[400] mx-auto mb-7 mt-2">
           <div className="flex-1 h-px bg-[hsla(38,61%,73%,0.15)]" />
           <span className="text-[1.1rem] uppercase tracking-[0.2em] whitespace-nowrap text-[hsla(0,0%,40%,1)]">
             Follow Us
@@ -245,7 +245,7 @@ export default function SubscribeSection() {
         </div>
 
         {/* Social icons */}
-        <div className="flex justify-center items-center flex-wrap gap-[10px]">
+        <div className="flex justify-center items-center flex-wrap gap-2.5">
           {SOCIALS.map(({ label, href, icon }) => (
             <a
               key={label}
