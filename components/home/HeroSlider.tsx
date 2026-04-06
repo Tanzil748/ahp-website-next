@@ -65,14 +65,14 @@ export default function HeroSlider() {
     <section
       id="home"
       aria-label="home"
-      className="relative min-h-screen overflow-hidden py-[120px]"
+      className="relative min-h-screen overflow-hidden py-30"
     >
       {slides.map((slide, i) => {
         const isActive = i === current;
         return (
           <div
             key={i}
-            className={`slider-item${isActive ? " active" : ""} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-[100px] text-center z-[1] transition-[opacity,visibility] duration-1000`}
+            className={`slider-item${isActive ? " active" : ""} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full grid place-content-center pt-25 text-center z-1 transition-[opacity,visibility] duration-1000`}
             style={{
               opacity: isActive ? 1 : 0,
               visibility: isActive ? "visible" : "hidden",
@@ -80,7 +80,7 @@ export default function HeroSlider() {
           >
             {/* Ken Burns background */}
             <div
-              className="absolute inset-0 -z-[1] pointer-events-none select-none brightness-[0.4]"
+              className="absolute inset-0 -z-1 pointer-events-none select-none brightness-[0.4]"
               style={{
                 animation: isActive ? "smoothScale 7s linear forwards" : "none",
                 transform: isActive ? undefined : "scale(1.15)",
@@ -99,7 +99,7 @@ export default function HeroSlider() {
             <p className="hero-subtitle slider-reveal relative section-label mb-3">
               {slide.subtitle}
             </p>
-            <span className="hero-subtitle slider-reveal block mt-[14px] mb-[20px]">
+            <span className="hero-subtitle slider-reveal block mt-3.5 mb-5">
               <Separator />
             </span>
 
@@ -111,7 +111,7 @@ export default function HeroSlider() {
             </h1>
 
             {/* Body */}
-            <p className="hero-body slider-reveal section-body mt-[10px] mb-[40px] max-w-[520px] mx-auto sm:text-[2rem]">
+            <p className="hero-body slider-reveal section-body mt-2.5 mb-10 max-w-130 mx-auto sm:text-[2rem]">
               {slide.text}
             </p>
 
@@ -130,7 +130,7 @@ export default function HeroSlider() {
       <button
         onClick={() => goTo(current - 1)}
         aria-label="Slide to previous"
-        className="hero-nav-btn left-[30px]"
+        className="hero-nav-btn left-7.5"
         style={{
           transform: mounted
             ? "translateY(-50%) rotate(45deg)"
@@ -146,7 +146,7 @@ export default function HeroSlider() {
       <button
         onClick={() => goTo(current + 1)}
         aria-label="Slide to next"
-        className="hero-nav-btn right-[30px]"
+        className="hero-nav-btn right-7.5"
         style={{
           transform: mounted
             ? "translateY(-50%) rotate(45deg)"

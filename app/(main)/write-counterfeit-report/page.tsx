@@ -337,7 +337,6 @@ export default function WriteCounterfeitReportPage() {
                   name="reporterName"
                   type="text"
                   placeholder="Full name…"
-                  hint="Optional"
                   value={form.reporterName}
                   onChange={handleChange}
                 />
