@@ -74,7 +74,7 @@ export default function FragrancesPage() {
 
   return (
     <main
-      className="min-h-screen pt-[120px] pb-20"
+      className="min-h-screen pt-30 pb-20"
       style={{
         backgroundColor: "hsla(210,4%,9%,1)",
         backgroundImage: "url('/images/potential-pink-bg.png')",
@@ -87,7 +87,7 @@ export default function FragrancesPage() {
       {/* ── Toast ── */}
       <div
         className={[
-          "fixed bottom-6 left-1/2 -translate-x-1/2 z-[200]",
+          "fixed bottom-6 left-1/2 -translate-x-1/2 z-200",
           "px-6 py-3 border border-[hsl(38,61%,73%)]/40",
           "bg-[hsla(0,0%,8%,0.97)] backdrop-blur-md",
           "text-[hsl(38,61%,73%)] font-bold text-[1.2rem] uppercase tracking-widest",
@@ -100,9 +100,9 @@ export default function FragrancesPage() {
         {notification?.msg}
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+      <div className="max-w-[1400] mx-auto px-5 sm:px-8">
         {/* ── Header ── */}
-        <div className="mb-14 mt-[50px]">
+        <div className="mb-14 mt-[50]">
           <div className="flex items-center gap-3 mb-4">
             <span className="gold-diamond" />
             <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
@@ -145,7 +145,7 @@ export default function FragrancesPage() {
                 className="border border-white/10 animate-pulse"
                 style={{ backgroundColor: "hsla(0,0%,11%,1)" }}
               >
-                <div className="w-full aspect-[4/3] bg-white/5" />
+                <div className="w-full aspect-4/3 bg-white/5" />
                 <div className="p-6 space-y-3">
                   <div className="h-3 w-1/3 bg-white/10 rounded" />
                   <div className="h-5 w-3/4 bg-white/10 rounded" />
@@ -225,7 +225,7 @@ export default function FragrancesPage() {
                   >
                     {/* Image */}
                     <div
-                      className="relative w-full aspect-[4/3] overflow-hidden border-b border-white/5"
+                      className="relative w-full aspect-4/3 overflow-hidden border-b border-white/5"
                       style={{ backgroundColor: "hsla(0,0%,7%,1)" }}
                     >
                       {product.imageUrl ? (
@@ -254,7 +254,7 @@ export default function FragrancesPage() {
                         </div>
                       )}
                       {product.imageUrl && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
                       )}
                       <span
                         className={`absolute top-3 left-3 px-3 py-1 text-[1rem] font-bold uppercase tracking-[0.06em] backdrop-blur-sm ${

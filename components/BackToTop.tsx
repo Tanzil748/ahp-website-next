@@ -42,7 +42,7 @@ export default function FloatingButtons() {
         target="_blank"
         rel="noopener noreferrer"
         className={`${baseClass} bg-[#25D366] text-white hover:bg-white hover:text-[#25D366] ${
-          visible ? "bottom-[75px]" : "bottom-5"
+          visible ? "bottom-[75]" : "bottom-5"
         }`}
         aria-label="Contact us on WhatsApp"
       >

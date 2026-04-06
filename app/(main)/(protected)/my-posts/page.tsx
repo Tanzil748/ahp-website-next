@@ -110,10 +110,10 @@ function NotABloggerState() {
       className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 py-24 text-center"
       style={{ ...fullScreenBg, fontFamily: "var(--font-dm-sans)" }}
     >
-      <div className="w-full max-w-[520px] mx-auto flex flex-col items-center">
+      <div className="w-full max-w-[520] mx-auto flex flex-col items-center">
         {/* Diamond icon */}
         <div
-          className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] grid place-items-center mb-8"
+          className="w-17.5 h-17.5 sm:w-20 sm:h-20 grid place-items-center mb-8"
           style={{
             border: "1px solid hsla(38,61%,73%,0.35)",
             transform: "rotate(45deg)",
@@ -151,13 +151,13 @@ function NotABloggerState() {
           Become a Blogger
         </h1>
 
-        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-8 max-w-[420px]">
+        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-8 max-w-[420]">
           You don't currently have permission to write posts. Submit an inquiry
           and our team will review your request.
         </p>
 
         {/* Decorative rule */}
-        <div className="flex items-center gap-4 mb-8 w-full max-w-[300px]">
+        <div className="flex items-center gap-4 mb-8 w-full max-w-[300]">
           <div
             className="flex-1 h-px"
             style={{
@@ -241,10 +241,10 @@ function EmptyBloggerState() {
       className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 py-24 text-center"
       style={{ ...fullScreenBg, fontFamily: "var(--font-dm-sans)" }}
     >
-      <div className="w-full max-w-[520px] mx-auto flex flex-col items-center">
+      <div className="w-full max-w-[520] mx-auto flex flex-col items-center">
         {/* Diamond icon */}
         <div
-          className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px] grid place-items-center mb-8"
+          className="w-17.5 h-17.5 sm:w-20 sm:h-20 grid place-items-center mb-8"
           style={{
             border: "1px solid hsla(38,61%,73%,0.35)",
             transform: "rotate(45deg)",
@@ -284,13 +284,13 @@ function EmptyBloggerState() {
           Your Story Starts Here
         </h1>
 
-        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-10 max-w-[420px]">
+        <p className="text-white/40 text-[1.5rem] sm:text-[1.6rem] leading-[1.7] mb-10 max-w-[420]">
           You haven't written any posts yet. Share your fragrance expertise with
           our community — your first post is just a click away.
         </p>
 
         {/* Decorative separator */}
-        <div className="flex items-center gap-4 mb-10 w-full max-w-[300px]">
+        <div className="flex items-center gap-4 mb-10 w-full max-w-[300]">
           <div
             className="flex-1 h-px"
             style={{
@@ -474,7 +474,7 @@ export default function MyPostsPage() {
           backgroundColor: "hsla(210,4%,9%,1)",
         }}
       >
-        <div className="max-w-[1100px] mx-auto">
+        <div className="max-w-[1100] mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <span className="gold-diamond" />
             <span className="text-[hsl(38,61%,73%)] font-bold uppercase tracking-[4px] text-[1.1rem]">
@@ -526,7 +526,7 @@ export default function MyPostsPage() {
         className="px-5 sm:px-8 py-12 min-h-[50vh]"
         style={{ backgroundColor: "hsla(210,4%,6%,1)" }}
       >
-        <div className="max-w-[1100px] mx-auto">
+        <div className="max-w-[1100] mx-auto">
           {/* Not signed in */}
           {isUnauthorized && (
             <div className="flex flex-col items-center justify-center py-32 gap-5">
