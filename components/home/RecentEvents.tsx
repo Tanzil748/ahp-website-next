@@ -40,14 +40,14 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <li className="[perspective:1000px]" style={{ aspectRatio: "350 / 450" }}>
+    <li className="perspective-[1000px]" style={{ aspectRatio: "350 / 450" }}>
       <div
-        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-in-out cursor-pointer"
+        className="relative w-full h-full transform-3d transition-transform duration-700 ease-in-out cursor-pointer"
         style={{ transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
         onClick={() => !flipped && setFlipped(true)}
       >
         {/* ── Front ── */}
-        <div className="group absolute inset-0 [backface-visibility:hidden] overflow-hidden">
+        <div className="group absolute inset-0 backface-hidden overflow-hidden">
           <div className="relative w-full h-full overflow-hidden">
             <Image
               src={event.image}
@@ -62,14 +62,14 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
             <Shimmer />
             <time
               dateTime={event.datetime}
-              className="absolute top-[30px] left-[25px] z-[1] font-bold text-[1.2rem] px-[10px] py-[5px] leading-[14px] text-[var(--gold)] bg-black [font-family:var(--font-primary)] tracking-[0.15em]"
+              className="absolute top-7.5 left-[25] z-1 font-bold text-[1.2rem] px-2.5 py-1.25 leading-3.5 text-(--gold) bg-black [font-family:var(--font-primary)] tracking-[0.15em]"
             >
               {event.date}
             </time>
           </div>
 
-          <div className="event-card-gradient absolute bottom-0 w-full z-[1] px-[35px] pt-[35px] pb-[25px]">
-            <p className="text-center section-label mb-[5px]">
+          <div className="event-card-gradient absolute bottom-0 w-full z-1 px-8.75 pt-8.75 pb-6.25">
+            <p className="text-center section-label mb-1.25">
               {event.location}
             </p>
             <h3 className="card-heading text-center text-[2.2rem]">
@@ -78,7 +78,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
           </div>
 
           {/* Tap hint */}
-          <div className="absolute top-[30px] right-[25px] z-[1] flex items-center gap-1.5 px-[10px] py-[5px] bg-black opacity-70">
+          <div className="absolute top-7.5 right-6.25 z-1 flex items-center gap-1.5 px-2.5 py-1.25 bg-black opacity-70">
             <svg
               width="12"
               height="12"
@@ -89,7 +89,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
             >
               <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
             </svg>
-            <span className="text-[1.1rem] font-bold tracking-[0.15em] uppercase text-[var(--gold)] [font-family:var(--font-primary)]">
+            <span className="text-[1.1rem] font-bold tracking-[0.15em] uppercase text-(--gold)t-family:var(--font-primary)]">
               Details
             </span>
           </div>
@@ -97,7 +97,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
 
         {/* ── Back ── */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col"
+          className="absolute inset-0 backface-hidden transform-[rotateY(180deg)] flex flex-col"
           style={{
             backgroundColor: "var(--bg-dark)",
             border: "1px solid var(--gold-border)",
@@ -105,14 +105,14 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
         >
           {/* Corner accents */}
           <span
-            className="absolute top-0 right-0 w-[60px] h-[60px] pointer-events-none opacity-60 z-[1]"
+            className="absolute top-0 right-0 w-15 h-15 pointer-events-none opacity-60 z-1"
             style={{
               borderTop: "1px solid var(--gold)",
               borderRight: "1px solid var(--gold)",
             }}
           />
           <span
-            className="absolute bottom-0 left-0 w-[60px] h-[60px] pointer-events-none opacity-60 z-[1]"
+            className="absolute bottom-0 left-0 w-15 h-15 pointer-events-none opacity-60 z-1"
             style={{
               borderBottom: "1px solid var(--gold)",
               borderLeft: "1px solid var(--gold)",
@@ -125,7 +125,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
               e.stopPropagation();
               setFlipped(false);
             }}
-            className="absolute top-3 right-3 z-[2] w-8 h-8 grid place-items-center opacity-50 hover:opacity-100 transition-opacity duration-200"
+            className="absolute top-3 right-3 z-2 w-8 h-8 grid place-items-center opacity-50 hover:opacity-100 transition-opacity duration-200"
             aria-label="Flip back"
           >
             <svg
@@ -142,7 +142,7 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
 
           {/* Scrollable content — stopPropagation so scroll doesn't re-trigger flip */}
           <div
-            className="overflow-y-auto flex-1 px-[30px] py-[35px]"
+            className="overflow-y-auto flex-1 px-7.5 py-[35]"
             onClick={(e) => e.stopPropagation()}
           >
             <h3
@@ -173,12 +173,12 @@ function EventCard({ event }: { event: (typeof events)[number] }) {
                   >
                     {label}
                   </span>
-                  <span className="text-[var(--text-muted)]">— {value}</span>
+                  <span className="text-(--text-muted)">— {value}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="text-[1.4rem] leading-[1.7] text-[var(--text-muted)]">
+            <p className="text-[1.4rem] leading-[1.7] text-(--text-muted)">
               {event.description}
             </p>
           </div>
@@ -192,7 +192,7 @@ export default function RecentEvents() {
   return (
     <section
       aria-label="event"
-      className="section-base text-left bg-[var(--bg-dark)]"
+      className="section-base text-left bg-(--bg-dark)"
     >
       <div className="section-container">
         <SectionHeader
@@ -207,7 +207,7 @@ export default function RecentEvents() {
           ))}
         </ul>
 
-        <GoldButton href="/blogs" className="mx-auto mt-[40px]">
+        <GoldButton href="/blogs" className="mx-auto mt-10">
           View Our Blog
         </GoldButton>
       </div>
