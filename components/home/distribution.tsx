@@ -32,7 +32,7 @@ const brands = [
 
 export default function Distribution() {
   return (
-    <section aria-label="service" className="section-base bg-[var(--bg-dark)]">
+    <section aria-label="service" className="section-base bg-(--bg-dark)">
       {/* Floating decorative background shapes */}
       <Image
         src="/images/index-page/bg-images/bg-left-v1.png"
@@ -41,7 +41,7 @@ export default function Distribution() {
         loading="lazy"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block absolute bottom-0 left-0 -z-[1] pointer-events-none max-w-max"
+        className="hidden lg:block absolute bottom-0 left-0 -z-1 pointer-events-none max-w-max"
         style={{ animation: "moveFloat 5s linear infinite" }}
       />
       <Image
@@ -51,7 +51,7 @@ export default function Distribution() {
         loading="lazy"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block absolute top-0 right-0 -z-[1] pointer-events-none max-w-max"
+        className="hidden lg:block absolute top-0 right-0 -z-1 pointer-events-none max-w-max"
         style={{ animation: "moveFloat 5s linear infinite" }}
       />
 
@@ -62,7 +62,7 @@ export default function Distribution() {
           titleClassName="mb-4"
         />
 
-        <p className="section-body mb-10 max-w-[560px] mx-auto">
+        <p className="section-body mb-10 max-w-[560] mx-auto">
           We bring the world's most prestigious fragrances directly to you,
           ensuring authenticity, quality, and a luxurious experience with every
           scent.
@@ -75,24 +75,24 @@ export default function Distribution() {
               key={brand.name}
               className={
                 index === 0 || index === 3
-                  ? "lg:-translate-y-[30px]"
-                  : "lg:translate-y-[30px]"
+                  ? "lg:-translate-y-7.5"
+                  : "lg:translate-y-7.5"
               }
             >
               <div className="group overflow-hidden">
                 <Link
                   href={brand.href}
-                  className="relative z-1 block py-[30px] mb-[26px] no-underline overflow-hidden [perspective:600px]"
+                  className="relative z-1 block py-7.5 mb-6.5 no-underline overflow-hidden perspective-[600px]"
                 >
                   {/* SVG pattern strip */}
                   <span
                     className="
-                      absolute top-0 left-1/2 w-[140px] h-full -z-[1]
+                      absolute top-0 left-1/2 w-35 h-full -z-1
                       bg-[url('/images/patterns/img-pattern.svg')] bg-center bg-cover bg-repeat
-                      [transform:translateX(-50%)]
+                      transform-[translateX(-50%)]
                       [transition:transform_500ms_ease_0ms]
-                      group-hover:[transform:rotateY(180deg)_translateX(50%)]
-                      group-hover:[transition-delay:300ms]
+                      group-hover:transform-[rotateY(180deg)_translateX(50%)]
+                      group-hover:delay-300
                     "
                     aria-hidden="true"
                   />
@@ -112,8 +112,8 @@ export default function Distribution() {
                     />
 
                     {/* Hover badge */}
-                    <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent to-black flex items-center justify-center px-3 opacity-0 group-hover:opacity-90 transition-opacity duration-500">
-                      <p className="text-center text-[1.1rem] tracking-[1.5px] uppercase font-semibold text-[var(--gold)] line-clamp-2">
+                    <div className="absolute inset-x-0 bottom-0 h-14 bg-linear-to-b from-transparent to-black flex items-center justify-center px-3 opacity-0 group-hover:opacity-90 transition-opacity duration-500">
+                      <p className="text-center text-[1.1rem] tracking-[1.5px] uppercase font-semibold text-(--gold) line-clamp-2">
                         {brand.badge}
                       </p>
                     </div>
